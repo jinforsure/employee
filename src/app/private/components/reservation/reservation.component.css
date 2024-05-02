@@ -1,0 +1,65 @@
+
+/* Custom CSS for button positioning */
+.button-container {
+    display: flex;
+    justify-content: flex-end; /* Align items to the right */
+  }
+  
+  .button-container button {
+    margin-left: 10px; /* Add space between the button and other content */
+  }
+  .btn-disabled {
+    background-color: #ccc; /* Grey background */
+    color: #666; /* Dark grey text */
+  }
+  
+  .btn-enabled { 
+    color: #fff; /* White text */
+  }
+
+  .custom-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .custom-table th,
+  .custom-table td {
+    padding: 8px;
+    border: 1px solid #ddd;
+  }
+  
+  .custom-table th {
+    background-color: #f2f2f2;
+    text-align: left;
+  }
+  
+  ::ng-deep .mat-checkbox-frame {
+    border-color: green;
+  }
+  
+  ::ng-deep .mat-checkbox-background {
+    background-color: green;
+  }
+  
+  ::ng-deep .mat-checkbox-checked.mat-accent .mat-checkbox-background {
+    background-color: green;
+  }
+  
+  .button-container {
+    margin-top: 20px;
+  }
+  
+  .btn-disabled {
+    cursor: not-allowed;
+    background-color: #cccccc !important;
+    border-color: #cccccc !important;
+    color: #666666 !important;
+  }
+  
+  .btn-enabled {
+    cursor: pointer;
+  }
+  
+
+    
+  

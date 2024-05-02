@@ -1,0 +1,133 @@
+/* Modal Styles */
+.modal-dialog {
+    margin: 10px auto;
+    max-width: 1500px;
+    margin-top: -10px;
+  }
+  
+  .modal-content {
+    border-radius: 10px;
+  }
+  
+  .modal-header {
+    background-color: #0A1E59;
+    color: #fff;
+    border-radius: 10px 10px 0 0;
+  }
+  
+  .modal-title {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: bold;
+    padding: 15px;
+  }
+  
+  .row{
+    margin-top: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: -15px;
+    margin-left: -15px;
+  }
+  .col {
+    flex: 0 0 calc(50% - 10px); /* Adjust the width and margin as needed */
+    max-width: calc(50% - 10px); /* Adjust the width and margin as needed */
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-bottom: 20px;
+  }
+  .modal-body {
+    padding: 20px;
+  }
+  
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+  label {
+    font-weight: bold;
+  }
+  
+  input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    transition: border-color 0.2s;
+  }
+  
+  input[type="text"]:focus {
+    border-color: #0A1E59;
+  }
+  
+  .modal-footer {
+    background-color: #f7f7f7;
+    border-top: 1px solid #ddd;
+    border-radius: 0 0 10px 10px;
+    padding: 15px;
+    text-align: right;
+  }
+  
+  .btn-success {
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .btn-success:hover {
+    background-color: #218838;
+  }
+  
+  select {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    transition: border-color 0.2s;
+  }
+  
+  select:focus {
+    border-color: #007bff;
+  }
+  
+  .btn-secondary {
+    background-color: #6c757d;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    margin-right: 10px;
+  }
+  
+  .btn-secondary:hover {
+    background-color: #5a6268;
+  }
+  
+
+  /* Media Query for Small Screens */
+@media (max-width: 768px) {
+  .col {
+    flex: 0 0 100%; /* Set width to 100% for smaller screens */
+    max-width: 100%; /* Set max-width to 100% for smaller screens */
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-bottom: 20px;
+  }
+}
+
+label > span {
+  color: red; /* Change color as needed */
+  margin-left: 2px; /* Adjust spacing as needed */
+}
+
+label.required::after {
+  content: "*";
+  color: red; /* Change color as needed */
+  margin-left: 2px; /* Adjust spacing as needed */
+}

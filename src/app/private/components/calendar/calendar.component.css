@@ -1,0 +1,134 @@
+#calendar-container {
+    font-family: Arial, sans-serif;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 5px;
+  }
+  
+
+  
+  #cal-date-field {
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+    flex-grow: 1;
+  }
+  
+  span[ngSwitch] {
+    display: block;
+    margin-top: 10px;
+  }
+  
+  #cal-buttons {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  
+  .btn-group {
+    display: flex;
+    gap: 10px;
+  }
+  
+  #cal-date-field {
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+    flex-grow: 1;
+  }
+  
+  span[ngSwitch] {
+    display: block;
+    margin-top: 10px;
+  }
+  
+  .btn-secondary.active,
+  .btn-secondary:hover {
+    background-color: #007bff;
+    color: #fff;
+  }
+  
+  .btn-secondary {
+    background-color: #fff;
+    color: #007bff;
+    border-color: #007bff;
+  }
+  
+  .btn-secondary:not(.active):hover {
+    background-color: #f8f9fa;
+    color: #007bff;
+    border-color: #007bff;
+  }
+
+  .btn-success {
+    width: 160px;
+  }
+
+
+  /* Style for the modal dialog */
+.modal-dialog {
+  max-width: 600px; /* Adjust the maximum width of the modal */
+}
+
+/* Style for the modal content */
+.modal-content {
+  border-radius: 10px; /* Add border radius to the modal */
+}
+
+
+.modal-title {
+  font-weight: bold;
+  font-size: large;
+}
+
+/* Style for the modal body */
+.modal-body {
+  padding: 20px; /* Add padding to the body */
+}
+
+/* Style for the modal footer */
+.modal-footer {
+  border-top: none; /* Remove the top border of the footer */
+}
+
+/* Style for the close button */
+.close {
+  color: #ffffff; /* Change the color of the close button */
+  font-size: 1.5rem; /* Increase the font size of the close button */
+}
+
+/* Style for the primary button */
+.modal-content .btn-primary {
+  background-color: #007bff; /* Change the background color of the primary button */
+  border-color: #5b57d0; /* Change the border color of the primary button */
+}
+
+/* Style for the secondary button */
+.modal-content .btn-secondary {
+  background-color: #6c757d; /* Change the background color of the secondary button */
+  border-color: #6c757d; /* Change the border color of the secondary button */
+  color: #ffffff; /* Change the text color of the secondary button */
+}
+
+/* Hover effect for buttons */
+.modal-content .btn:hover {
+  opacity: 0.8; /* Reduce opacity on hover */
+}
+
+input[type="date"],
+input[type="time"] {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+/* Style for input fields on focus */
+input[type="date"]:focus,
+input[type="time"]:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 3px #007bff;
+}

@@ -1,0 +1,50 @@
+<style>
+  .card {
+    width: 1200px !important;
+    margin-top: -30px;
+    margin-left: -220px;
+  }
+</style>
+
+
+
+<div class="container">
+    <div class="table-wrapper">
+      <div class="table-responsive">
+      <table class="table table-bordered table-hover">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Category</th>
+            <th>Subcategory</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let equipments of equipmentsList">
+            <td>{{equipments.name }}</td>
+            <td>Equipments</td>
+            <td>{{equipments.type}}</td>
+            <td>
+              <mat-checkbox class="example-margin" (change)="updateButtonState()" [(ngModel)]="equipments.checked"> Add</mat-checkbox>               
+            </td>
+          </tr>
+          <tr *ngFor="let rooms of roomsList">
+            <td>{{rooms.name }}</td>
+            <td>Rooms</td>
+            <td>{{rooms.type}}</td>
+            <td>
+              <mat-checkbox class="example-margin"(change)="updateButtonState()" [(ngModel)]="rooms.checked"> Add</mat-checkbox>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    </div>
+    <div class="button-container">
+    <button class="btn btn-success" [ngClass]="{'btn-disabled': !isButtonEnabled, 'btn-enabled': isButtonEnabled}" >Submit</button>
+  </div>
+</div>
+
+
+  

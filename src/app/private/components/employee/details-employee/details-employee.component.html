@@ -1,0 +1,74 @@
+
+<div class="modal-dialog">
+  <div class="modal-content">
+    <form>
+      <div class="modal-header">
+        <h4 class="modal-title">{{employee.id ? "Edit" : "Add"}} Employee</h4>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col">
+            <label >First Name <span>*</span></label>
+            <input type="text" [(ngModel)]=" employee.firstName" name="firstName" class="form-control" required />
+        </div>
+        <div class="col">
+          <label>Last Name <span>*</span></label>
+          <input type="text" [(ngModel)]=" employee.lastName" name="lastName" class="form-control" required />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <label>Phone Number <span>*</span></label>
+          <input type="tel" [(ngModel)]=" employee.phoneNumber" name="phoneNumber" class="form-control" appNumbersOnly required />
+        </div>
+
+        <div class="col">
+          <label>Address <span>*</span></label>
+          <input type="text" [(ngModel)]=" employee.address" name="address" class="form-control" required />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <label>Email <span>*</span></label>
+          <input type="email" [(ngModel)]=" employee.email" name="email" class="form-control" required />
+        </div>
+
+        <div class="col">
+          <label>Password</label>
+          <input type="password" [(ngModel)]=" employee.password" name="password" class="form-control" required />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <label>Account Type <span>*</span></label>
+          <select id="account_type" [(ngModel)]="employee.account_type" name="account_type" required>
+            <option value="" disabled selected>Select Account Type</option>
+            <option *ngFor="let account_type of account_type" [value]="account_type">{{ account_type }}</option>
+          </select>
+        </div>
+
+        <div class="col">
+          <label>Department <span>*</span></label>
+          <select id="department" [(ngModel)]="employee.department" name="department" required>
+            <option value="" disabled selected>Select Departmrnt</option>
+            <option *ngFor="let department of departments" [value]="department">{{ department }}</option>
+          </select>
+        </div>
+
+        <div class="col">
+          <label>Job <span>*</span></label>
+          <input type="text" [(ngModel)]=" employee.job" name="job" class="form-control" required />
+        </div>
+      </div>
+        
+
+      </div>
+      <div class="modal-footer" >
+        <button type="button" class="btn btn-secondary" (click)="goBack()">Back</button>
+        <input type="submit" class="btn btn-success" value="Save" (click)="saveEmployee()"/>
+      </div>
+    </form>
+  </div>
+</div>
+
+
