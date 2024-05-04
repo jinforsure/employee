@@ -36,4 +36,7 @@ export class EmployeeService {
     return this.httpclient.post<any>(`${this.baseUrl}/employee/login`, loginData);
   }
   
+  getEmployeeByEmail(email: string): Observable<Employee> {
+    return this.httpclient.get<Employee>(`${this.baseUrl}/employee/email/${email}`);
+  }
 }
