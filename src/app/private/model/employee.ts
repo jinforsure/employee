@@ -9,6 +9,7 @@ export interface Employee{
     account_type? :string;
     department? :string;
     job? :string;
+    state? : string;
     createdAt? : Date;
     updatedAt? : Date;
 }

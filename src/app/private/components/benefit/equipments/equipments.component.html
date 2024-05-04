@@ -1,46 +1,71 @@
+<!-- Inclusion du lien vers les polices Google Material Icons -->
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-<div class="container">
-    <div class="table-wrapper">
-      <div class="table-title">
-        <div class="row">
-          <div class="col-sm-6">
-            <h2>List of Equipments</h2>
-          </div>
-        </div>
-      </div>
-      <div class="table-responsive">
-      <table class="table table-bordered table-hover">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Type</th>
-            <th>Manufactuer</th>
-            <th>Model</th>
-            <th>Purchase Date</th>
-            <th>Quantity</th>
-            <th>Price</th>
-            <th>Maintenance Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let equipments of equipmentsList">
-            <td>{{equipments.name }}</td>
-            <td>{{equipments.type}}</td>
-            <td>{{equipments.manufactuer}}</td>
-            <td>{{equipments.model}}</td>
-            <td>{{equipments.purchase_date}}</td>
-            <td>{{equipments.quantity}}</td>
-            <td>{{equipments.price}}</td>
-            <td>{{equipments.maintenance_status}}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-      <div class="clearfix">
-        <div class="hint-text">Showing <b>{{equipmentsList.length}}</b> entries</div>
-      </div>
-    
-    </div>
-  </div>
 
-  
+<!-- Conteneur principal avec classe 'container' -->
+<div class="container">
+    <!-- En-tête de la table -->
+    <div class="table-wrapper">
+        <div class="table-title">
+            <!-- Ligne contenant le titre de la table -->
+            <div class="row">
+                <!-- Colonne pour le titre de la table -->
+                <div class="col-sm-6">
+                    <h2>Liste des équipements</h2>
+                </div>
+                <!-- Colonne pour le bouton d'ajout d'un nouvel équipement -->
+                <div class="col-sm-6">
+                    <!-- Bouton pour ajouter un nouvel équipement avec lien dynamique -->
+                    <a href="#addEquipmentsModal" [routerLink]="'/benefit/equipments/new'" class="btn btn-success" data-toggle="modal">
+                        <!-- Icone d'ajout -->
+                        <i class="material-icons">&#xE147;</i>
+                        <span>Ajouter Nouveau</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <!-- Tableau responsive avec classes Bootstrap -->
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover">
+                <!-- En-têtes de colonnes -->
+                <thead>
+                    <tr>
+                        <th>Nom</th>
+                        <th>Sous-catégorie</th>
+                        <th>Fabricant</th>
+                        <th>Modèle</th>
+                        <th>Quantité</th>
+                        <th>Prix</th>
+                        <th>Statut de Maintenance</th>
+                        <th>État</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <!-- Corps du tableau avec boucle *ngFor -->
+                <tbody>
+                    <tr *ngFor="let equipment of equipmentsList">
+                        <td>{{equipment.name}}</td>
+                        <td>{{equipment.type}}</td>
+                        <td>{{equipment.manufactuer}}</td>
+                        <td>{{equipment.model}}</td>
+                        <td>{{equipment.quantity}}</td>
+                        <td>{{equipment.price}}</td>
+                        <td>{{equipment.maintenance_status}}</td>
+                        <!-- Style dynamique pour la colonne 'État' -->
+                        <td [ngStyle]="{'color': equipment.state === 'Actif' ? 'green' : 'red'}">{{equipment.state}}</td>
+                        <td>
+                            <!-- Lien pour éditer chaque équipement -->
+                            <a href="#editEquipmentsModal" [routerLink]="'/benefit/equipments/' + equipment.id" class="edit" data-toggle="edit">
+                                <!-- Icone d'édition -->
+                                <i class="material-icons" data-toggle="tooltip" title="Éditer">&#xE254;</i>
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <!-- Affichage du nombre d'entrées dans la liste d'équipements -->
+        <div class="hint-text" *ngIf="equipmentsList">
+            Affichage de <b>{{equipmentsList.length}}</b> entrées
+        </div>
+    </div>
+</div>

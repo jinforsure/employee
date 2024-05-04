@@ -8,9 +8,6 @@
     height: 100vh;
     box-shadow: 0.063rem 0 1.25rem 0 #8690a3;
 }
-.logo-container{
-    display: flex;
-}
 
 .logo-container {
     display: flex;
@@ -23,16 +20,23 @@
     text-align: center;
     width: 3rem;
     min-width: 3rem;
+    height: 3rem;
     border-radius: 0.313rem;
     padding: 0.313rem;
     font-size: 24px;
-    font-weight: 900;
     cursor: pointer;
     border: none;
 }
-
+.logo-container .logo img{
+    width: 2.5rem;
+    height: 3rem;
+    align-self: center;
+    margin-top: -4px;
+    margin-left: -1px;
+}
 .logo-container .logo-text {
-    margin-left:  1.5rem;
+    margin-left:  1rem;
+    margin-top: 12px;
     font-size: 24px;
     font-weight: 700;
     color: #fff;
@@ -46,6 +50,7 @@
     border-radius: 50%;
     background-color: transparent;
     border: none;
+    margin-top: 4px;
 }
 
 .logo-container .btn-close .fa-times{

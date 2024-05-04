@@ -29,6 +29,7 @@
             <th>Account Type</th>
             <th>Department</th>
             <th>Job</th>
+            <th>State</th>
             <th>action</th>
           </tr>
         </thead>
@@ -42,15 +43,11 @@
             <td>{{employee.account_type}}</td>
             <td>{{employee.department}}</td>
             <td>{{employee.job}}</td>
+            <td [ngStyle]="{ 'color': employee.state === 'Active' ? 'green' : 'red' }">{{ employee.state }}</td>
             <td>
               <a href="#editEmployeeModal" [routerLink]="'/employee/'+ employee.id" class="edit" data-toggle="edit"
                 ><i class="material-icons" data-toggle="tooltip" title="Edit"
                   >&#xE254;</i
-                ></a
-              >
-              <a href="#deleteModal" class="delete" data-toggle="modal" (click)="selectEmployee (employee)"
-                ><i class="material-icons" data-toggle="tooltip" title="Delete"
-                  >&#xE872;</i
                 ></a
               >
             </td>

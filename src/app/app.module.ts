@@ -18,9 +18,9 @@ import { LoginComponent } from './private/components/login/login.component';
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { EmployeeLayoutComponent } from './layouts/employee-layout/employee-layout.component';
-import { ReservationListComponent } from './private/components/reservation-list/reservation-list.component';
-import { ChatComponent } from './private/components/chat/chat.component';
 import { ComponentsModule } from "./private/shared/shared.module";
+
+
 
 class CustomDateFormatter extends CalendarNativeDateFormatter{
   public override dayViewHour({ date,locale}: DateFormatterParams) : string{
@@ -38,8 +38,6 @@ class CustomDateFormatter extends CalendarNativeDateFormatter{
         AppComponent,
         LoginComponent,
         EmployeeLayoutComponent,
-        ReservationListComponent,
-        ChatComponent,
     ],
     providers: [
         { provide: CalendarDateFormatter, useClass: CustomDateFormatter }

@@ -1,0 +1,58 @@
+<div class="modal-dialog">
+    <div class="modal-content">
+      <form #roomsForm="ngForm" (ngSubmit)="saveRooms()">
+        <div class="modal-header">
+          <h4 class="modal-title">{{rooms.id ? "Edit" : "Add"}} rooms</h4>
+        </div>
+
+        <div class="modal-body">
+          <div class="row" *ngIf="!rooms.id" >
+            <div class="col">
+              <label>Name <span></span></label>
+              <input type="text" [(ngModel)]="rooms.name" name="name" class="form-control"  />
+            </div>
+            <div class="col">
+                <label>SubCategory <span></span></label>
+                <select id="type" [(ngModel)]="rooms.type" name="type" required (ngModelChange)="checkFormValidity()">
+                  <option value="" enabled selected>Select SubCategory</option>
+                  <option *ngFor="let type of types" [value]="type">{{ type }}</option>
+                </select>
+            </div>
+          </div>
+          <div class="row" >
+            <div class="col">
+              <label>Location <span>*</span></label>
+              <input type="text" [(ngModel)]="rooms.location" name="manufactuer" class="form-control"  />
+            </div>
+            <div class="col">
+                <label>Capacity <span>*</span></label>
+                <input type="number" [(ngModel)]="rooms.capacity" name="capacity" class="form-control"  />
+                <div *ngIf="capacityInvalid && roomsForm.controls['capacity'].touched" class="text-danger"></div>
+                  Capacity is required.
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+                <label>Maintenance Status <span>*</span></label>
+                <input type="text" [(ngModel)]="rooms.maintenance_status" name="maintenance_status" class="form-control"  />
+            </div>
+            <div class="col">
+              <label>State <span>*</span></label>
+              <select id="state" [(ngModel)]="rooms.state" name="state" required (ngModelChange)="checkFormValidity()"
+                      [ngClass]="{ 'state-active': rooms.state === 'Active', 'state-inactive': rooms.state !== 'Active' }">
+                <option value="" enabled selected>Select state</option>
+                <option *ngFor="let state of states" [value]="state">{{ state }}</option>
+              </select>
+              <div *ngIf="stateInvalid && roomsForm.controls['state'].touched" class="text-danger">
+                State is required.
+              </div>
+            </div>          
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="goBack()">Back</button>
+          <input type="submit" class="btn btn-success" value="Save" [disabled]="roomsForm.invalid" />
+        </div>
+      </form>
+    </div>
+</div>

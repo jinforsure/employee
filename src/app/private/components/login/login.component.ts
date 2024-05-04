@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
-import { EmployeeService } from '../../services/employee.service';
 import { Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
+import { AuthService } from '../../services/auth.service'; // Import du service d'authentification
 
 @Component({
   selector: 'app-login',
@@ -9,37 +8,37 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
-  email: string ='';
-  password: string ='';
-  errorMessage: string ='';
+  email: string = '';
+  password: string = '';
+  errorMessage: string = '';
 
-  constructor(private employeeService: EmployeeService,
-              private router: Router,
-             private http: HttpClient) { }
+  constructor(private authService: AuthService, // Injection du service d'authentification
+              private router: Router) { }
 
   login() {
     console.log(this.email);
     console.log(this.password);
 
-    let bodyData = {
-      email:this.email,
-      password:this.password
-    };
-
-    this.http.post("http://localhost:8083/api/arsii/employee/login", bodyData).subscribe( (resultData: any) => {
-      console.log(resultData);
-
-      if(resultData.message == "email does not match"){
-        alert("email does not match");
+    this.authService.login(this.email, this.password).subscribe(
+      (resultData: any) => {
+        console.log(resultData);
+        if (resultData.message === 'login success') {
+          const userRole = this.authService.getUserRole();
+          if (userRole === 'admin') {
+            this.router.navigateByUrl('/dashboard'); // Rediriger vers le tableau de bord de l'admin
+          } else if (userRole === 'employee') {
+            this.router.navigateByUrl('/calendar'); // Rediriger vers le calendrier de l'employé
+          } else {
+            alert('Unknown user role'); // Rôle utilisateur inconnu
+          }
+        } else {
+          alert('Failed to login'); // Échec de la connexion
+        }
+      },
+      (error) => {
+        console.error('An error occurred:', error); // Gérer les erreurs
+        alert('Failed to login');
       }
-      else if (resultData.message == "login success"){
-        this.router.navigateByUrl('/calendar');
-      }
-      else {
-        alert ("failed to login");
-      }
-    })
-    
-}
-
+    );
+  }
 }

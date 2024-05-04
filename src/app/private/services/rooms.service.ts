@@ -30,4 +30,12 @@ export class RoomsService {
       )
     );
   }
+
+  addRooms(rooms : Rooms) {
+    return this.httpclient.post(this.baseUrl + '/rooms',rooms);
+  }
+
+  editRooms(id: number,rooms:Rooms){
+    return this.httpclient.put(this.baseUrl + '/rooms/' + id, rooms);
+  }
 }

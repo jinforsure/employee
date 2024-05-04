@@ -1,5 +1,4 @@
 export interface Rooms{
-    checked: boolean;
     id? : number;
     name? : string;
     type? : string;
@@ -8,4 +7,9 @@ export interface Rooms{
     capacity? :number;
     createdAt? : Date;
     updatedAt? : Date;
+    category?: string; // Ajouter la propriété category
+  subcategory?: string; // Ajouter la propriété subcategory
+  state?:string;
+  benefit_id?:number | null;
+  checked?: boolean;
 }

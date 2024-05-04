@@ -27,4 +27,13 @@ export class BenefitComponent {
     });
   }
 
+  redirectToCategoryPage(category: string): void {
+    // Rediriger vers la page spécifique en fonction de la catégorie du bénéfice
+    if (category === 'Equipments') {
+      this.router.navigate(['/benefit/equipments']);
+    } else {
+      this.router.navigate(['/benefit/rooms']);
+    }
+  }
+
 }
