@@ -51,7 +51,7 @@
                 id="day" 
                 (click)="setView(CalendarView.Day)" 
                 class="btn btn-secondary"
-                [class.active]="view === CalendarView.Month"
+                [class.active]="view === CalendarView.Day"
             >Day</button>
         </div>
     </div>
@@ -103,7 +103,7 @@
         <div class="modal-body">
             <form [formGroup]="reservationForm">
                 <label for="departureDate">Select Date</label>
-                <input type="date" id="departureDate" name="departureDate" formControlName="departureDate">
+                <input type="date" id="departureDate" name="departureDate" formControlName="departureDate" >
             
                 <label for="departureTime">Select Hour of Departure</label>
                 <input type="time" id="departureTime" name="departureTime" formControlName="departureTime">

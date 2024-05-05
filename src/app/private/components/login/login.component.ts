@@ -38,7 +38,7 @@ export class LoginComponent {
                     // Vous pouvez accéder aux informations de l'employé ici, par exemple, employeeData.accountType
                     console.log("Account Type:", employeeData.account_type);
                     if (employeeData.account_type === "Employee"){
-                      this.router.navigateByUrl('/Calendar');
+                      this.router.navigateByUrl('/calendar');
                     }else if (employeeData.account_type === "Admin"){
                       this.router.navigateByUrl('/dashboard');
                     }else {

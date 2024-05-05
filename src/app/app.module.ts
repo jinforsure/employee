@@ -19,6 +19,8 @@ import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { EmployeeLayoutComponent } from './layouts/employee-layout/employee-layout.component';
 import { ComponentsModule } from "./private/shared/shared.module";
+import { ForgotPasswordComponent } from './private/components/forgot-password/forgot-password.component';
+import { NotFoundComponent } from './private/components/not-found/not-found.component';
 
 
 
@@ -38,6 +40,8 @@ class CustomDateFormatter extends CalendarNativeDateFormatter{
         AppComponent,
         LoginComponent,
         EmployeeLayoutComponent,
+        ForgotPasswordComponent,
+        NotFoundComponent,
     ],
     providers: [
         { provide: CalendarDateFormatter, useClass: CustomDateFormatter }

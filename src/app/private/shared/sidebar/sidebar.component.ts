@@ -16,12 +16,12 @@ declare interface RouteInfo {
 
 export const navbarData = [
   { path: '/dashboard', title: 'Dashboard',  icon: 'fal fa-dashboard', class: '' },
-  { path: '/charts', title: 'Charts',  icon: 'fal fa-line-chart', class: '' },
   { path: '/calendar', title: 'Calendar',  icon: 'fal fa-calendar', class: '' },
-  { path: '/history', title: 'History',  icon: 'fal fa-history', class: '' },
   { path: '/employee', title: 'Employee',  icon: 'fal fa-user', class: '' },
   { path: '/benefit', title: 'Benefit',  icon: 'fal fa-box-open', class: '' },
   { path: '/reservation', title: 'Make Reservation',  icon: 'fal fa-bookmark', class: '' },
+  { path: '/reservation/list', title: 'Reservation List',  icon: 'fal fa-list', class: '' },
+  { path: '/chat', title: 'Messages',  icon: 'fal fa-comment', class: '' },
 ];
 
 @Component({

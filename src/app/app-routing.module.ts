@@ -2,12 +2,24 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './private/components/login/login.component';
 import { EmployeeLayoutComponent } from './layouts/employee-layout/employee-layout.component';
+import { ForgotPasswordComponent } from './private/components/forgot-password/forgot-password.component';
+import { NotFoundComponent } from './private/components/not-found/not-found.component';
+import { authGuard } from './guards/auth.guard';
 
 
 const routes: Routes = [
   {
     path: 'login',
     component: LoginComponent,
+  },
+  {
+    path: '',
+    redirectTo: 'login',
+    pathMatch: 'full',
+  },
+  {
+    path: 'forgot-password',
+    component: ForgotPasswordComponent,
   },
   {
     path: '',
@@ -25,8 +37,8 @@ const routes: Routes = [
   }, 
   {
     path: '**',
-    redirectTo: 'dashboard'
-  }
+    component: NotFoundComponent,
+  },
 ];
 
 @NgModule({

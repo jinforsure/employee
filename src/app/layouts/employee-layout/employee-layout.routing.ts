@@ -5,12 +5,10 @@ import { EquipmentsComponent } from 'src/app/private/components/benefit/equipmen
 import { DetailsRoomsComponent } from 'src/app/private/components/benefit/rooms/details-rooms/details-rooms.component';
 import { RoomsComponent } from 'src/app/private/components/benefit/rooms/rooms.component';
 import { CalendarComponent } from 'src/app/private/components/calendar/calendar.component';
-import { ChartsComponent } from 'src/app/private/components/charts/charts.component';
 import { ChatComponent } from 'src/app/private/components/chat/chat.component';
 import { DashboardComponent } from 'src/app/private/components/dashboard/dashboard.component';
 import { DetailsEmployeeComponent } from 'src/app/private/components/employee/details-employee/details-employee.component';
 import { EmployeeComponent } from 'src/app/private/components/employee/employee.component';
-import { HistoryComponent } from 'src/app/private/components/history/history.component';
 import { ListreservComponent } from 'src/app/private/components/reservation/listreserv/listreserv.component';
 import { ReservationComponent } from 'src/app/private/components/reservation/reservation.component';
 
@@ -18,8 +16,6 @@ import { ReservationComponent } from 'src/app/private/components/reservation/res
 
 export const AdminLayoutRoutes: Routes = [
     { path: 'dashboard',      component: DashboardComponent },
-    { path: 'charts',      component: ChartsComponent },
-    { path: 'history',      component: HistoryComponent },
     { path: 'calendar',      component: CalendarComponent },
     { path: 'employee',      component: EmployeeComponent,},
     { path: 'employee/:id', component:DetailsEmployeeComponent },

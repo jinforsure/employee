@@ -1,14 +1,12 @@
 import { Component } from '@angular/core';
 import { CalendarEvent, CalendarView,  } from 'angular-calendar';
-import { isSameDay, isSameMonth } from 'date-fns';
+import { isSameDay, isSameMonth, isSameWeek } from 'date-fns';
 import { Subject } from 'rxjs';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import * as dateFns from 'date-fns';
-
-
-import { Injectable } from '@angular/core';
 import { FormControl, ValidatorFn, AbstractControl, ValidationErrors } from '@angular/forms';
+import { ReservationService } from '../../services/reservation.service';
+
 
 @Component({
   selector: 'app-calendar',
@@ -24,6 +22,9 @@ export class CalendarComponent {viewDate: Date = new Date();
   events: CalendarEvent[] = [];
   refresh = new Subject<void>();
 
+  reservations: { name: string, departDate: string, departHour: string, returnHour: string }[] = [];
+  eventsList: CalendarEvent[] = [];
+
   selectedDate: string='';
   selectedDepartureTime: string='';
   selectedReturnTime: string='';
@@ -35,11 +36,10 @@ export class CalendarComponent {viewDate: Date = new Date();
 
   
 
-  constructor(private router :Router ,private fb: FormBuilder){
+  constructor(private router :Router ,private fb: FormBuilder, private reservationService: ReservationService ){
     const event1 = {
       title: "Pc hp Reservation",
       start: new Date("2024-04-25T10:30"),
-      end: new Date("2024-04-25T13:00"),
       draggable: true,
       resizable: {
         beforeStart: true,
@@ -58,7 +58,6 @@ export class CalendarComponent {viewDate: Date = new Date();
       this.selectedDate = value; // Mettre à jour selectedDate
       console.log('Departure date changed:', value);
     });
-
     // Écouteur d'événement de modification pour le champ 'departureTime'
     this.reservationForm.get('departureTime')?.valueChanges.subscribe(value => {
       this.selectedDepartureTime = value; // Mettre à jour selectedDepartureTime
@@ -83,24 +82,31 @@ export class CalendarComponent {viewDate: Date = new Date();
       departureTime: ['', Validators.required],
       returnTime: ['', Validators.required]
     });
+    this.getAllReservations();
   }
   setView(view : CalendarView) {
     this.view = view;
   }
 
-  dayClicked({date,events}: {date: Date; events: CalendarEvent[] }): void {
-    if(isSameMonth(date, this.viewDate)){
+  dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
+    console.log("92");
+    if (isSameMonth(date, this.viewDate)) {
+      console.log("94");
       if (
-        (isSameDay(this.viewDate, date) && this.activeDayIsOpen === true ) || events.length === 0
+        (isSameDay(this.viewDate, date) && this.activeDayIsOpen === true) ||
+        events.length === 0
       ) {
-        this.activeDayIsOpen =false;
+        console.log("99");
+        this.activeDayIsOpen = false;
       } else {
+        console.log("102");
         this.activeDayIsOpen = true;
       }
+      console.log("105");
       this.viewDate = date;
     }
   }
-
+  
   eventClicked(event : any){
     console.log(event);
   }
@@ -178,14 +184,31 @@ formatDate(dateString: string): string {
     };
   }
 
-  timeFormatValidator(): ValidatorFn {
-    return (control: AbstractControl): ValidationErrors | null => {
-      const timePattern = /^([01][0-9]|2[0-3]):[0-5][0-9]$/;
-      const isValid = timePattern.test(control.value);
-
-      return isValid ? null : { invalidTimeFormat: true };
-    };
-  }
-
+  getAllReservations() {
+    this.reservationService.getAllReservations().subscribe(reservations => {
+      this.events = reservations
+        .filter(reservation => reservation.departDate) // Filtrer les réservations sans date de départ
+        .map(reservation => {
+          // Créer une nouvelle Date seulement si reservation.departDate est défini
+          // Diviser la date en parties (mois, jour, année)
+        const dateParts = reservation.departDate!.split('-');
+        const startDateTimeString = `${dateParts[2]}-${dateParts[0]}-${dateParts[1]}T${reservation.departHour}`;
+        const start = new Date(startDateTimeString);
+        const end = new Date(startDateTimeString);
+          return {
+            title: reservation.name ?? 'Unknown',
+            start: start,
+            end: end,
+            draggable: true,
+            resizable: {
+                beforeStart: true,
+                afterEnd: true,
+            }
+          };
+        });
+      console.log('All Reservations:', this.events);
+      console.log(reservations);
+    });
+  }
 
 }

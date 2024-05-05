@@ -4,8 +4,6 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AdminLayoutRoutes } from './employee-layout.routing';
 import { DashboardComponent } from 'src/app/private/components/dashboard/dashboard.component';
-import { ChartsComponent } from 'src/app/private/components/charts/charts.component';
-import { HistoryComponent } from 'src/app/private/components/history/history.component';
 import { EmployeeComponent } from 'src/app/private/components/employee/employee.component';
 import { BenefitComponent } from 'src/app/private/components/benefit/benefit.component';
 import { ReservationComponent } from 'src/app/private/components/reservation/reservation.component';
@@ -25,6 +23,13 @@ import { DetailsRoomsComponent } from 'src/app/private/components/benefit/rooms/
 import { ListreservComponent } from 'src/app/private/components/reservation/listreserv/listreserv.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { ChatComponent } from 'src/app/private/components/chat/chat.component';
+
+import {MatButtonModule} from '@angular/material/button';
+import {MatRippleModule} from '@angular/material/core';
+import {MatTooltipModule} from '@angular/material/tooltip';
+import {MatSelectModule} from '@angular/material/select';
+
+
 // import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
@@ -40,12 +45,14 @@ import { ChatComponent } from 'src/app/private/components/chat/chat.component';
     CalendarModule.forRoot({ provide: DateAdapter, useFactory: adapterFactory }),
     ReactiveFormsModule,
     MatFormFieldModule,
-    MatDialogModule
+    MatDialogModule,
+    MatButtonModule,
+    MatRippleModule,
+    MatSelectModule,
+    MatTooltipModule,
   ],
   declarations: [
      DashboardComponent,
-     ChartsComponent,
-     HistoryComponent,
      EmployeeComponent,
      BenefitComponent,
      ReservationComponent,
