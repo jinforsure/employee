@@ -1,5 +1,6 @@
 export interface Rooms{
     id? : number;
+    benefitId? :2;
     name? : string;
     type? : string;
     location? : string;
@@ -7,7 +8,7 @@ export interface Rooms{
     capacity? :number;
     createdAt? : Date;
     updatedAt? : Date;
-    category?: string; // Ajouter la propriété category
+    category?: "Rooms"; // Ajouter la propriété category
   subcategory?: string; // Ajouter la propriété subcategory
   state?:string;
   benefit_id?:number | null;

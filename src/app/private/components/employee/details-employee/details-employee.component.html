@@ -7,6 +7,13 @@
       
       <div class="modal-body">
         <div class="row" *ngIf="!employee.id">
+          <div >
+            <label>UserName <span></span></label>
+            <input type="text" [(ngModel)]="employee.username" name="username" class="form-control"  />
+            
+          </div>
+        </div>
+        <div class="row" *ngIf="!employee.id">
           <div class="col">
             <label>First Name <span></span></label>
             <input type="text" [(ngModel)]="employee.firstName" name="firstName" class="form-control"  />
@@ -98,7 +105,7 @@
 
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" (click)="goBack()">Back</button>
-        <input type="submit" class="btn btn-success" value="Save" [disabled]="employeeForm.invalid" />
+        <input type="submit" class="btn btn-success" value="Save" (click)="saveEmployee()" [disabled]="employeeForm.invalid" />
       </div>
     </form>
   </div>

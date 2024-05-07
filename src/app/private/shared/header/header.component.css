@@ -10,7 +10,7 @@
 }
 
 .head .head-content {
-    background-color: #fff;
+    background-color: #0a1f5f;
     border-radius: 0.625rem;
     box-shadow: 0px 0px 10px 0 rgb(34 41 47 / 10%);
     padding: 0.813rem 1.563rem;
@@ -78,7 +78,8 @@
     border-radius: 50%;
     margin-left: 5px;
     outline: 0;
-    color: #495057;
+    color: #ffffff;
+    background-color: #0A1E59;
 }
 
 .head-menu-item-btn:hover, .head-menu-item-btn:focus{
@@ -261,3 +262,22 @@
 .overlay-user ul li:hover{
     background: #eff2f3;
 }
+.profile-link {
+    color: inherit; /* Use the parent element's color */
+    text-decoration: none; /* Remove underline */
+}
+
+.breadcrumbs{
+    color: white;
+    font-size:large;
+}
+
+.breadcrumbs a {
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.no-underline {
+    text-decoration: none; /* Remove underline */
+  }
+  

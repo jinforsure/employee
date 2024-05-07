@@ -51,8 +51,15 @@
                         <td>{{equipment.price}}</td>
                         <td>{{equipment.maintenance_status}}</td>
                         <!-- Style dynamique pour la colonne 'État' -->
-                        <td [ngStyle]="{'color': equipment.state === 'Actif' ? 'green' : 'red'}">{{equipment.state}}</td>
                         <td>
+                            <ng-container *ngIf="equipment.state === 'Enabled'; else inactiveButton">
+                              <button type="button" class="btn btn-success">{{ equipment.state }}</button>
+                            </ng-container>
+                            <ng-template #inactiveButton>
+                              <button type="button" class="btn btn-danger">{{ equipment.state }}</button>
+                            </ng-template>
+                          </td>
+                          <td>
                             <!-- Lien pour éditer chaque équipement -->
                             <a href="#editEquipmentsModal" [routerLink]="'/benefit/equipments/' + equipment.id" class="edit" data-toggle="edit">
                                 <!-- Icone d'édition -->

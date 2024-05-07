@@ -10,10 +10,10 @@ import { EquipmentsService } from 'src/app/private/services/equipments.service';
   styleUrls: ['./details-equipments.component.css']
 })
 export class DetailsEquipmentsComponent {
-  equipments : Equipments ={name: '',type:'',manufactuer:'',model:'',quantity:0,price:0,maintenance_status:'',state:'',checked:false };
+  equipments : Equipments ={name: '',type:'',manufactuer:'',model:'',quantity:0,price:0,maintenance_status:'',state:'',checked:false, benefitId:1, category:'Equipments' };
   departments: string[] = ['web','mobile'];
   account_types: string[]=['equipments','Technician','Admin'];
-  states: string[] = ['Active', 'Inactive'];
+  states: string[] = ['Enabled', 'Diabled'];
   equipmentsId: string |null = null;
   @ViewChild('equipmentsForm') equipmentsForm!: NgForm;
   quantityInvalid: boolean = true;
@@ -67,7 +67,7 @@ jobs: string[] = ['developper','HR'];
 
   addEquipments() {
     this.equipmentsService.addEquipments(this.equipments).subscribe((res) => { 
-      this.router.navigate(['/equipments']);
+      this.router.navigate(['/benefit/equipments']);
       console.log(res);});
   }
 

@@ -10,8 +10,8 @@ import { RoomsService } from 'src/app/private/services/rooms.service';
   styleUrls: ['./details-rooms.component.css']
 })
 export class DetailsRoomsComponent {
-  rooms : Rooms ={name: '',type:'',location:'',capacity:0,maintenance_status:'',state:'',checked:false };
-  states: string[] = ['Active', 'Inactive'];
+  rooms : Rooms ={name: '',type:'',location:'',capacity:0,maintenance_status:'',state:'',checked:false,benefitId:2, category:'Rooms' };
+  states: string[] = ['Enabled', 'Disabled'];
   roomsId: string |null = null;
   @ViewChild('roomsForm') roomsForm!: NgForm;
   capacityInvalid: boolean = true;

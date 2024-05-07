@@ -1,7 +1,17 @@
 <div class="head" [ngClass]="getHeadClass()">
     <div class="head-content">
         <div class="head-content-left">
-            <div class="search-container">
+            <div class="breadcrumbs">
+                <span *ngFor="let breadcrumb of breadcrumbs; let last = last">
+                    <ng-container *ngIf="!last">
+                        <a [routerLink]="breadcrumb.url" [ngClass]="{'active': last}">{{ breadcrumb.label }}</a> /
+                    </ng-container>
+                    <ng-container *ngIf="last">
+                        <a (click)="navigateBack()" [ngClass]="{'active': last}">{{ breadcrumb.label }}</a>
+                    </ng-container>
+                </span>
+            </div>                  
+        <!--  <div class="search-container">
                 <div *ngIf="!canShowSearchAsOverlay" class="normal-search">
                     <input type="search"
                      class="search" name="" id=""
@@ -17,7 +27,7 @@
                         <i class="farl fa-search search-icon"></i>
                     </button>
                 </div>
-            </div>
+            </div> -->
         </div>
         <div class="head-content-right">
             <div class="head-menu">
@@ -39,27 +49,40 @@
 </div>
 
 
-<ng-template #searchOverlay>
+<!--<ng-template #searchOverlay>
     <div class="overlay overlay-search overlay-fall" cdkMenu>
         <input type="search" class="search" name="" id="" placeholder="Search...">
         <button class="search-btn">
             <i class="fal fa-search search-icon"></i>
         </button>
     </div>
-</ng-template>
+</ng-template> -->
 
 <ng-template #userverlay>
     <div class="overlay overlay-user overlay-fall" cdkMenu>
         <ul>
-            <li *ngFor="let item of userItems">
-                <a>
-                    <i class="icon" [ngClass]="item.icon"></i>
-                    <span>{{item.label}}</span>
+            <li>
+                <a class="profile-link" routerLink="/profile">
+                    <i class="icon" [ngClass]="userItems[0].icon"></i>
+                    <span>{{userItems[0].label}}</span>
+                </a>
+            </li>
+            <li>
+                <a class="profile-link" routerLink="/settings">
+                    <i class="icon" [ngClass]="userItems[1].icon"></i>
+                    <span>{{userItems[1].label}}</span>
+                </a>
+            </li>
+            <li>
+                <a  class="profile-link" routerLink="/login">
+                    <i class="icon" [ngClass]="userItems[2].icon"></i>
+                    <span>{{userItems[2].label}}</span>
                 </a>
             </li>
         </ul>
     </div>
 </ng-template>
+
 
 <ng-template #notificationsOverlay>
     <div class="overlay overlay-notification overlay-fall" cdkMenu>

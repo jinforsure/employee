@@ -3,6 +3,7 @@
     background-color: #FFF; 
     box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
     height: 700px;
+    margin-top: -30px;
   }
   
   /* ===== MENU ===== */
@@ -187,6 +188,7 @@
     margin-left: 30px;
     color:#515151;
     font-size: 14pt;
+    margin-right: 50px;
   }
   
   .chat .header-chat .name {
@@ -268,6 +270,7 @@
     bottom: 0;
     background-color: transparent;
     border-top: 2px solid #EEE;
+    margin-bottom: 50px;
     
   }
   

@@ -1,19 +1,21 @@
 import { Component, HostListener, Input, OnInit } from '@angular/core';
-import { Subject } from 'rxjs';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { Subject, filter } from 'rxjs';
+import { Location } from '@angular/common';
 
 export const notfications = [
   {
-    icon: 'far fa-cloud-download',
+    icon: 'fal fa-cloud-download',
     Subject: 'Download complete',
     description: 'lorem ipsum dolor sit amet, constructor.'
   },
   {
-    icon: 'far fa-cloud-upload',
+    icon: 'fal fa-cloud-upload',
     Subject: 'upload complete',
     description: 'lorem ipsum dolor sit amet, constructor.'
   },
   {
-    icon: 'far fa-trash',
+    icon: 'fal fa-trash',
     Subject: '350 MB trash files',
     description: 'lorem ipsum dolor sit amet, constructor.'
   }
@@ -21,19 +23,15 @@ export const notfications = [
 
 export const userItems = [
   {
-    icon: 'far fa-user',
+    icon: 'fal fa-user',
     label: 'Profile'
   },
   {
-    icon: 'far fa-cog',
+    icon: 'fal fa-cog',
     label: 'Settings'
   },
   {
-    icon: 'far fa-unlock-alt',
-    label: 'Lock screen'
-  },
-  {
-    icon: 'far fa-power-off',
+    icon: 'fal fa-power-off',
     label: 'Log out'
   },
 
@@ -57,7 +55,6 @@ export class HeaderComponent implements OnInit{
   ngOnInit(): void {
     this.chackCanShowSearchOverlay(window.innerWidth);
   }
-  constructor() {}
 
   @HostListener('window:resize', ['$event'])
   onResize(event : any){
@@ -81,5 +78,31 @@ export class HeaderComponent implements OnInit{
       this.canShowSearchAsOverlay= false;
     }
   }
+  
+
+  breadcrumbs: any[] = [];
+
+  constructor(private router: Router, private activatedRoute: ActivatedRoute, private location: Location) {
+    // Subscribe to router events
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe(() => {
+      // Get the current route and its parent routes
+      let route = this.activatedRoute.firstChild;
+      this.breadcrumbs = [];
+      while (route) {
+        const routePath = route.snapshot.url.map(segment => segment.path);
+        this.breadcrumbs.push({
+          label: route.snapshot.data['breadcrumb'] || route.snapshot.url.map(segment => segment.path).join('/'),
+          url: '/' + routePath.join('/')
+        });
+        route = route.firstChild;
+      }
+    });
+  }
+
+  navigateBack(): void {
+    this.location.back();
+}
 
 }

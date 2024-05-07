@@ -4,7 +4,7 @@ import { LoginComponent } from './private/components/login/login.component';
 import { EmployeeLayoutComponent } from './layouts/employee-layout/employee-layout.component';
 import { ForgotPasswordComponent } from './private/components/forgot-password/forgot-password.component';
 import { NotFoundComponent } from './private/components/not-found/not-found.component';
-import { authGuard } from './guards/auth.guard';
+
 
 
 const routes: Routes = [
@@ -24,7 +24,7 @@ const routes: Routes = [
   {
     path: '',
     redirectTo: 'dashboard',
-    pathMatch: 'full',
+    pathMatch: 'full'
   }, {
     path: '',
     component: EmployeeLayoutComponent,
@@ -33,7 +33,7 @@ const routes: Routes = [
         path: '',
         loadChildren: () => import('src/app/layouts/employee-layout/employee-layout.module').then(m => m.AdminLayoutModule)
       }
-    ]
+    ],
   }, 
   {
     path: '**',

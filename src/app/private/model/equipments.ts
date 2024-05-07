@@ -1,5 +1,6 @@
 export interface Equipments{
-    id? : number |null;
+    id? : number;
+    benefitId? : 1;
     checked?: boolean;
     name? : string;
     type? : string;
@@ -11,7 +12,7 @@ export interface Equipments{
     maintenance_status? :string;
     createdAt? : Date;
     updatedAt? : Date;
-    category?: string; // Ajouter la propriété category
+    category?: "Equipments"; // Ajouter la propriété category
   subcategory?: string; // Ajouter la propriété subcategory
   state?:string;
   benefit_id?:number | null;

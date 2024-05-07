@@ -37,7 +37,14 @@
             <td>{{rooms.location}}</td>
             <td>{{rooms.capacity}}</td>
             <td>{{rooms.maintenance_status}}</td>
-            <td [ngStyle]="{ 'color': rooms.state === 'Active' ? 'green' : 'red' }">{{ rooms.state }}</td>
+            <td>
+              <ng-container *ngIf="rooms.state === 'Enabled'; else inactiveButton">
+                <button type="button" class="btn btn-success">{{ rooms.state }}</button>
+              </ng-container>
+              <ng-template #inactiveButton>
+                <button type="button" class="btn btn-danger">{{ rooms.state }}</button>
+              </ng-template>
+            </td>
             <td>
               <a href="#editRoomsModal" [routerLink]="'/benefit/rooms/'+ rooms.id" class="edit" data-toggle="edit"
                 ><i class="material-icons" data-toggle="tooltip" title="Edit"

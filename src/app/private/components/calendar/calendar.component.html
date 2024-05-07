@@ -1,121 +1,135 @@
 <div id="calendar-container" >
-    <div id="cal-buttons">
-        <div class="btn-group" id="cal-date-nav-buttons" role="group" aria-label="Basic example">
-            <button 
-               id="previous" 
-               mwlCalendarPreviousView [(viewDate)]="viewDate" 
-               [view]="view"
-               class="btn btn-secondary"
-               [class.active]="activeButton === 'previous'">
-               <i class="fal fa-chevron-left"></i>
-            </button>
-            <button 
-               id="today" 
-               mwlCalendarToday [(viewDate)]="viewDate"  
-               class="btn btn-secondary"
-               [class.active]="activeButton === 'today'"
-            >Today</button>
-            <button 
-               id="next" 
-               mwlCalendarNextView [(viewDate)]="viewDate" 
-               [view]="view"  
-               class="btn btn-secondary"
-               [class.active]="activeButton === 'next'">
-               <i class="fal fa-chevron-right"></i>
-            </button>
-            <div class="col-sm-6">
-                <a
-                  href="#addReservationModal"
-                  class="btn btn-success"
-                  data-toggle="modal"
-                  > 
-                  <span class="fal fa-plus">    New Reservation</span></a
-                >
-              </div>
-        </div>
-        <div id="cal-date-field">{{ viewDate| calendarDate:(view + 'ViewTitle') : 'en'}}</div>
-        <div class="btn-group" id="cal-view-nav-buttons" role="group" aria-label="Basic example">
-            <button 
-                id="month"
-                (click)="setView(CalendarView.Month)" 
-                class="btn btn-secondary"
-                [class.active]="view === CalendarView.Month"
-            >Month</button>
-            <button 
-                id="week" 
-                (click)="setView(CalendarView.Week)" 
-                class="btn btn-secondary"
-                [class.active]="view === CalendarView.Week"
-            >Week</button>
-            <button 
-                id="day" 
-                (click)="setView(CalendarView.Day)" 
-                class="btn btn-secondary"
-                [class.active]="view === CalendarView.Day"
-            >Day</button>
-        </div>
-    </div>
-    <span [ngSwitch]="view">
-        <mwl-calendar-month-view 
-           *ngSwitchCase="CalendarView.Month" 
-           [viewDate]="viewDate" 
-           [events]="events"
-           [activeDayIsOpen]="activeDayIsOpen"
-           (dayClicked)="dayClicked($event.day)"
-           (eventClicked)="eventClicked($event)"
-           (eventTimesChanged)="eventTimesChanged($event)"
-           [refresh]="refresh"
-        ></mwl-calendar-month-view>
-        <mwl-calendar-week-view 
-           *ngSwitchCase="CalendarView.Week" 
-           [viewDate]="viewDate" 
-           [events]="events"
-           [dayStartHour]="8"
-           [dayEndHour]="18"
-           (eventClicked)="eventClicked($event)"
-           (eventTimesChanged)="eventTimesChanged($event)"
-           [refresh]="refresh"
-           ></mwl-calendar-week-view>
-        <mwl-calendar-day-view 
-           *ngSwitchCase="CalendarView.Day" 
-           [viewDate]="viewDate" 
-           [events]="events"
-           [dayStartHour]="8"
-           [dayEndHour]="18"
-           (eventClicked)="eventClicked($event)"
-           (eventTimesChanged)="eventTimesChanged($event)"
-           [refresh]="refresh"
-           ></mwl-calendar-day-view>
-    </span>
+  <div id="cal-buttons">
+      <div class="btn-group" id="cal-date-nav-buttons" role="group" aria-label="Basic example">
+          <button 
+             id="previous" 
+             mwlCalendarPreviousView [(viewDate)]="viewDate" 
+             [view]="view"
+             class="btn btn-secondary"
+             [class.active]="activeButton === 'previous'">
+             <i class="fal fa-chevron-left"></i>
+          </button>
+          <button 
+             id="today" 
+             mwlCalendarToday [(viewDate)]="viewDate"  
+             class="btn btn-secondary"
+             [class.active]="activeButton === 'today'"
+          >Today</button>
+          <button 
+             id="next" 
+             mwlCalendarNextView [(viewDate)]="viewDate" 
+             [view]="view"  
+             class="btn btn-secondary"
+             [class.active]="activeButton === 'next'">
+             <i class="fal fa-chevron-right"></i>
+          </button>
+          <div class="col-sm-6">
+              <a
+                href="#addReservationModal"
+                class="btn btn-success"
+                data-toggle="modal"
+                > 
+                <span class="fal fa-plus">    New Reservation</span></a
+              >
+            </div>
+      </div>
+      <div id="cal-date-field">{{ viewDate| calendarDate:(view + 'ViewTitle') : 'en'}}</div>
+      <div class="btn-group" id="cal-view-nav-buttons" role="group" aria-label="Basic example">
+          <button 
+              id="month"
+              (click)="setView(CalendarView.Month)" 
+              class="btn btn-secondary"
+              [class.active]="view === CalendarView.Month"
+          >Month</button>
+          <button 
+              id="week" 
+              (click)="setView(CalendarView.Week)" 
+              class="btn btn-secondary"
+              [class.active]="view === CalendarView.Week"
+          >Week</button>
+          <button 
+              id="day" 
+              (click)="setView(CalendarView.Day)" 
+              class="btn btn-secondary"
+              [class.active]="view === CalendarView.Month"
+          >Day</button>
+      </div>
+  </div>
+  <span [ngSwitch]="view">
+      <mwl-calendar-month-view 
+         *ngSwitchCase="CalendarView.Month" 
+         [viewDate]="viewDate" 
+         [events]="events"
+         [activeDayIsOpen]="activeDayIsOpen"
+         (dayClicked)="dayClicked($event.day)"
+         (eventClicked)="eventClicked($event)"
+         (eventTimesChanged)="eventTimesChanged($event)"
+         [refresh]="refresh"
+      ></mwl-calendar-month-view>
+      <mwl-calendar-week-view 
+         *ngSwitchCase="CalendarView.Week" 
+         [viewDate]="viewDate" 
+         [events]="events"
+         [dayStartHour]="8"
+         [dayEndHour]="18"
+         (eventClicked)="eventClicked($event)"
+         (eventTimesChanged)="eventTimesChanged($event)"
+         [refresh]="refresh"
+         ></mwl-calendar-week-view>
+      <mwl-calendar-day-view 
+         *ngSwitchCase="CalendarView.Day" 
+         [viewDate]="viewDate" 
+         [events]="events"
+         [dayStartHour]="8"
+         [dayEndHour]="18"
+         (eventClicked)="eventClicked($event)"
+         (eventTimesChanged)="eventTimesChanged($event)"
+         [refresh]="refresh"
+         ></mwl-calendar-day-view>
+  </span>
 
 </div>
 
 
 <div class="modal fade" id="addReservationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLongTitle">Chose your Reservation's Date and Hours</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-            <form [formGroup]="reservationForm">
-                <label for="departureDate">Select Date</label>
-                <input type="date" id="departureDate" name="departureDate" formControlName="departureDate" >
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Chose your Reservation's Date and Hours</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <form [formGroup]="reservationForm">
+              <label for="departureDate">Select Date</label>
+              <input type="date" id="departureDate" name="departureDate" formControlName="departureDate">
+              <div *ngIf="reservationForm.get('departureDate')?.invalid && (reservationForm.get('departureDate')?.dirty || reservationForm.get('departureDate')?.touched)">
+                <small class="text-danger">Please select a valid departure date.</small>
+              </div>
+           
+          
+            <div class="form-group">
+              <label for="departureTime">Select Hour of Departure</label>
+              <input type="time" id="departureTime" name="departureTime" formControlName="departureTime" class="form-control">
+              <div *ngIf="reservationForm.get('departureTime')?.invalid && (reservationForm.get('departureTime')?.dirty || reservationForm.get('departureTime')?.touched)">
+                <small class="text-danger">Please select a valid departure time.</small>
+              </div>
+            </div>
             
-                <label for="departureTime">Select Hour of Departure</label>
-                <input type="time" id="departureTime" name="departureTime" formControlName="departureTime">
-            
-                <label for="returnTime">Select Hour of Return</label>
-                <input type="time" id="returnTime" name="returnTime" formControlName="returnTime">
-              </form>
+            <div class="form-group">
+              <label for="returnTime">Select Hour of Return</label>
+              <input type="time" id="returnTime" name="returnTime" formControlName="returnTime" class="form-control">
+              <div *ngIf="reservationForm.get('returnTime')?.invalid && (reservationForm.get('returnTime')?.dirty || reservationForm.get('returnTime')?.touched)">
+                <small class="text-danger">Please select a valid return time.</small>
+              </div>
+            </div>
+          </form>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary" (click)="navigateAndSave()" [disabled]="reservationForm.invalid">choose Benefits</button>
-        </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" (click)="navigateAndSave()"[disabled]="!reservationForm.valid" >choose Benefits</button>
       </div>
     </div>
-  </div>
+  </div>
+</div>

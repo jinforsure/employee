@@ -28,6 +28,8 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatRippleModule} from '@angular/material/core';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatSelectModule} from '@angular/material/select';
+import { ProfileComponent } from 'src/app/private/components/profile/profile.component';
+import { SettingsComponent } from 'src/app/private/components/settings/settings.component';
 
 
 // import { ToastrModule } from 'ngx-toastr';
@@ -63,7 +65,9 @@ import {MatSelectModule} from '@angular/material/select';
      DetailsEquipmentsComponent,
      DetailsRoomsComponent,
      ListreservComponent,
-     ChatComponent
+     ChatComponent,
+     ProfileComponent,
+     SettingsComponent,
   ]
 })
 

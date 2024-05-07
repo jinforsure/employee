@@ -39,7 +39,7 @@
             <div class="col">
               <label>State <span>*</span></label>
               <select id="state" [(ngModel)]="rooms.state" name="state" required (ngModelChange)="checkFormValidity()"
-                      [ngClass]="{ 'state-active': rooms.state === 'Active', 'state-inactive': rooms.state !== 'Active' }">
+                      [ngClass]="{ 'state-active': rooms.state === 'Enabled', 'state-inactive': rooms.state !== 'Disabled' }">
                 <option value="" enabled selected>Select state</option>
                 <option *ngFor="let state of states" [value]="state">{{ state }}</option>
               </select>
@@ -51,7 +51,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" (click)="goBack()">Back</button>
-          <input type="submit" class="btn btn-success" value="Save" [disabled]="roomsForm.invalid" />
+          <input type="submit" class="btn btn-success" value="Save" (click)="saveRooms()" [disabled]="roomsForm.invalid" />
         </div>
       </form>
     </div>

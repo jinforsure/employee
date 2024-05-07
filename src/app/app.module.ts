@@ -23,7 +23,6 @@ import { ForgotPasswordComponent } from './private/components/forgot-password/fo
 import { NotFoundComponent } from './private/components/not-found/not-found.component';
 
 
-
 class CustomDateFormatter extends CalendarNativeDateFormatter{
   public override dayViewHour({ date,locale}: DateFormatterParams) : string{
     return new Intl.DateTimeFormat(locale, {hour: 'numeric', minute: 'numeric'}).format(date);

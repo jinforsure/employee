@@ -28,15 +28,16 @@ export class CalendarComponent {viewDate: Date = new Date();
   selectedDate: string='';
   selectedDepartureTime: string='';
   selectedReturnTime: string='';
-  reservationForm: FormGroup = this.fb.group({  // Initialize reservationForm inline
-    departureDate: [null, [Validators.required, this.futureDateValidator()]],
-    departureTime: [null, [Validators.required, Validators.pattern('^08:3[0-9]|0[9-9]:[0-5][0-9]$')]],
-    returnTime: [null, [Validators.required, Validators.pattern('^(1[0-7]|0[0-9]):[0-5][0-9]$')]]
-  });
-
+  reservationForm: FormGroup ;
   
 
   constructor(private router :Router ,private fb: FormBuilder, private reservationService: ReservationService ){
+      this.reservationForm = this.fb.group({  
+        departureDate: [null, [Validators.required, this.futureDateValidator()]],
+        departureTime: [null, [Validators.required, Validators.pattern('^08:[0-5][0-9]$|^09:[0-5][0-9]$|^1[0-7]:[0-5][0-9]$')]],
+        returnTime: [null, [Validators.required, Validators.pattern('^08:[0-5][0-9]$|^09:[0-5][0-9]$|^1[0-7]:[0-5][0-9]$')]],
+      }, { validators: this.timeRangeValidator() }); // Ajouter le validateur de plage d'heures
+      
     const event1 = {
       title: "Pc hp Reservation",
       start: new Date("2024-04-25T10:30"),
@@ -44,14 +45,7 @@ export class CalendarComponent {viewDate: Date = new Date();
       resizable: {
         beforeStart: true,
         afterEnd: true,
-      },
-      this:this.reservationForm = this.fb.group({
-        departureDate: [null, [Validators.required, this.futureDateValidator()]],
-        departureTime: [null, [Validators.required, Validators.pattern('^08:3[0-9]|0[9-9]:[0-5][0-9]$|^0[9-9]:[0-5][0-9]$|1[0-7]:[0-5][0-9]$')]],
-        returnTime: [null, [Validators.required, Validators.pattern('^(1[0-7]|0[0-9]):[0-5][0-9]$')]]
-      })
-      
-    }
+      }};
 
     this.events.push(event1);
     this.reservationForm.get('departureDate')?.valueChanges.subscribe(value => {
@@ -77,12 +71,8 @@ export class CalendarComponent {viewDate: Date = new Date();
   }
 
   ngOnInit(): void {
-    this.reservationForm = this.fb.group({
-      departureDate: ['', Validators.required],
-      departureTime: ['', Validators.required],
-      returnTime: ['', Validators.required]
-    });
     this.getAllReservations();
+    this.timeRangeValidator();
   }
   setView(view : CalendarView) {
     this.view = view;
@@ -210,5 +200,52 @@ formatDate(dateString: string): string {
       console.log(reservations);
     });
   }
+
+  timeRangeValidator(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      if (control instanceof FormGroup) {
+        const departureDate = control.get('departureDate')?.value;
+        const departureTime = control.get('departureTime')?.value;
+        const returnTime = control.get('returnTime')?.value;
+  
+        if (departureDate && departureTime && returnTime) {
+          // Convertir la date de départ en objet Date
+          const selectedDepartureDate = new Date(departureDate);
+          const currentTime= new Date();
+          const currentHour = currentTime.getHours();
+          const currentMinute = currentTime.getMinutes();
+          const isToday = isSameDay(selectedDepartureDate, currentTime);
+  
+          // Si la date de départ est aujourd'hui en Tunisie
+          if (isToday) {
+            // Convertir l'heure de départ en objet Date
+            const selectedDepartureTime = new Date(`2000-01-01T${departureTime}`);
+            const selectedHour = selectedDepartureTime.getHours();
+            const selectedMinute = selectedDepartureTime.getMinutes();
+  
+           // Si l'heure de départ est dans le passé par rapport à l'heure actuelle
+           if (selectedHour < currentHour || (selectedHour === currentHour && selectedMinute < currentMinute)) {
+            return { pastDepartureTime: true };
+          }
+        }
+
+        // Vérifier si les heures sont dans l'intervalle spécifié (08:00 - 18:00)
+        const departureHour = parseInt(departureTime.split(':')[0]);
+        const returnHour = parseInt(returnTime.split(':')[0]);
+
+        if (departureHour < 8 || returnHour > 18) {
+          return { invalidTimeRange: true };
+        }
+
+        // Vérifier si l'heure de départ est avant l'heure de retour
+        if (departureHour >= returnHour) {
+          return { invalidTimeOrder: true };
+        }
+      }
+    }
+
+    return null;
+    };
+  }
 
 }
