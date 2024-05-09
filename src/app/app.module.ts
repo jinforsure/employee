@@ -21,7 +21,7 @@ import { EmployeeLayoutComponent } from './layouts/employee-layout/employee-layo
 import { ComponentsModule } from "./private/shared/shared.module";
 import { ForgotPasswordComponent } from './private/components/forgot-password/forgot-password.component';
 import { NotFoundComponent } from './private/components/not-found/not-found.component';
-
+import { MatDialogModule } from '@angular/material/dialog';
 
 class CustomDateFormatter extends CalendarNativeDateFormatter{
   public override dayViewHour({ date,locale}: DateFormatterParams) : string{
@@ -65,7 +65,8 @@ class CustomDateFormatter extends CalendarNativeDateFormatter{
         BrowserAnimationsModule,
         MatTableModule,
         MatIconModule,
-        ComponentsModule
+        ComponentsModule,
+        MatDialogModule
     ]
 })
 export class AppModule { }

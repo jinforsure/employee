@@ -19,7 +19,7 @@ export class CalendarComponent {viewDate: Date = new Date();
   activeButton: string | undefined;
   activeDayIsOpen =false;
 
-  events: CalendarEvent[] = [];
+events: CalendarEvent<any>[] = [];
   refresh = new Subject<void>();
 
   reservations: { name: string, departDate: string, departHour: string, returnHour: string }[] = [];
@@ -182,9 +182,28 @@ formatDate(dateString: string): string {
           // Créer une nouvelle Date seulement si reservation.departDate est défini
           // Diviser la date en parties (mois, jour, année)
         const dateParts = reservation.departDate!.split('-');
-        const startDateTimeString = `${dateParts[2]}-${dateParts[0]}-${dateParts[1]}T${reservation.departHour}`;
-        const start = new Date(startDateTimeString);
-        const end = new Date(startDateTimeString);
+        console.log("185",dateParts);
+        const formattedDate = `${dateParts[1]}-${dateParts[0]}-${dateParts[2]}`;
+        console.log("187",formattedDate);
+
+        const returnTimeParts = reservation.returnHour!.split(':');
+        const departTimeParts = reservation.departHour!.split(':');
+        const returnHour = parseInt(returnTimeParts[0]);
+        const returnMinute = parseInt(returnTimeParts[1]);
+        const end = new Date(formattedDate);
+        end.setHours(returnHour);
+        end.setMinutes(returnMinute);
+        console.log("end date : ",end);
+
+        const departHour = parseInt(departTimeParts[0]);
+        const departMinute = parseInt(departTimeParts[1]);
+        const start = new Date(formattedDate);
+        end.setHours(departHour);
+        end.setMinutes(departMinute);
+        console.log("start date : ",start);
+
+
+
           return {
             title: reservation.name ?? 'Unknown',
             start: start,
@@ -197,7 +216,7 @@ formatDate(dateString: string): string {
           };
         });
       console.log('All Reservations:', this.events);
-      console.log(reservations);
+      
     });
   }
 

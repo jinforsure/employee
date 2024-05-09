@@ -1,42 +1,48 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
+  private loggedIn = new BehaviorSubject<boolean>(false);
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   login(email: string, password: string): Observable<any> {
-    let bodyData = {
-      email: email,
-      password: password
-    };
-    console.log("auth service");
-    return this.http.post("http://localhost:8083/api/arsii/employee/login", bodyData);
-
+    const loginData = { email, password }; 
+    return this.http.post<any>('http://localhost:8083/api/arsii/employee/login', loginData)
+      .pipe(
+        tap(result => {
+          if (result.message === 'login success') {
+            this.loggedIn.next(true);
+            // Appel à la méthode du service Employee pour récupérer les détails de l'employé
+            this.getEmployeeDetails(email).subscribe(employee => {
+              localStorage.setItem('account_type', employee.account_type);
+              console.log("24",employee.account_type);
+            });
+          }
+        })
+      );
   }
-  
-  isLoggedIn(): boolean {
-    const token = localStorage.getItem('token');
-    console.log("isloggedin");
-    return !!token && !this.isTokenExpired(token);
-  }
 
-  private isTokenExpired(token: string): boolean {
-    const tokenParts = token.split('.');
-    console.log("isTokenExpired");
-    if (tokenParts.length !== 3) {
-      return true;
-    }
-    const payload = JSON.parse(atob(tokenParts[1]));
-    const expirationDate = new Date(payload.exp * 1000);
-    return expirationDate <= new Date();
+  isLoggedIn(): Observable<boolean> {
+    return this.loggedIn.asObservable();
   }
 
   logout(): void {
-    localStorage.removeItem('token');
+    localStorage.clear();
+    this.loggedIn.next(false);
+    console.log("fel logout auth");
+  }
+
+  private getEmployeeDetails(email: string): Observable<any> {
+    return this.http.get<any>(`http://localhost:8083/api/arsii/employee/email/${email}`);
+  }
+  getRole(): string | null {
+    // Récupérez l'account_type du stockage local
+    return localStorage.getItem('account_type');
   }
 }

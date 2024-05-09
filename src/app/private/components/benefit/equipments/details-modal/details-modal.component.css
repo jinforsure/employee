@@ -1,0 +1,12 @@
+/* Style du modal */
+.mat-dialog-container {
+    background-color: white; /* Fond blanc */
+  }
+  
+  /* Style du bouton Close */
+  .mat-dialog-actions button {
+    background-color: blue; /* Bouton bleu */
+    color: white; /* Texte blanc */
+    /* Ajoutez d'autres styles personnalisés si nécessaire */
+  }
+  

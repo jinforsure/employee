@@ -1,9 +1,6 @@
 import { Component } from '@angular/core';
-import { EmployeeService } from '../../services/employee.service';
-import { Router } from '@angular/router';
-import { HtmlParser } from '@angular/compiler';
-import { HttpClient } from '@angular/common/http';
 import { AuthService } from '../../services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -11,38 +8,39 @@ import { AuthService } from '../../services/auth.service';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
-  email: string = '';
-  password: string = '';
-  errorMessage: string = '';
+  email: string ='';
+  password: string ='';
+  errorMessage: string ='';
+  account_type: string='';
 
   constructor(private authService: AuthService,
-              private employeeService: EmployeeService,
               private router: Router) { }
 
-  login() {
-    console.log(this.email);
-    console.log(this.password);
-
-    this.authService.login(this.email, this.password).subscribe((resultData: any) => {
-      console.log(resultData);
-
-      if (resultData.message == "email does not match") {
-        alert("email does not match");
-      } else if (resultData.message == "login success") {
-        this.employeeService.getEmployeeByEmail(this.email).subscribe((employeeData: any) => {
-          console.log("Account Type:", employeeData.account_type);
-          if (employeeData.account_type === "Employee"){
-            this.router.navigateByUrl('/calendar');
-          } else if (employeeData.account_type === "Admin"){
-            this.router.navigateByUrl('/dashboard');
-            console.log("dashboard");
-          } else {
-            alert("Unknown account type");
+   login() {
+    this.authService.login(this.email, this.password).subscribe(
+      result => {
+        console.log(result);
+        if (result.message === 'login success') {
+          console.log("message",result.message);
+          const storedAccountType = localStorage.getItem('account_type');
+          console.log("storedAccountType",storedAccountType);
+          if (storedAccountType !== null) {
+            this.account_type = storedAccountType;
+            console.log("account_type",this.account_type);
+            if (this.account_type == "Admin"){
+              this.router.navigateByUrl('/dashboard');
+            } else {
+              this.router.navigateByUrl('/calendar');
+            }
           }
-        });
-      } else {
-        alert("failed to login");
+        } else {
+          alert('Failed to login');
+        }
+      },
+      error => {
+        console.error(error);
+        alert('An error occurred while logging in');
       }
-    });
+    );
   }
 }

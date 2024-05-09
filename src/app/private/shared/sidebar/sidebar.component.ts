@@ -1,5 +1,7 @@
 import { animate, keyframes, style, transition, trigger } from '@angular/animations';
 import { Component, Output , EventEmitter, OnInit, HostListener } from '@angular/core';
+import { AuthService } from '../../services/auth.service';
+import { Router } from '@angular/router';
 
 interface SideNavToggle {
   screenWidth: number;
@@ -21,8 +23,7 @@ export const navbarData = [
   { path: '/benefit', title: 'Benefit',  icon: 'fal fa-box-open', class: '' },
   { path: '/reservation', title: 'Make Reservation',  icon: 'fal fa-bookmark', class: '' },
   { path: '/reservation/list', title: 'Reservation List',  icon: 'fal fa-list', class: '' },
-  { path: '/chat', title: 'Messages',  icon: 'fal fa-comment', class: '' },
-  { path: '/login', title: 'LogOut',  icon: 'fal fa-right-from-bracket', class: '' },
+  { path: '/chat', title: 'Messages',  icon: 'fal fa-comment', class: '' }
 ];
 
 @Component({
@@ -62,7 +63,8 @@ export class SidebarComponent  implements OnInit{
   collapsed = false;
   screenWidth= 0;
   navData = navbarData;
-
+  role : boolean =false;
+  constructor (private service : AuthService, private router : Router) {}
   @HostListener('window:resize', ['$event'])
   onResize(event : any){
     if(this.screenWidth <= 768){
@@ -73,6 +75,7 @@ export class SidebarComponent  implements OnInit{
 
   ngOnInit(): void {
       this.screenWidth = window.innerWidth;
+      this.onChecked();
   }
 
   toggleCollapse(): void {
@@ -85,4 +88,18 @@ export class SidebarComponent  implements OnInit{
     this.onToggleSideNav.emit({collapsed: this.collapsed, screenWidth: this.screenWidth});
   }
 
+  onChecked() : void {
+    if(this.service.getRole()=== "Admin"){
+      this.role=true;
+      console.log("cest admin");
+    }else{
+      this.role =false;
+    }
+  }
+  
+  logout(): void {
+    this.service.logout();
+    this.router.navigateByUrl('/login');
+    console.log("fel logout sidebar");
+  }
 }

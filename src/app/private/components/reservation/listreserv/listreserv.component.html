@@ -1,24 +1,23 @@
 <div class="container">
-    <h2>My list of reservation </h2>
-    <table class="table">
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Category</th>
-          <th>Subcategory</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let item of reservationService.checkedItems">
-          <td>{{ item.name }}</td>
-          <td>{{ item.category }}</td>
-          <td>{{item.type}}</td>
-        </tr>
-      </tbody>
-    </table>	
-    <!-- Bouton pour valider la réservation -->
-    <button class="btn btn-success" (click)="validateReservation(); showSuccessMessage()">Validate</button>
-  <!-- Bouton pour revenir et ajouter d'autres éléments -->
-  <button class="btn btn-primary" (click)="goBack()">Add More</button>
-  </div>
-  
+  <h2>My list of reservation </h2>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Category</th>
+        <th>Subcategory</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of reservationService.checkedItems">
+        <td>{{ item.name }}</td>
+        <td>{{ item.category }}</td>
+        <td>{{item.type}}</td>
+      </tr>
+    </tbody>
+  </table>	
+  <!-- Bouton pour valider la réservation -->
+  <button class="btn btn-success" (click)="validateReservation(); showSuccessMessage()">Validate</button>
+<!-- Bouton pour revenir et ajouter d'autres éléments -->
+<button class="btn btn-primary" (click)="goBack()">Add More</button>
+</div>

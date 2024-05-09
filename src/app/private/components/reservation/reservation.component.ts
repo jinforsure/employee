@@ -16,6 +16,7 @@ import { Observable } from 'rxjs';
 
 import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { DetailsModalComponent } from '../benefit/equipments/details-modal/details-modal.component';
 @Component({
   selector: 'app-reservation',
   templateUrl: './reservation.component.html',
@@ -123,24 +124,33 @@ this.reservationService.getReservationState().subscribe((data: any[]) => {
     console.log('Checkbox état:', event.checked ? 'coché' : 'non coché');
   
     if (event.checked) {
-      // Créer un nouvel objet contenant toutes les données nécessaires
+      // Désélectionner toutes les autres chambres dans la liste et les retirer de checkedItems
+      this.filteredRoomsList.forEach(room => {
+        if (room !== item && room.checked) {
+          room.checked = false;
+          const index = this.reservationService.checkedItems.findIndex(x => x.id === room.id);
+          if (index !== -1) {
+            this.reservationService.checkedItems.splice(index, 1);
+          }
+        }
+      });
+  
+      // Ajouter la chambre sélectionnée à checkedItems
       const newItem = {
         ...item,
         selectedDate: selectedDate,
         selectedDepartureTime: selectedDepartureTime,
         selectedReturnTime: selectedReturnTime
       };
-      console.log('checkedItems ye tas ',newItem);
+      console.log('checkedItems ye tas ', newItem);
       this.reservationService.checkedItems.push(newItem);
     } else {
-      // Supprimer l'élément de la liste si la case est décochée
-      const index = this.reservationService.checkedItems.findIndex(x => 
-        x.id === item.id);  // Assurez-vous que chaque 'item' a un identifiant unique ou modifiez la condition pour correspondre à votre cas d'usage.
+      // Supprimer la chambre désélectionnée de checkedItems
+      const index = this.reservationService.checkedItems.findIndex(x => x.id === item.id);
       if (index !== -1) {
         this.reservationService.checkedItems.splice(index, 1);
       }
     }
-   
   }
   
   onSubmit() {
@@ -298,43 +308,6 @@ extractDepartureDates(reservations: Reservation[]): { equipmentsId: number | und
       console.log(res);
     });
   }
-/*
-  selectedEquipment!: Equipments ;
-
-  selectEquipment(equipments : any ) {
-    this.selectedEquipment = equipments;
-  }
-
-   
-
-  loadReservations(): void {
-    this.reservationService.getAllReservations().subscribe(reservations => {
-      this.reservations = reservations;
-    });
-  }
-  
-  selectedDepartureDate: Date = new Date(); // Initialize with current date
-  selectedReturnDate: Date = new Date();
-
-  checkAvailability(): void {
-    // Compare selected dates with reservations
-    const isDepartureDateAvailable = this.isDateAvailable(this.selectedDepartureDate);
-    const isReturnDateAvailable = this.isDateAvailable(this.selectedReturnDate);
-
-    // Provide feedback to the user
-    if (isDepartureDateAvailable && isReturnDateAvailable) {
-      console.log('Selected dates are available for reservation.');
-    } else {
-      console.log('Selected dates are not available for reservation.');
-    }
-  }
-
-  isDateAvailable(dateToCheck: Date): boolean {
-    // Implement logic to check if the date is available
-    // You can compare with the reservations array using some logic
-    return true; // Placeholder return value
-  }
-  */
   result: any;
 
   onCategoryChange(event: any) {
@@ -383,8 +356,8 @@ extractDepartureDates(reservations: Reservation[]): { equipmentsId: number | und
     const selectedSubcategory = (document.getElementById('subcategory') as HTMLSelectElement).value;
   
      // Affichez les valeurs récupérées dans la console
-  console.log('Selected Category:', selectedCategory);
-  console.log('Selected Subcategory:', selectedSubcategory);
+    console.log('Selected Category:', selectedCategory);
+    console.log('Selected Subcategory:', selectedSubcategory);
 
     if (selectedCategory === 'category1') { // 'category1' devrait correspondre à 'Equipments'
       this.equipmentsService.getAllEquipments().subscribe(equipments => {
@@ -415,8 +388,7 @@ extractDepartureDates(reservations: Reservation[]): { equipmentsId: number | und
       }
   }
   
-
- /* openDetailsModal(item: any) {
+  openDetailsModal(item: any) {
     const category = item.category; 
     const dialogRef = this.dialog.open(DetailsModalComponent, {
       width: '250px',
@@ -427,10 +399,7 @@ extractDepartureDates(reservations: Reservation[]): { equipmentsId: number | und
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
     });
-  }
-  
-*/
-
+  }
 
 
 }

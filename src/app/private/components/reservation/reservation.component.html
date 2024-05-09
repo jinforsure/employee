@@ -100,7 +100,7 @@
             <td>
               <mat-checkbox [(ngModel)]="equipments.checked" (change)="onCheckboxChange($event, equipments, selectedDate, selectedDepartureTime, selectedReturnTime)" [disabled]="equipments.state === 'Disabled'"></mat-checkbox>
 
-              <!--<button class="btn btn-primary" (click)="openDetailsModal(equipments)">Check Details</button>-->
+              <button class="btn btn-primary" (click)="openDetailsModal(equipments)">Check Details</button>
             </td>
             
           </tr>
@@ -113,7 +113,7 @@
             <td>{{rooms.maintenance_status}}</td>
             <td>
               <mat-checkbox [(ngModel)]="rooms.checked" (change)="onCheckboxChange($event, rooms,selectedDate, selectedDepartureTime, selectedReturnTime)" [disabled]="rooms.state === 'Disabled'"></mat-checkbox>
-             <!-- <button class="btn btn-primary" (click)="openDetailsModal(rooms)">Check Details</button>-->
+              <button class="btn btn-primary" (click)="openDetailsModal(rooms)">Check Details</button>
               
             </td>
             
@@ -126,5 +126,8 @@
     <div class="button-container">
       <button class="btn btn-success blue-button" [ngClass]="{'btn-disabled': !isButtonEnabled, 'btn-enabled': isButtonEnabled}" (click)="onSubmit()" >Submit</button>
     </div>
-    
+    
 </div>
+
+
+  

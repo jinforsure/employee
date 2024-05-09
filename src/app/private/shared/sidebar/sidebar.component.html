@@ -9,14 +9,69 @@
         </button>
     </div>
     <ul class="sidenav-nav">
-        <li class="sidenav-nav-item" *ngFor="let data of navData">
-            <a class="sidenav-nav-link" [routerLink]="[data.path]"
+        <li class="sidenav-nav-item">
+            <a class="sidenav-nav-link" *ngIf="role" [routerLink]="[navData[0].path]"
                routerLinkActive="active"
                [routerLinkActiveOptions]="{exact: true}"
             >
-                <i class="sidenav-link-icon" [class]="data.icon"></i>
-                <span class="sidenav-link-text" @fadeInOut *ngIf="collapsed" >{{data.title}}</span>
+                <i class="sidenav-link-icon" [class]="navData[0].icon"></i>
+                <span class="sidenav-link-text" @fadeInOut *ngIf="collapsed">{{navData[0].title}}</span>
             </a>
         </li>
+        <li class="sidenav-nav-item">
+            <a class="sidenav-nav-link" [routerLink]="[navData[1].path]"
+               routerLinkActive="active"
+               [routerLinkActiveOptions]="{exact: true}"
+            >
+                <i class="sidenav-link-icon" [class]="navData[1].icon"></i>
+                <span class="sidenav-link-text" @fadeInOut *ngIf="collapsed">{{navData[1].title}}</span>
+            </a>
+        </li>
+        <li class="sidenav-nav-item">
+            <a class="sidenav-nav-link" *ngIf="role" [routerLink]="[navData[2].path]"
+               routerLinkActive="active"
+               [routerLinkActiveOptions]="{exact: true}"
+            >
+                <i class="sidenav-link-icon" [class]="navData[2].icon"></i>
+                <span class="sidenav-link-text" @fadeInOut *ngIf="collapsed">{{navData[2].title}}</span>
+            </a>
+        </li>
+        <li class="sidenav-nav-item">
+            <a class="sidenav-nav-link" *ngIf="role" [routerLink]="[navData[3].path]"
+               routerLinkActive="active"
+               [routerLinkActiveOptions]="{exact: true}"
+            >
+                <i class="sidenav-link-icon" [class]="navData[3].icon"></i>
+                <span class="sidenav-link-text" @fadeInOut *ngIf="collapsed">{{navData[3].title}}</span>
+            </a>
+        </li>
+        <li class="sidenav-nav-item">
+            <a class="sidenav-nav-link" [routerLink]="[navData[4].path]"
+               routerLinkActive="active"
+               [routerLinkActiveOptions]="{exact: true}"
+            >
+                <i class="sidenav-link-icon" [class]="navData[4].icon"></i>
+                <span class="sidenav-link-text" @fadeInOut *ngIf="collapsed">{{navData[4].title}}</span>
+            </a>
+        </li>
+        <li class="sidenav-nav-item">
+            <a class="sidenav-nav-link" [routerLink]="[navData[5].path]"
+               routerLinkActive="active"
+               [routerLinkActiveOptions]="{exact: true}"
+            >
+                <i class="sidenav-link-icon" [class]="navData[5].icon"></i>
+                <span class="sidenav-link-text" @fadeInOut *ngIf="collapsed">{{navData[5].title}}</span>
+            </a>
+        </li>
+        <li class="sidenav-nav-item">
+            <a class="sidenav-nav-link" [routerLink]="[navData[6].path]"
+               routerLinkActive="active"
+               [routerLinkActiveOptions]="{exact: true}"
+            >
+                <i class="sidenav-link-icon" [class]="navData[6].icon"></i>
+                <span class="sidenav-link-text" @fadeInOut *ngIf="collapsed">{{navData[6].title}}</span>
+            </a>
+        </li>
+        <button class="btn-logout" (click)="logout()">Logout</button>
     </ul>
 </div>

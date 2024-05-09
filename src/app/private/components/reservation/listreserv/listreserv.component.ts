@@ -67,7 +67,8 @@ addReservationFromCheckedItems() {
       departHour: item.selectedDepartureTime,
       returnHour: item.selectedReturnTime,
       category: item.category,
-      subCategory:item.type
+      subCategory:item.type,
+      name:item.name
     };
 
     // Vérifiez si la catégorie est "Equipments" ou "Rooms"

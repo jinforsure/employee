@@ -22,7 +22,7 @@ import { DetailsEquipmentsComponent } from 'src/app/private/components/benefit/e
 import { DetailsRoomsComponent } from 'src/app/private/components/benefit/rooms/details-rooms/details-rooms.component';
 import { ListreservComponent } from 'src/app/private/components/reservation/listreserv/listreserv.component';
 import { MatDialogModule } from '@angular/material/dialog';
-import { ChatComponent } from 'src/app/private/components/chat/chat.component';
+
 
 import {MatButtonModule} from '@angular/material/button';
 import {MatRippleModule} from '@angular/material/core';
@@ -30,6 +30,7 @@ import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatSelectModule} from '@angular/material/select';
 import { ProfileComponent } from 'src/app/private/components/profile/profile.component';
 import { SettingsComponent } from 'src/app/private/components/settings/settings.component';
+import { DetailsModalComponent } from 'src/app/private/components/benefit/equipments/details-modal/details-modal.component';
 
 
 // import { ToastrModule } from 'ngx-toastr';
@@ -65,9 +66,9 @@ import { SettingsComponent } from 'src/app/private/components/settings/settings.
      DetailsEquipmentsComponent,
      DetailsRoomsComponent,
      ListreservComponent,
-     ChatComponent,
      ProfileComponent,
      SettingsComponent,
+     DetailsModalComponent
   ]
 })
 

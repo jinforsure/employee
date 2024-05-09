@@ -1,0 +1,18 @@
+
+
+<h2 mat-dialog-title>Details</h2>
+<div mat-dialog-content>
+  <ng-container *ngIf="data.item.category === 'Equipments'">
+    <p>Model: {{ data.item.model }}</p>
+    <p>Manufacturer: {{ data.item.manufacturer }}</p>
+    <p>Type: {{ data.item.type }}</p>
+  </ng-container>
+  <ng-container *ngIf="data.item.category === 'Rooms'">
+    <p>Capacity: {{ data.item.capacity }}</p>
+    <p>Location: {{ data.item.location }}</p>
+    <p>Type: {{ data.item.type }}</p>
+  </ng-container>
+</div>
+<div mat-dialog-actions>
+  <button mat-button [mat-dialog-close]="true">Close</button>
+</div>
