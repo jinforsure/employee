@@ -12,6 +12,7 @@
     margin: -10px 0;
     border-radius: 3px;
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+    margin-top: -50px;
   }
   .table-title {
     padding-bottom: 15px;
@@ -208,3 +209,29 @@
   }
 }
 
+
+.search-container {
+  display: flex; /* Use flexbox for layout */
+  align-items: center; /* Center items vertically */
+  background-color: #f2f2f2; /* Set background color */
+  border-radius: 5px; /* Add border radius */
+  padding: 5px 10px;
+  margin-top: 10px;
+  margin-bottom: 10px; /* Add padding */
+}
+
+.search-container input {
+  flex: 1; /* Expand input to fill remaining space */
+  border: none; /* Remove border */
+  outline: none; /* Remove outline */
+}
+
+.search-container input::placeholder {
+  color: #999; /* Set placeholder color */
+}
+
+.search-container input:focus {
+  /* Example focus styles */
+  border: 2px solid #007bff; /* Add border on focus */
+  padding: 3px 8px; /* Adjust padding on focus */
+}

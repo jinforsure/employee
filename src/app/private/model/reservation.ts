@@ -1,6 +1,7 @@
 export interface Reservation{
     id? : number;
     name? : string;
+    username?: string;
     equipmentsId? : number;
     roomsId? : number;
     state?:string;
@@ -11,5 +12,5 @@ export interface Reservation{
     departHour? : string ;
     returnHour? : string;
     createdAt? : Date;
-    updatedAt? : Date;
+    updatedAt? : Date;
 }

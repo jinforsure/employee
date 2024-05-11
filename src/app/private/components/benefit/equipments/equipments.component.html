@@ -3,7 +3,6 @@
 
 <!-- Conteneur principal avec classe 'container' -->
 <div class="container">
-    <!-- En-tête de la table -->
     <div class="table-wrapper">
         <div class="table-title">
             <!-- Ligne contenant le titre de la table -->
@@ -23,6 +22,9 @@
                 </div>
             </div>
         </div>
+        <div class="search-container">
+            <input type="text" [(ngModel)]="searchText" (input)="search()" class="form-control" placeholder="Search...">
+        </div>
         <!-- Tableau responsive avec classes Bootstrap -->
         <div class="table-responsive">
             <table class="table table-bordered table-hover">
@@ -38,11 +40,16 @@
                         <th>Statut de Maintenance</th>
                         <th>État</th>
                         <th>Action</th>
+                        <th>Maintenance Status</th>
+                        <th>Reservation State </th>
+                        <th>Returned </th>
+                        <th>Taken</th>
+                        <th>Description </th>
                     </tr>
                 </thead>
                 <!-- Corps du tableau avec boucle *ngFor -->
                 <tbody>
-                    <tr *ngFor="let equipment of equipmentsList">
+                    <tr *ngFor="let equipment of filteredEquipmentList">
                         <td>{{equipment.name}}</td>
                         <td>{{equipment.type}}</td>
                         <td>{{equipment.manufactuer}}</td>
@@ -66,6 +73,9 @@
                                 <i class="material-icons" data-toggle="tooltip" title="Éditer">&#xE254;</i>
                             </a>
                         </td>
+                        <td>{{equipment.reservation_State}}</td>
+                        <td>{{equipment.returned}}</td><!---->
+                        <td>{{equipment.taken}}</td>
                     </tr>
                 </tbody>
             </table>

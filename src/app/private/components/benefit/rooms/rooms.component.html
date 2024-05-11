@@ -17,6 +17,9 @@
           </div>
         </div>
       </div>
+      <div class="search-container">
+        <input type="text" [(ngModel)]="searchText" (input)="search()" class="form-control" placeholder="Search...">
+      </div>
       <div class="table-responsive">
       <table class="table table-bordered table-hover">
         <thead>
@@ -27,11 +30,14 @@
             <th>Capacity</th>
             <th>Maintenance Status</th>
             <th>State</th>
+            <th>Rservation State </th>
+            <th>Free</th>
+            <th>Occupied</th>
             <th>action</th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let rooms of roomsList">
+          <tr *ngFor="let rooms of filteredRoomsList">
             <td>{{rooms.name }}</td>
             <td>{{rooms.type}}</td>
             <td>{{rooms.location}}</td>
@@ -52,6 +58,9 @@
                 ></a
               >
             </td>
+            <td>{{rooms.reservation_State}}</td>
+            <td>{{rooms.free}}</td>
+            <td>{{rooms.occupied}}</td>
           </tr>
         </tbody>
       </table>

@@ -133,3 +133,7 @@ input[type="time"]:focus {
     border-color: #007bff;
     box-shadow: 0 0 3px #007bff;
 }
+
+.event-title {
+  color: white !important;
+}

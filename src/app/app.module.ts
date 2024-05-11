@@ -41,6 +41,7 @@ class CustomDateFormatter extends CalendarNativeDateFormatter{
         EmployeeLayoutComponent,
         ForgotPasswordComponent,
         NotFoundComponent,
+
     ],
     providers: [
         { provide: CalendarDateFormatter, useClass: CustomDateFormatter }

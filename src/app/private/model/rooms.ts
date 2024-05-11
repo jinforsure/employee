@@ -9,8 +9,12 @@ export interface Rooms{
     createdAt? : Date;
     updatedAt? : Date;
     category?: "Rooms"; // Ajouter la propriété category
-  subcategory?: string; // Ajouter la propriété subcategory
-  state?:string;
-  benefit_id?:number | null;
-  checked?: boolean;
+    subcategory?: string; // Ajouter la propriété subcategory
+    state?:string;
+    benefit_id?:number | null;
+    checked?: boolean;
+    reservation_State?:string;
+    description?:string;
+    occupied?:string;
+    free?:string;
 }

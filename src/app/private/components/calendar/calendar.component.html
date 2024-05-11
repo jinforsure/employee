@@ -1,5 +1,6 @@
 <div id="calendar-container" >
-  <div id="cal-buttons">
+  <div class="row text-center">
+      <div id="cal-buttons">
       <div class="btn-group" id="cal-date-nav-buttons" role="group" aria-label="Basic example">
           <button 
              id="previous" 
@@ -54,8 +55,8 @@
               [class.active]="view === CalendarView.Month"
           >Day</button>
       </div>
-  </div>
-  <span [ngSwitch]="view">
+      </div>
+      <span [ngSwitch]="view">
       <mwl-calendar-month-view 
          *ngSwitchCase="CalendarView.Month" 
          [viewDate]="viewDate" 
@@ -86,9 +87,84 @@
          (eventTimesChanged)="eventTimesChanged($event)"
          [refresh]="refresh"
          ></mwl-calendar-day-view>
-  </span>
-
+      </span>
+      
+      <div class="table-responsive">
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>Username</th>
+              <th>Benefit In Reservation</th>
+              <th>State Color</th>
+              <th>Starts at</th>
+              <th>Ends at</th>
+              <th>Cancel Reservation</th>
+            </tr>
+          </thead>
+          
+          <tbody>
+            <tr *ngFor="let event of events" [style.background-color]="getEventColor(event)">
+              <td>
+                <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="event.username"
+                (keyup)="refresh.next()"
+              />
+              </td>
+              <td>
+                <input
+                  type="text"
+                  class="form-control"
+                  [(ngModel)]="event.title"
+                  (keyup)="refresh.next()"
+                />
+              </td>
+              <td>
+                <input
+                  type="color"
+                  [value]="getEventColor(event)"
+                />
+              </td>
+              <td>
+                <input
+                  class="form-control"
+                  type="text"
+                  mwlFlatpickr
+                  [(ngModel)]="event.start"
+                  (ngModelChange)="refresh.next()"
+                  dateFormat="Y-m-dTH:i"
+                  altFormat="F j, Y H:i"
+                  placeholder="Not set"
+                />
+              </td>
+              <td>
+                <input
+                  class="form-control"
+                  type="text"
+                  mwlFlatpickr
+                  [(ngModel)]="event.end"
+                  (ngModelChange)="refresh.next()"
+                  dateFormat="Y-m-dTH:i"
+                  altFormat="F j, Y H:i"
+                  placeholder="Not set"
+                />
+              </td>
+              <td>
+                <button class="btn btn-danger" (click)="cancelReservation(event)">
+                  Cancel
+                </button>
+              </td>
+            </tr>
+          </tbody>
+          
+          
+        </table>
+      </div>
+      
+  </div>
 </div>
+
 
 
 <div class="modal fade" id="addReservationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">

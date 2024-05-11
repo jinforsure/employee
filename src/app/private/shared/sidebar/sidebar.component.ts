@@ -23,7 +23,7 @@ export const navbarData = [
   { path: '/benefit', title: 'Benefit',  icon: 'fal fa-box-open', class: '' },
   { path: '/reservation', title: 'Make Reservation',  icon: 'fal fa-bookmark', class: '' },
   { path: '/reservation/list', title: 'Reservation List',  icon: 'fal fa-list', class: '' },
-  { path: '/chat', title: 'Messages',  icon: 'fal fa-comment', class: '' }
+  { path: '/chat', title: 'Messages',  icon: 'fal fa-comment', class: '' },
 ];
 
 @Component({

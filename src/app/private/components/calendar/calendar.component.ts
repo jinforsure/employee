@@ -1,37 +1,48 @@
-import { Component } from '@angular/core';
-import { CalendarEvent, CalendarView,  } from 'angular-calendar';
-import { isSameDay, isSameMonth, isSameWeek } from 'date-fns';
-import { Subject } from 'rxjs';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { FormControl, ValidatorFn, AbstractControl, ValidationErrors } from '@angular/forms';
 import { ReservationService } from '../../services/reservation.service';
-
+import { MatDialog } from '@angular/material/dialog';
+import { Component,ChangeDetectionStrategy,ViewChild,TemplateRef, } from '@angular/core';
+import {isSameDay,isSameMonth, } from 'date-fns';
+import { Subject } from 'rxjs';
+import {CalendarEvent, CalendarView} from 'angular-calendar';
+import { EventColor } from 'calendar-utils';
 
 @Component({
   selector: 'app-calendar',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './calendar.component.html',
   styleUrls: ['./calendar.component.css']
 })
-export class CalendarComponent {viewDate: Date = new Date();
+export class CalendarComponent {
+
+  colors: Record<string, string> = {
+    green: '#008000', // Event is already done
+    yellow: '#FFFF00', // Event is ongoing
+    blue: '#0000FF', // Event is not happening yet
+  };
+
+  viewDate: Date = new Date();
   view: CalendarView = CalendarView.Week;
   CalendarView = CalendarView;
   activeButton: string | undefined;
   activeDayIsOpen =false;
 
-events: CalendarEvent<any>[] = [];
+  events: CalendarEvent<any>[] = [];
   refresh = new Subject<void>();
 
-  reservations: { name: string, departDate: string, departHour: string, returnHour: string }[] = [];
+  reservations: {
+      username: any; name: string, departDate: string, departHour: string, returnHour: string 
+}[] = [];
   eventsList: CalendarEvent[] = [];
 
   selectedDate: string='';
   selectedDepartureTime: string='';
   selectedReturnTime: string='';
   reservationForm: FormGroup ;
-  
 
-  constructor(private router :Router ,private fb: FormBuilder, private reservationService: ReservationService ){
+  constructor(private router :Router ,private fb: FormBuilder, private reservationService: ReservationService, private dialog: MatDialog ){
       this.reservationForm = this.fb.group({  
         departureDate: [null, [Validators.required, this.futureDateValidator()]],
         departureTime: [null, [Validators.required, Validators.pattern('^08:[0-5][0-9]$|^09:[0-5][0-9]$|^1[0-7]:[0-5][0-9]$')]],
@@ -41,6 +52,7 @@ events: CalendarEvent<any>[] = [];
     const event1 = {
       title: "Pc hp Reservation",
       start: new Date("2024-04-25T10:30"),
+      end: new Date("2024-04-25T10:30"),
       draggable: true,
       resizable: {
         beforeStart: true,
@@ -175,50 +187,88 @@ formatDate(dateString: string): string {
   }
 
   getAllReservations() {
+    const accountType = localStorage.getItem('account_type');
+    console.log("accout type : ",accountType)
+    const username = localStorage.getItem('username');
+    console.log("username : ",username)
+    if (!accountType || !username) {
+      console.error('Account type or username not found in local storage.');
+      return;
+    }
+  
     this.reservationService.getAllReservations().subscribe(reservations => {
       this.events = reservations
-        .filter(reservation => reservation.departDate) // Filtrer les réservations sans date de départ
+        .filter(reservation => {
+          // If account type is Admin or Technician, show all reservations
+          if (accountType === 'Admin' || accountType === 'Technician') {
+            return true;
+          }
+          // If account type is Employee, show only the employee's reservations
+          return reservation.username === username;
+        })
+        .filter(reservation => reservation.departDate) // Filter out reservations without departDate
         .map(reservation => {
-          // Créer une nouvelle Date seulement si reservation.departDate est défini
-          // Diviser la date en parties (mois, jour, année)
-        const dateParts = reservation.departDate!.split('-');
-        console.log("185",dateParts);
-        const formattedDate = `${dateParts[1]}-${dateParts[0]}-${dateParts[2]}`;
-        console.log("187",formattedDate);
-
-        const returnTimeParts = reservation.returnHour!.split(':');
-        const departTimeParts = reservation.departHour!.split(':');
-        const returnHour = parseInt(returnTimeParts[0]);
-        const returnMinute = parseInt(returnTimeParts[1]);
-        const end = new Date(formattedDate);
-        end.setHours(returnHour);
-        end.setMinutes(returnMinute);
-        console.log("end date : ",end);
-
-        const departHour = parseInt(departTimeParts[0]);
-        const departMinute = parseInt(departTimeParts[1]);
-        const start = new Date(formattedDate);
-        end.setHours(departHour);
-        end.setMinutes(departMinute);
-        console.log("start date : ",start);
-
-
-
+          const dateParts = reservation.departDate!.split('-');
+          const formattedDate = `${dateParts[1]}-${dateParts[0]}-${dateParts[2]}`;
+  
+          const returnTimeParts = reservation.returnHour!.split(':');
+          const departTimeParts = reservation.departHour!.split(':');
+          const returnHour = parseInt(returnTimeParts[0]);
+          const returnMinute = parseInt(returnTimeParts[1]);
+          const end = new Date(formattedDate);
+          end.setHours(returnHour);
+          end.setMinutes(returnMinute);
+  
+          const departHour = parseInt(departTimeParts[0]);
+          const departMinute = parseInt(departTimeParts[1]);
+          const start = new Date(formattedDate);
+          start.setHours(departHour);
+          start.setMinutes(departMinute);
+  
+          let color: EventColor = { primary: '', secondary: '' };
+  
+          // Determine event color based on reservation state
+          if (reservation.state === 'cancelled') {
+            color = { primary: 'red', secondary: 'red' };
+          } else {
+            // Determine event color based on current date
+            const now = new Date();
+            if (now > end) {
+              color = { primary: 'green', secondary: 'green' }; // Event has already ended
+            } else if (now >= start && now <= end) {
+              color = { primary: 'yellow', secondary: 'yellow' }; // Event is ongoing
+            } else {
+              color = { primary: 'blue', secondary: 'blue' }; // Event has not yet started
+            }
+          }
+  
           return {
+            id: reservation.id,
+            username: reservation.username, // Use reservation.username directly
             title: reservation.name ?? 'Unknown',
             start: start,
             end: end,
-            draggable: true,
-            resizable: {
-                beforeStart: true,
-                afterEnd: true,
-            }
+            color: color,
+            actions: [
+              {
+                label: '<i class="fas fa-fw fa-trash-alt"></i>',
+                onClick: ({ event }: { event: CalendarEvent<any> }): void => {
+                  this.events = this.events.filter((iEvent) => iEvent !== event);
+                  console.log('Event deleted', event);
+                },
+              },
+            ]
           };
         });
+  
       console.log('All Reservations:', this.events);
-      
     });
   }
+  
+  
+  
+  
+
 
   timeRangeValidator(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
@@ -264,7 +314,65 @@ formatDate(dateString: string): string {
     }
 
     return null;
-    };
-  }
+    };
+  }
+  
+  
+  getEventColor(event: CalendarEvent<any>): string {
+    const now = new Date();
+    const start = event.start instanceof Date ? event.start : undefined;
+    const end = event.end instanceof Date ? event.end : undefined;
 
+    if (!start || !end) {
+      // Handle the case where start or end date is undefined or not a valid Date object
+      return ''; // Return an empty string or a default color
+    }
+
+    if (now > end) {
+      return this.colors['green']; // Event is already done
+    } else if (now >= start && now <= end) {
+      return this.colors['yellow']; // Event is ongoing
+    } else {
+      return this.colors['blue']; // Event is not happening yet
+    }
+  }
+
+  cancelReservation(event: CalendarEvent<any>): void {
+    const now = new Date();
+    const start = event.start instanceof Date ? event.start : undefined;
+    
+    // Check if the reservation is in the past or ongoing
+    if (!start || start <= now) {
+      console.error('Cannot cancel past or ongoing reservation.');
+      alert('Cannot cancel past or ongoing reservation.');
+      return; // Exit the method if the reservation is in the past or ongoing
+    }
+    
+    const confirmation = confirm('Are you sure you want to cancel this reservation?');
+    console.log("cancel reservation");
+    if (confirmation && event.id) {
+      const reservationId: number = typeof event.id === 'string' ? parseInt(event.id, 10) : event.id;
+      console.log("reservation id : ", reservationId);
+      
+      // Call the service method to update the reservation state
+      this.reservationService.updateReservation(reservationId, { state: 'cancelled' }).subscribe(() => {
+        // On successful cancellation, log a message and possibly refresh the reservation data
+        console.log('Reservation cancelled:', event);
+        // Change the color of the cancelled reservation to red
+        event.color = { primary: 'red', secondary: 'red' };
+        // You might want to refresh the reservations after cancellation
+        this.getAllReservations();
+      }, error => {
+        // Handle error if cancellation fails
+        console.error('Failed to cancel reservation:', error);
+      });
+    } else {
+      console.error('Cannot cancel reservation: Event ID is undefined.');
+    }
+  }
+  
+  
+  
+  
+  
 }

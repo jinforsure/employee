@@ -32,4 +32,5 @@ export const AdminLayoutRoutes: Routes = [
     { path: 'chat',   component: ChatComponent},
     { path: 'profile',   component: ProfileComponent},
     { path: 'settings',   component: SettingsComponent},
+    
 ];

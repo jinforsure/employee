@@ -21,6 +21,8 @@ export class AuthService {
             // Appel à la méthode du service Employee pour récupérer les détails de l'employé
             this.getEmployeeDetails(email).subscribe(employee => {
               localStorage.setItem('account_type', employee.account_type);
+              localStorage.setItem('id', employee.id);
+              localStorage.setItem('username', employee.username);
               console.log("24",employee.account_type);
             });
           }

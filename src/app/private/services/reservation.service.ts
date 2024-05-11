@@ -19,29 +19,6 @@ export class ReservationService {
 
   constructor(private httpclient: HttpClient) { }
 
-
-  sendAddMoreClicked(): void {
-    console.log("Send add more clicked");
-    this.addMoreClickedSubject.next();
-  }
-
-  // Observable pour écouter le message "Add more clicked"
-  getAddMoreClicked(): Observable<void> {
-    console.log("add more  ");
-    return this.addMoreClickedSubject.asObservable();
-  }
- 
-
-  getReservationState(): Observable<any[]> {
-    return this.reservationStateSubject.asObservable();
-  }
-
-storeReservationState(state: any[]): void {
-  this.reservationStateSubject.next(state);
-}
-
-
-
   getAllReservations(){
     return this.httpclient.get<Reservation[]>(this.baseUrl+'/reservation');
   }
@@ -100,4 +77,33 @@ storeReservationState(state: any[]): void {
     const url = `${this.baseUrl}/reservation?departureDate=${departureDate}`;
     return this.httpclient.get<Reservation[]>(url);
   }  
+
+  getAllReservationIds(): Observable<number[]> {
+    return this.httpclient.get<number[]>(`${this.baseUrl}/reservation/ids`);
+  }
+
+  sendAddMoreClicked(): void {
+    console.log("Send add more clicked");
+    this.addMoreClickedSubject.next();
+  }
+
+  // Observable pour écouter le message "Add more clicked"
+  getAddMoreClicked(): Observable<void> {
+    console.log("add more  ");
+    return this.addMoreClickedSubject.asObservable();
+  }
+ 
+
+  getReservationState(): Observable<any[]> {
+     // Afficher le contenu de reservationStateSubject dans la console
+     console.log("w fi get store", this.reservationStateSubject);
+    return this.reservationStateSubject.asObservable();
+    console.log("w fi get store",this.reservationStateSubject);
+  }
+
+  storeReservationState(state: any[]): void {
+    this.reservationStateSubject.next(state);
+    console.log("fi store trah",this.reservationStateSubject);
+}
+
 }

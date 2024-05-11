@@ -13,7 +13,11 @@ export interface Equipments{
     createdAt? : Date;
     updatedAt? : Date;
     category?: "Equipments"; // Ajouter la propriété category
-  subcategory?: string; // Ajouter la propriété subcategory
-  state?:string;
-  benefit_id?:number | null;
+    subcategory?: string; // Ajouter la propriété subcategory
+    state?:string;
+    benefit_id?:number | null;
+    returned?:string;
+    reservation_State?:string;
+    description?:string;
+    taken?:string;
 }

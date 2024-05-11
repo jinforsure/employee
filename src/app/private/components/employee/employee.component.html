@@ -17,6 +17,9 @@
           </div>
         </div>
       </div>
+      <div class="search-container">
+        <input type="text" [(ngModel)]="searchText" (input)="search()" class="form-control" placeholder="Search...">
+      </div>
       <div class="table-responsive">
       <table class="table table-bordered table-hover">
         <thead>
@@ -35,7 +38,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let employee of employeeList">
+          <tr *ngFor="let employee of filteredEmployeeList">
             <td>{{employee.username}}</td>
             <td>{{employee.firstName }}</td>
             <td>{{employee.lastName}}</td>
