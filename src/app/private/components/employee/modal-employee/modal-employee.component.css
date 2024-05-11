@@ -1,0 +1,49 @@
+/* Style the modal content */
+.mat-dialog-content {
+    padding: 20px;
+  }
+  
+  /* Style the modal title */
+  .mat-dialog-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: black;
+  }
+  
+  /* Style the list items */
+  ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  /* Style the reservation details */
+  li {
+    margin-bottom: 10px;
+  }
+  
+  /* Style the close button */
+  .mat-dialog-actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-top: 20px;
+    border-top: 1px solid #ccc; /* Add a line above the button */
+  }
+  
+  /* Style the close button */
+  button {
+    background-color: #b1b1b1;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-left: 240px;
+  }
+  
+  /* Hover effect for close button */
+  button:hover {
+    background-color: #ff0a0a;
+  }
+  

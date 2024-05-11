@@ -1,0 +1,28 @@
+<h1 mat-dialog-title>Reservations Information</h1>
+<div mat-dialog-content>
+  <ul>
+    <li><strong>Username:</strong> {{ data.employee.username }}</li>
+    <!-- Add other employee information here -->
+  </ul>
+
+  <h2>Reservations:</h2>
+  <ul>
+    <ng-container *ngIf="data.reservations.length > 0; else noReservations">
+      <li *ngFor="let reservation of data.reservations">
+        <strong>Reservation ID:</strong> {{ reservation.id }}<br>
+        <strong>Reservation Name:</strong> {{ reservation.name }}<br>
+        <strong>Reservation State:</strong> {{ reservation.state }}<br>
+        <strong>Reservation Depart Date:</strong> {{ reservation.departDate }}<br>
+        <strong>Reservation Depart Hour:</strong> {{ reservation.departHour }}<br>
+        <strong>Reservation Return Hour:</strong> {{ reservation.returnHour }}<br>
+        <!-- Display other reservation details as needed -->
+      </li>
+    </ng-container>
+    <ng-template #noReservations>
+      <li>No reservations</li>
+    </ng-template>
+  </ul>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="closeDialog()">Close</button>
+</div>

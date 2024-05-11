@@ -31,6 +31,7 @@ import {MatSelectModule} from '@angular/material/select';
 import { ProfileComponent } from 'src/app/private/components/profile/profile.component';
 import { SettingsComponent } from 'src/app/private/components/settings/settings.component';
 import { DetailsModalComponent } from 'src/app/private/components/benefit/equipments/details-modal/details-modal.component';
+import { ModalEmployeeComponent } from 'src/app/private/components/employee/modal-employee/modal-employee.component';
 
 
 // import { ToastrModule } from 'ngx-toastr';
@@ -68,7 +69,8 @@ import { DetailsModalComponent } from 'src/app/private/components/benefit/equipm
      ListreservComponent,
      ProfileComponent,
      SettingsComponent,
-     DetailsModalComponent
+     DetailsModalComponent,
+     ModalEmployeeComponent
   ]
 })
 

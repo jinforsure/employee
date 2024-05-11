@@ -2,6 +2,10 @@ import { Component } from '@angular/core';
 import { Employee } from '../../model/employee';
 import { EmployeeService } from '../../services/employee.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ModalEmployeeComponent } from './modal-employee/modal-employee.component';
+import { MatDialog } from '@angular/material/dialog';
+import { ReservationService } from '../../services/reservation.service';
+import { Reservation } from '../../model/reservation';
 
 @Component({
   selector: 'app-employee',
@@ -13,9 +17,13 @@ export class EmployeeComponent {
   employeeList: Employee[] =[];
   searchText: string ='';
   filteredEmployeeList : Employee[] = [];
-  constructor(private employeeService: EmployeeService){}
+  reservationList: Reservation[] = [];
+  matchingUsernames: string[] = [];
+
+  constructor(private employeeService: EmployeeService,private dialog: MatDialog , private reservationService: ReservationService){}
   ngOnInit(): void {
     this.displayEmployee();
+    this.displayReservations();
   }
 
   displayEmployee() {
@@ -28,9 +36,11 @@ export class EmployeeComponent {
 
   selectedEmployee!: Employee ;
 
-  selectEmployee(employee : any ) {
+  selectEmployee(employee: any) {
     this.selectedEmployee = employee;
+    console.log()
   }
+  
 
   deleteEmployee(){
     if (this.selectedEmployee.id){
@@ -64,7 +74,60 @@ export class EmployeeComponent {
         );
       });
     }console.log('Filtered Employee List:', this.filteredEmployeeList);
-  }
+  }
 
+
+  displayReservations() {
+    this.reservationService.getAllReservations().subscribe((reservations) => {
+      this.reservationList = reservations;
+      console.log(reservations);
+  
+      // Extract usernames from reservations
+      const reservationUsernames = reservations.map((reservation) => reservation.username);
+      console.log('Usernames:', reservationUsernames);
+  
+      // Get list of employee usernames that match reservation usernames
+      this.matchingUsernames = this.employeeList
+        .filter(employee => reservationUsernames.includes(employee.username)) // Filter employees by matching usernames
+        .map(employee => employee.username) // Extract usernames
+        .filter((username): username is string => !!username); // Filter out undefined values
+  
+      console.log('Employee usernames with matching reservations:', this.matchingUsernames);
+  
+      // Get reservations for each matching employee
+      this.matchingUsernames.forEach(username => {
+        const employeeReservations = this.reservationList.filter(reservation => reservation.username === username);
+        console.log(`Reservations for employee ${username}:`, employeeReservations);
+      });
+    });
+  }
+  
+  
+  
+  
+  openEmployeeInfoModal(employee: any) {
+    // Filter reservations by the selected employee's username
+    const employeeReservations = this.reservationList.filter(reservation => reservation.username === employee.username);
+  
+    this.dialog.open(ModalEmployeeComponent, {
+      data: {
+        employee: employee,
+        reservations: employeeReservations
+      }
+    });
+  }
+  
+
+  hasReservations(usernames: string[]): boolean {
+    // Check if any of the usernames have reservations
+    return usernames.some(username =>
+      this.reservationList.some(reservation => reservation.username === username)
+    );
+  }
+  
+  
+
+  
+  
 
 }

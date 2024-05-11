@@ -385,14 +385,6 @@ extractDepartureDates(reservations: Reservation[]): { equipmentsId: number | und
     });
   }
 
-
-
-
-
-
-
-
-
   displayEquipments() {
     this.equipmentsService.getAllEquipments().subscribe((res) => {
      this.equipmentsList = res;
@@ -409,43 +401,7 @@ extractDepartureDates(reservations: Reservation[]): { equipmentsId: number | und
       console.log(res);
     });
   }
-/*
-  selectedEquipment!: Equipments ;
 
-  selectEquipment(equipments : any ) {
-    this.selectedEquipment = equipments;
-  }
-
-   
-
-  loadReservations(): void {
-    this.reservationService.getAllReservations().subscribe(reservations => {
-      this.reservations = reservations;
-    });
-  }
-  
-  selectedDepartureDate: Date = new Date(); // Initialize with current date
-  selectedReturnDate: Date = new Date();
-
-  checkAvailability(): void {
-    // Compare selected dates with reservations
-    const isDepartureDateAvailable = this.isDateAvailable(this.selectedDepartureDate);
-    const isReturnDateAvailable = this.isDateAvailable(this.selectedReturnDate);
-
-    // Provide feedback to the user
-    if (isDepartureDateAvailable && isReturnDateAvailable) {
-      console.log('Selected dates are available for reservation.');
-    } else {
-      console.log('Selected dates are not available for reservation.');
-    }
-  }
-
-  isDateAvailable(dateToCheck: Date): boolean {
-    // Implement logic to check if the date is available
-    // You can compare with the reservations array using some logic
-    return true; // Placeholder return value
-  }
-  */
   result: any;
 
   onCategoryChange(event: any) {
@@ -540,13 +496,6 @@ extractDepartureDates(reservations: Reservation[]): { equipmentsId: number | und
     });
   }
   
-
-
-
-
-
-
-
 
 
 }
