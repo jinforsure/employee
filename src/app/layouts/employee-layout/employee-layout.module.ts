@@ -32,6 +32,7 @@ import { DetailsModalComponent } from 'src/app/private/components/benefit/equipm
 import { ModalEmployeeComponent } from 'src/app/private/components/employee/modal-employee/modal-employee.component';
 import { MatAutocomplete, MatAutocompleteModule } from '@angular/material/autocomplete'
 import { PastReservationsComponent } from 'src/app/private/components/past-reservations/past-reservations.component';
+import { CustomModalComponent } from 'src/app/private/components/calendar/custom-modal/custom-modal.component';
 
 // import { ToastrModule } from 'ngx-toastr';
 
@@ -73,7 +74,8 @@ import { PastReservationsComponent } from 'src/app/private/components/past-reser
      SettingsComponent,
      DetailsModalComponent,
      ModalEmployeeComponent,
-     PastReservationsComponent
+     PastReservationsComponent,
+     CustomModalComponent
   ]
 })
 

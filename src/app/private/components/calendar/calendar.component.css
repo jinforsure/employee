@@ -63,7 +63,7 @@
   }
 
   .btn-success {
-    width: 160px;
+    width: 200px;
   }
 
 
@@ -134,6 +134,3 @@ input[type="time"]:focus {
     box-shadow: 0 0 3px #007bff;
 }
 
-.event-title {
-  color: white !important;
-}

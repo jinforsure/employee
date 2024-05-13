@@ -1,0 +1,91 @@
+.normal-modal {
+    position: fixed; /* Fixed position to overlay the entire screen */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black background */
+    z-index: 9999; /* Ensure the modal is above other content */
+  }
+  
+  .normal-modal-dialog {
+    position: relative;
+    margin: 10% auto; /* Center the modal vertically */
+    width: 50%; /* Adjust the width of the modal */
+    max-width: 500px; /* Maximum width of the modal */
+    background-color: #fff; /* Background color of the modal */
+    border-radius: 5px;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Add a shadow effect */
+  }
+  
+  .normal-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #ccc; /* Add a border at the bottom */
+  }
+  
+  .normal-modal-title {
+    margin: 0;
+    font-size:medium ;
+  }
+  
+  .normal-modal-body {
+    padding: 20px 0;
+  }
+  
+  .normal-modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding-top: 10px;
+    border-top: 1px solid #ccc; /* Add a border at the top */
+  }
+  
+  .normal-close-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    color: #007bff; /* Blue color for the close button */
+  }
+  
+  .normal-close-button:hover {
+    text-decoration: underline; /* Underline the close button on hover */
+  }
+  
+  .normal-primary-button {
+    background-color: #007bff; /* Blue color for the primary button */
+    color: #fff; /* White text color */
+    border: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .normal-primary-button:hover {
+    background-color: #0056b3; /* Darker blue color on hover */
+  }
+  
+  input[type="date"],
+input[type="time"] {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+/* Style for input fields on focus */
+input[type="date"]:focus,
+input[type="time"]:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 3px #007bff;
+}
+
+.btn {
+    margin: 5px;
+}

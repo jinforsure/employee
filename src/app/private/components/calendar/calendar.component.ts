@@ -8,6 +8,7 @@ import {isSameDay,isSameMonth, } from 'date-fns';
 import { Subject } from 'rxjs';
 import {CalendarEvent, CalendarView} from 'angular-calendar';
 import { EventColor } from 'calendar-utils';
+import { CustomModalComponent } from './custom-modal/custom-modal.component';
 
 @Component({
   selector: 'app-calendar',
@@ -117,59 +118,6 @@ export class CalendarComponent {
     event.event.end = event.newEnd;
     this.refresh.next();
   }
-  // bech etsjel date w ethzni lel reservation
-  navigateAndSave() {
-    // Récupérer et afficher la valeur de la date de départ
-   // Récupérer et afficher la valeur de la date de départ
-this.selectedDate = this.reservationForm.get('departureDate')?.value;
-console.log('Selected Departure Date:', this.selectedDate);
-
-// Récupérer et afficher la valeur de l'heure de départ
-this.selectedDepartureTime = this.reservationForm.get('departureTime')?.value;
-console.log('Selected Departure Time:', this.selectedDepartureTime);
-
-// Récupérer et afficher la valeur de l'heure de retour
-this.selectedReturnTime = this.reservationForm.get('returnTime')?.value;
-console.log('Selected Return Time:', this.selectedReturnTime);
-
-
-
-// Formatter la date au format "jj-mm-aaaa"
-const formattedDate = this.formatDate(this.selectedDate);
-console.log('Selected Departure Daaaaaaaate:', this.selectedDate);
-
-
-
-// Afficher les paramètres de requête avant la navigation
-console.log('Navigating with query params:', {
-    date: formattedDate,
-    departureTime: this.selectedDepartureTime,
-    returnTime: this.selectedReturnTime
-});
-
-// Naviguer vers la route /reservation avec les paramètres de requête
-this.router.navigate(['/reservation'], {
-    queryParams: {
-        date: formattedDate,
-        departureTime: this.selectedDepartureTime,
-        returnTime: this.selectedReturnTime
-    }
-});
-  
-}
-// Fonction de formatage de date
-formatDate(dateString: string): string {
-  // Utiliser une expression régulière pour extraire les parties de la date
-  const match = dateString.match(/^(\d{4})-(\d{2})-(\d{2})$/);
-  if (match) {
-      // Reformater la date dans le format "jj-mm-aaaa" en inversant l'ordre des composants
-      return match[3] + '-' + match[2] + '-' + match[1];
-  } else {
-      // Retourner la date d'origine si le format n'est pas reconnu
-      console.warn('Le format de date n\'est pas reconnu:', dateString);
-      return dateString;
-  }
-}
 
 
   //bech etvalidi el modal 
@@ -264,10 +212,6 @@ formatDate(dateString: string): string {
       console.log('All Reservations:', this.events);
     });
   }
-  
-  
-  
-  
 
 
   timeRangeValidator(): ValidatorFn {
@@ -372,7 +316,15 @@ formatDate(dateString: string): string {
   }
   
   
-  
+  openCustomModal(selectedDate: string, departureTime: string, returnTime: string) {
+    this.dialog.open(CustomModalComponent, {
+      data: {
+        departureDate: selectedDate,
+        departureTime: departureTime,
+        returnTime: returnTime
+      }
+    });
+  }
   
   
 }
