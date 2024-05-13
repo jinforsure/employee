@@ -22,8 +22,6 @@ import { DetailsEquipmentsComponent } from 'src/app/private/components/benefit/e
 import { DetailsRoomsComponent } from 'src/app/private/components/benefit/rooms/details-rooms/details-rooms.component';
 import { ListreservComponent } from 'src/app/private/components/reservation/listreserv/listreserv.component';
 import { MatDialogModule } from '@angular/material/dialog';
-
-
 import {MatButtonModule} from '@angular/material/button';
 import {MatRippleModule} from '@angular/material/core';
 import {MatTooltipModule} from '@angular/material/tooltip';
@@ -32,7 +30,8 @@ import { ProfileComponent } from 'src/app/private/components/profile/profile.com
 import { SettingsComponent } from 'src/app/private/components/settings/settings.component';
 import { DetailsModalComponent } from 'src/app/private/components/benefit/equipments/details-modal/details-modal.component';
 import { ModalEmployeeComponent } from 'src/app/private/components/employee/modal-employee/modal-employee.component';
-
+import { MatAutocomplete, MatAutocompleteModule } from '@angular/material/autocomplete'
+import { PastReservationsComponent } from 'src/app/private/components/past-reservations/past-reservations.component';
 
 // import { ToastrModule } from 'ngx-toastr';
 
@@ -54,6 +53,9 @@ import { ModalEmployeeComponent } from 'src/app/private/components/employee/moda
     MatRippleModule,
     MatSelectModule,
     MatTooltipModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatAutocompleteModule
   ],
   declarations: [
      DashboardComponent,
@@ -70,7 +72,8 @@ import { ModalEmployeeComponent } from 'src/app/private/components/employee/moda
      ProfileComponent,
      SettingsComponent,
      DetailsModalComponent,
-     ModalEmployeeComponent
+     ModalEmployeeComponent,
+     PastReservationsComponent
   ]
 })
 

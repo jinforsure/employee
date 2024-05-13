@@ -1,0 +1,53 @@
+<div class="container-xl">
+    <div class="table-responsive">
+        <div class="table-wrapper">
+            <div class="table-title">
+                <div class="row">
+                    <div class="col-sm-6"><h2><b>Past Reservations</b></h2></div>
+                    <div class="col-sm-6">
+                        <div class="btn-group" data-toggle="buttons">
+                            <label class="btn btn-info active" (click)="onStatusChange('all')">
+                                <input type="radio" name="state" value="all" [checked]="selectedStatus === 'all'"> All
+                            </label>
+                            <label class="btn btn-success" (click)="onStatusChange('Reserved')">
+                                <input type="radio" name="state" value="Reserved" [checked]="selectedStatus === 'Reserved'"> Reserved
+                            </label>
+                            <label class="btn btn-danger" (click)="onStatusChange('Cancelled')">
+                                <input type="radio" name="state" value="Cancelled" [checked]="selectedStatus === 'Cancelled'"> Cancelled
+                            </label>
+                        </div>                            
+                    </div>
+                </div>
+            </div>
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>UserName</th>
+                        <th>Name</th>
+                        <th>Category</th>
+                        <th>Depart Date</th>
+                        <th>Depart Hour</th>
+                        <th>Return Hour</th>
+                        <th>State</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let reservation of filteredReservations">
+                      <td>{{ reservation.username }}</td>
+                      <td><a href="#">{{ reservation.name }}</a></td>
+                      <td>{{ reservation.category }}</td>
+                      <td>{{ reservation.departDate }}</td>
+                      <td>{{ reservation.departHour }}</td>
+                      <td>{{ reservation.returnHour }}</td>
+                      <td>
+                        <button type="button" class="btn" [ngClass]="{
+                          'btn-success': reservation.state === 'Reserved',
+                          'btn-danger': reservation.state === 'Cancelled'
+                        }">{{ reservation.state }}</button>
+                      </td>
+                    </tr>
+                  </tbody>                  
+            </table>
+        </div> 
+    </div>   
+</div>

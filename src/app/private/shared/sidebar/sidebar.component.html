@@ -63,15 +63,6 @@
                 <span class="sidenav-link-text" @fadeInOut *ngIf="collapsed">{{navData[5].title}}</span>
             </a>
         </li>
-        <li class="sidenav-nav-item">
-            <a class="sidenav-nav-link" [routerLink]="[navData[6].path]"
-               routerLinkActive="active"
-               [routerLinkActiveOptions]="{exact: true}"
-            >
-                <i class="sidenav-link-icon" [class]="navData[6].icon"></i>
-                <span class="sidenav-link-text" @fadeInOut *ngIf="collapsed">{{navData[6].title}}</span>
-            </a>
-        </li>
-        <button class="btn-logout" (click)="logout()">Logout</button>
+          
     </ul>
 </div>

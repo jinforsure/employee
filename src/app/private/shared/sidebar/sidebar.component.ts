@@ -21,9 +21,8 @@ export const navbarData = [
   { path: '/calendar', title: 'Calendar',  icon: 'fal fa-calendar', class: '' },
   { path: '/employee', title: 'Employee',  icon: 'fal fa-user', class: '' },
   { path: '/benefit', title: 'Benefit',  icon: 'fal fa-box-open', class: '' },
-  { path: '/reservation', title: 'Make Reservation',  icon: 'fal fa-bookmark', class: '' },
-  { path: '/reservation/list', title: 'Reservation List',  icon: 'fal fa-list', class: '' },
-  { path: '/chat', title: 'Messages',  icon: 'fal fa-comment', class: '' },
+  { path: '/reservation', title: 'New Reservation',  icon: 'fal fa-bookmark', class: '' },
+  { path: '/pastReservation', title: 'Past Reservations',  icon: 'fal fa-history', class: '' },
 ];
 
 @Component({
