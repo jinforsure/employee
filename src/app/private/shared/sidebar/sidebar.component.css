@@ -115,3 +115,43 @@
 .active .sidenav-link-text {
     color: #000000;
 }
+
+.sidenav-nav-item .submenu {
+    list-style: none;
+    padding-left: 1.5rem; /* Adjust indentation */
+    margin: 0;
+    margin-top: 10px; /* Adjust top margin as needed */
+    margin-bottom: 10px; 
+}
+
+.sidenav-nav-item .submenu li {
+    margin-bottom: 0.625rem;
+}
+
+.sidenav-nav-item .submenu .submenu-link {
+    display: flex;
+    align-items: center;
+    height: 3rem;
+    color: #f3f3f3;
+    border-radius: 0.625rem;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    padding: 8px 12px;
+}
+
+.sidenav-nav-item .submenu .submenu-link .sidenav-link-icon {
+    font-size: 20px; /* Adjust icon size if needed */
+    width: 2rem;
+    min-width: 2rem;
+    margin: 0 0.5rem;
+    text-align: center;
+}
+
+.sidenav-nav-item .submenu .submenu-link .sidenav-link-text {
+    margin-left: 1rem; /* Adjust indentation */
+}
+
+.sidenav-nav-item .submenu .submenu-link:hover {
+    background-color: #fff;
+    color: #000;
+}

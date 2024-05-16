@@ -9,7 +9,7 @@ interface SideNavToggle {
 }
 export interface InavbarData {
   path : string;
-  icon?: string;
+  icon : string;
   title: string;
   expanded? : string;
   items?: InavbarData[];
@@ -34,10 +34,12 @@ export const navbarData : InavbarData[] = [
         {
             path: '/benefit/equipments',
             title: 'Equipments',
+            icon: 'fas fa-computer', // Add an icon if necessary
         },
         {
             path: '/benefit/rooms',
             title: 'Rooms',
+            icon: 'fal fa-door-closed', // Add an icon if necessary
         },
     ]
 },

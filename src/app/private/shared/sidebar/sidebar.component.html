@@ -44,7 +44,18 @@
                 <i class="sidenav-link-icon" [class]="navData[3].icon"></i>
                 <span class="sidenav-link-text" @fadeInOut *ngIf="collapsed">{{navData[3].title}}</span>
             </a>
+            <!-- Submenu for Benefit -->
+            <ul class="submenu" *ngIf="role && collapsed && navData[3].items && navData[3].items.length > 0">
+                <li *ngFor="let item of navData[3].items">
+                    <a class="submenu-link" [routerLink]="[item.path]" routerLinkActive="active">
+                        <!-- Adjust icon and text -->
+                        <i class="sidenav-link-icon" [class]="item.icon"></i>
+                        <span class="sidenav-link-text">{{ item.title }}</span>
+                    </a>
+                </li>
+            </ul>
         </li>
+
         <li class="sidenav-nav-item">
             <a class="sidenav-nav-link" [routerLink]="[navData[4].path]"
                routerLinkActive="active"

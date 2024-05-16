@@ -100,14 +100,51 @@ export class CustomModalComponent{
   }
   
   
-  futureDateValidator(): ValidatorFn {
+
+  timeRangeValidator(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
-      const selectedDate = new Date(control.value);
-      const currentDate = new Date();
-      if (isBefore(selectedDate, currentDate)) {
-        return { pastDate: true }; // Return an error if the date is in the past
+      if (control instanceof FormGroup) {
+        const departureDate = control.get('departureDate')?.value;
+        const departureTime = control.get('departureTime')?.value;
+        const returnTime = control.get('returnTime')?.value;
+  
+        if (departureDate && departureTime && returnTime) {
+          // Convertir la date de départ en objet Date
+          const selectedDepartureDate = new Date(departureDate);
+          const currentTime= new Date();
+          const currentHour = currentTime.getHours();
+          const currentMinute = currentTime.getMinutes();
+          const isToday = isSameDay(selectedDepartureDate, currentTime);
+  
+          // Si la date de départ est aujourd'hui en Tunisie
+          if (isToday) {
+            // Convertir l'heure de départ en objet Date
+            const selectedDepartureTime = new Date(`2000-01-01T${departureTime}`);
+            const selectedHour = selectedDepartureTime.getHours();
+            const selectedMinute = selectedDepartureTime.getMinutes();
+  
+           // Si l'heure de départ est dans le passé par rapport à l'heure actuelle
+           if (selectedHour < currentHour || (selectedHour === currentHour && selectedMinute < currentMinute)) {
+            return { pastDepartureTime: true };
+          }
+        }
+
+        // Vérifier si les heures sont dans l'intervalle spécifié (08:00 - 18:00)
+        const departureHour = parseInt(departureTime.split(':')[0]);
+        const returnHour = parseInt(returnTime.split(':')[0]);
+
+        if (departureHour < 8 || returnHour > 18) {
+          return { invalidTimeRange: true };
+        }
+
+        // Vérifier si l'heure de départ est avant l'heure de retour
+        if (departureHour >= returnHour) {
+          return { invalidTimeOrder: true };
+        }
       }
-      return null; // Return null if validation succeeds
+    }
+
+    return null;
     };
   }
   
