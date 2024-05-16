@@ -233,3 +233,6 @@ body {
   border: 2px solid #007bff; /* Add border on focus */
   padding: 3px 8px; /* Adjust padding on focus */
 }
+.edit {
+  cursor: pointer;
+}

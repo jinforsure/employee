@@ -1,14 +1,15 @@
 import { Component, ElementRef, Inject, Output, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { isBefore, isSameDay } from 'date-fns';
 
 @Component({
   selector: 'app-custom-modal',
   templateUrl: './custom-modal.component.html',
   styleUrls: ['./custom-modal.component.css']
 })
-export class CustomModalComponent {
+export class CustomModalComponent{
   selectedDate: string='';
   selectedDepartureTime: string='';
   selectedReturnTime: string='';
@@ -35,6 +36,7 @@ export class CustomModalComponent {
       });
     }
   }
+  
 
   closeDialog(): void {
     this.dialogRef.close();
@@ -90,5 +92,24 @@ export class CustomModalComponent {
     // Close the modal
     this.dialogRef.close();
   }
+  
+
+  
+  isFormValid(): boolean {
+    return this.reservationForm.valid && !this.reservationForm.hasError('pastDate');
+  }
+  
+  
+  futureDateValidator(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const selectedDate = new Date(control.value);
+      const currentDate = new Date();
+      if (isBefore(selectedDate, currentDate)) {
+        return { pastDate: true }; // Return an error if the date is in the past
+      }
+      return null; // Return null if validation succeeds
+    };
+  }
+  
   
 }

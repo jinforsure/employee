@@ -31,7 +31,10 @@
             >
                 <span class="fal fa-plus"></span> New Reservation
             </button>
-        </div>        
+        </div>  
+        <div class="col-sm-6">
+        <button class="btn btn-info" (click)="scrollToTable()">Scroll to Table</button>    
+        </div>  
       </div>
       <div id="cal-date-field">{{ viewDate| calendarDate:(view + 'ViewTitle') : 'en'}}</div>
       <div class="btn-group" id="cal-view-nav-buttons" role="group" aria-label="Basic example">
@@ -87,83 +90,86 @@
          [refresh]="refresh"
          ></mwl-calendar-day-view>
       </span>
-      
-      <div class="table-responsive">
-        <table class="table table-bordered">
-          <thead>
-            <tr>
-              <th>Username</th>
-              <th>Benefit In Reservation</th>
-              <th>State Color</th>
-              <th>Starts at</th>
-              <th>Ends at</th>
-              <th>Cancel Reservation</th>
-            </tr>
-          </thead>
-          
-          <tbody>
-            <tr *ngFor="let event of events" [style.background-color]="getEventColor(event)">
-              <td>
-                <input
-                type="text"
-                class="form-control"
-                [(ngModel)]="event.username"
-                (keyup)="refresh.next()"
-              />
-              </td>
-              <td>
-                <input
-                  type="text"
-                  class="form-control"
-                  [(ngModel)]="event.title"
-                  (keyup)="refresh.next()"
-                />
-              </td>
-              <td>
-                <input
-                  type="color"
-                  [value]="getEventColor(event)"
-                />
-              </td>
-              <td>
-                <input
-                  class="form-control"
-                  type="text"
-                  mwlFlatpickr
-                  [(ngModel)]="event.start"
-                  (ngModelChange)="refresh.next()"
-                  dateFormat="Y-m-dTH:i"
-                  altFormat="F j, Y H:i"
-                  placeholder="Not set"
-                />
-              </td>
-              <td>
-                <input
-                  class="form-control"
-                  type="text"
-                  mwlFlatpickr
-                  [(ngModel)]="event.end"
-                  (ngModelChange)="refresh.next()"
-                  dateFormat="Y-m-dTH:i"
-                  altFormat="F j, Y H:i"
-                  placeholder="Not set"
-                />
-              </td>
-              <td>
-                <button class="btn btn-danger" (click)="cancelReservation(event)">
-                  Cancel
-                </button>
-              </td>
-            </tr>
-          </tbody>
-          
-          
-        </table>
-      </div>
-      
-
   </div>
 </div>
 
+<br /><br /><br />
 
+<h3 class="title">
+ <strong> All Reservations</strong>
+  <div class="clearfix"></div>
+</h3>
+
+<div class="table-responsive mb-4" id="reservation-table" >
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Username</th>
+        <th>Benefit In Reservation</th>
+        <th>State Color</th>
+        <th>Starts at</th>
+        <th>Ends at</th>
+        <th>Cancel Reservation</th>
+      </tr>
+    </thead>
+    
+    <tbody>
+      <tr *ngFor="let event of events" [style.background-color]="getEventColor(event)">
+        <td>
+          <input
+          type="text"
+          class="form-control"
+          [(ngModel)]="event.username"
+          (keyup)="refresh.next()"
+        />
+        </td>
+        <td>
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="event.title"
+            (keyup)="refresh.next()"
+          />
+        </td>
+        <td>
+          <input
+            type="color"
+            [value]="getEventColor(event)"
+          />
+        </td>
+        <td>
+          <input
+            class="form-control"
+            type="text"
+            mwlFlatpickr
+            [(ngModel)]="event.start"
+            (ngModelChange)="refresh.next()"
+            dateFormat="Y-m-dTH:i"
+            altFormat="F j, Y H:i"
+            placeholder="Not set"
+          />
+        </td>
+        <td>
+          <input
+            class="form-control"
+            type="text"
+            mwlFlatpickr
+            [(ngModel)]="event.end"
+            (ngModelChange)="refresh.next()"
+            dateFormat="Y-m-dTH:i"
+            altFormat="F j, Y H:i"
+            placeholder="Not set"
+          />
+        </td>
+        <td>
+          <button class="btn btn-danger" (click)="cancelReservation(event)">
+            Cancel
+          </button>
+        </td>
+      </tr>
+    </tbody>
+    
+    
+  </table>
+</div>
 

@@ -1,0 +1,58 @@
+<div class="modal-dialog">
+    <div class="modal-content">
+      <form #roomsForm="ngForm">
+        <div class="modal-header">
+          <h4 class="modal-title">{{rooms.id ? "Edit" : "Add"}} rooms</h4>
+        </div>
+
+        <div class="modal-body">
+          <div class="row">
+            <div class="col">
+              <label>Name</label>
+              <input type="text" [(ngModel)]="rooms.name" name="name" class="form-control"  />
+            </div>
+            <div class="col">
+                <label>SubCategory</label>
+                <select id="type" [(ngModel)]="rooms.type" name="type" required (ngModelChange)="checkFormValidity()">
+                  <option value="" enabled selected>Select SubCategory</option>
+                  <option *ngFor="let type of types" [value]="type">{{ type }}</option>
+                </select>
+            </div>
+          </div>
+          <div class="row" >
+            <div class="col">
+              <label>Location</label>
+              <input type="text" [(ngModel)]="rooms.location" name="manufactuer" class="form-control"  />
+            </div>
+            <div class="col">
+                <label>Capacity</label>
+                <input type="number" [(ngModel)]="rooms.capacity" name="capacity" class="form-control"  />
+                <div *ngIf="capacityInvalid && roomsForm.controls['capacity'].touched" class="text-danger"></div>
+                  Capacity is required.
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+                <label>Maintenance Status</label>
+                <input type="text" [(ngModel)]="rooms.maintenance_status" name="maintenance_status" class="form-control"  />
+            </div>
+            <div class="col">
+              <label>State</label>
+              <select id="state" [(ngModel)]="rooms.state" name="state" required (ngModelChange)="checkFormValidity()"
+                      [ngClass]="{ 'state-active': rooms.state === 'Enabled', 'state-inactive': rooms.state !== 'Disabled' }">
+                <option value="" enabled selected>Select state</option>
+                <option *ngFor="let state of states" [value]="state">{{ state }}</option>
+              </select>
+              <div *ngIf="stateInvalid && roomsForm.controls['state'].touched" class="text-danger">
+                State is required.
+              </div>
+            </div>          
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="closeDialog()">Back</button>
+          <input type="submit" class="btn btn-success" value="Save" (click)="saveRooms()" [disabled]="roomsForm.invalid" />
+        </div>
+      </form>
+    </div>
+</div>

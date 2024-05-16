@@ -55,7 +55,7 @@
             </a>
         </li>
         <li class="sidenav-nav-item">
-            <a class="sidenav-nav-link" [routerLink]="[navData[5].path]"
+            <a class="sidenav-nav-link" *ngIf="role" [routerLink]="[navData[5].path]"
                routerLinkActive="active"
                [routerLinkActiveOptions]="{exact: true}"
             >
@@ -63,6 +63,16 @@
                 <span class="sidenav-link-text" @fadeInOut *ngIf="collapsed">{{navData[5].title}}</span>
             </a>
         </li>
-          
+        
+        <li class="sidenav-nav-item">
+            <a class="sidenav-nav-link" [routerLink]="[navData[6].path]"
+               routerLinkActive="active"
+               [routerLinkActiveOptions]="{exact: true}"
+            >
+                <i class="sidenav-link-icon" [class]="navData[6].icon"></i>
+                <span class="sidenav-link-text" @fadeInOut *ngIf="collapsed">{{navData[6].title}}</span>
+            </a>
+
+        </li>
     </ul>
 </div>

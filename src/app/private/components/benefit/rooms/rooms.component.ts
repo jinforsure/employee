@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { Rooms } from 'src/app/private/model/rooms';
 import { RoomsService } from 'src/app/private/services/rooms.service';
+import { EditRoomsModalComponent } from './edit-rooms-modal/edit-rooms-modal.component';
+import { AddRoomsModalComponent } from './add-rooms-modal/add-rooms-modal.component';
 
 @Component({
   selector: 'app-rooms',
@@ -12,7 +15,7 @@ export class RoomsComponent {
   searchText: string ='';
   filteredRoomsList: Rooms[] = [];
   constructor(
-    private roomsService: RoomsService,
+    private roomsService: RoomsService,private dialog: MatDialog 
   ){}
   ngOnInit(): void {
     this.displayRooms();
@@ -54,6 +57,33 @@ export class RoomsComponent {
       });
     }console.log('Filtered equipment List:', this.filteredRoomsList);
   }
+  
 
+openAddRoomsModal(): void {
+  const dialogRef = this.dialog.open(AddRoomsModalComponent, {
+    width: '500px',
+    // Add any other configuration options here
+  });
+
+  dialogRef.afterClosed().subscribe(result => {
+    console.log('The dialog was closed');
+    // Add logic to handle modal close if needed
+  });
+}
+
+
+openAddEditRoomsModal(roomsId :any, Rooms: any): void {
+  const dialogRef = this.dialog.open(EditRoomsModalComponent, {
+    width: '500px',
+    data: { roomsId, Rooms
+     }
+  });
+  console.log("room : ",Rooms);
+  console.log("roomsId id: ",roomsId);
+  dialogRef.afterClosed().subscribe(result => {
+    console.log('The dialog was closed');
+    // Handle any necessary actions after the modal is closed
+  });
+}
 
 }

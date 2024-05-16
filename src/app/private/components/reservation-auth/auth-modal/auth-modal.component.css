@@ -1,18 +1,12 @@
 /* Modal Styles */
 .modal-dialog {
-    margin: 10px auto;
-    max-width: 1500px;
-    margin-top: -10px;
+    height: 280px;
   }
   
-  .modal-content {
-    border-radius: 10px;
-  }
   
   .modal-header {
-    background-color: #0A1E59;
-    color: #fff;
-    border-radius: 10px 10px 0 0;
+    background-color: #ffffff;
+    color: #0A1E59;
   }
   
   .modal-title {
@@ -68,19 +62,6 @@
     text-align: right;
   }
   
-  .btn-success {
-    background-color: #28a745;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    padding: 10px 20px;
-    cursor: pointer;
-    transition: background-color 0.2s;
-  }
-  
-  .btn-success:hover {
-    background-color: #218838;
-  }
   
   select {
     width: 100%;
@@ -109,9 +90,9 @@
     background-color: #5a6268;
   }
   
-  
+
   /* Media Query for Small Screens */
-  @media (max-width: 768px) {
+@media (max-width: 768px) {
   .col {
     flex: 0 0 100%; /* Set width to 100% for smaller screens */
     max-width: 100%; /* Set max-width to 100% for smaller screens */
@@ -119,27 +100,33 @@
     padding-left: 15px;
     margin-bottom: 20px;
   }
-  }
-  
-  label > span {
+}
+
+label > span {
   color: red; /* Change color as needed */
   margin-left: 2px; /* Adjust spacing as needed */
-  }
-  
-  label.required::after {
+}
+
+label.required::after {
   content: "*";
   color: red; /* Change color as needed */
   margin-left: 2px; /* Adjust spacing as needed */
-  }
-  .border-error {
-  border: 2px solid red;
+}
+  
+  .normal-close-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 2rem;
+    color: #0A1E59;
+    margin-right: 30px; /* Blue color for the close button */
   }
   
-  .state-active {
-    color: green;
+  .normal-close-button:hover {
+    text-decoration: underline; /* Underline the close button on hover */
   }
   
-  .state-inactive {
-    color: red;
-  }
-  
+
+.btn {
+    margin: 5px;
+}

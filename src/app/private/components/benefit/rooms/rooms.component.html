@@ -7,14 +7,10 @@
             <h2>List of Rooms</h2>
           </div>
           <div class="col-sm-6">
-            <a
-              href="#addRoomsModal"
-              [routerLink]="'/benefit/rooms/new'"
-              class="btn btn-success"
-              data-toggle="modal"
-              ><i class="material-icons">&#xE147;</i> <span>Add New </span></a
-            >
-          </div>
+            <a (click)="openAddRoomsModal()" class="btn btn-success">
+              <i class="material-icons">&#xE147;</i> <span>Add New</span>
+            </a>
+        </div>
         </div>
       </div>
       <div class="search-container">
@@ -30,10 +26,7 @@
             <th>Capacity</th>
             <th>Maintenance Status</th>
             <th>State</th>
-            <th>Rservation State </th>
-            <th>Free</th>
-            <th>Occupied</th>
-            <th>action</th>
+            <th>Action</th>
           </tr>
         </thead>
         <tbody>
@@ -52,15 +45,10 @@
               </ng-template>
             </td>
             <td>
-              <a href="#editRoomsModal" [routerLink]="'/benefit/rooms/'+ rooms.id" class="edit" data-toggle="edit"
-                ><i class="material-icons" data-toggle="tooltip" title="Edit"
-                  >&#xE254;</i
-                ></a
-              >
+              <a (click)="openAddEditRoomsModal(rooms.id,rooms)" class="edit" data-toggle="edit">
+                <i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i>
+              </a>              
             </td>
-            <td>{{rooms.reservation_State}}</td>
-            <td>{{rooms.free}}</td>
-            <td>{{rooms.occupied}}</td>
           </tr>
         </tbody>
       </table>

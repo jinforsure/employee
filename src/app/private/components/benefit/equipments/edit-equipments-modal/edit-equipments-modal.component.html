@@ -1,0 +1,57 @@
+<div class="modal-dialog">
+    <div class="modal-content">
+        <form #equipmentsForm="ngForm" (ngSubmit)="saveEquipments()">
+            <div class="modal-header">
+                <h4 class="modal-title">Edit Equipments</h4>
+                <button type="button" class="normal-close-button" aria-label="Close" (click)="closeDialog()">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+            </div>
+            
+            <div class="modal-body">
+                <div class="row">
+                  <div class="col">
+                    <label>Quantity</label>
+                    <input type="number" [(ngModel)]="equipments.quantity" name="quantity" class="form-control" />
+                    <div *ngIf="equipmentsForm.controls['quantity'] && equipmentsForm.controls['quantity'].touched" class="text-danger">
+                        Quantity is required.
+                    </div>
+                </div>              
+                    <div class="col">
+                      <label>Price</label>
+                      <input type="number" [(ngModel)]="equipments.price" name="price" class="form-control" />
+                      <div *ngIf="equipmentsForm && equipmentsForm.controls['price'] && equipmentsForm.controls['price'].touched" class="text-danger">
+                          Price is required.
+                      </div>
+                    </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                      <label>Maintenance Status</label>
+                      <input type="text" [(ngModel)]="equipments.maintenance_status" name="maintenance_status" class="form-control" />
+                      <div *ngIf="equipmentsForm && equipmentsForm.controls['maintenance_status'] && equipmentsForm.controls['maintenance_status'].touched" class="text-danger">
+                          Maintenance Status is required.
+                      </div>
+                  </div>
+                  <div class="col">
+                      <label>State</label>
+                      <select id="state" [(ngModel)]="equipments.state" name="state" required (ngModelChange)="checkFormValidity()"
+                              [ngClass]="{ 'state-active': equipments.state === 'Enabled', 'state-inactive': equipments.state !== 'Disabled' }">
+                          <option value="" enabled selected>Select state</option>
+                          <option *ngFor="let state of states" [value]="state">{{ state }}</option>
+                      </select>
+                      <div *ngIf="equipmentsForm && equipmentsForm.controls['state'] && equipmentsForm.controls['state'].touched" class="text-danger">
+                          State is required.
+                      </div>
+                  </div>
+              </div>
+              
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" (click)="closeDialog()">Back</button>
+                <input type="submit" class="btn btn-success"  (click)="saveEquipments()" value="Save" />
+            </div>
+        </form>
+    </div>
+  </div>
+  

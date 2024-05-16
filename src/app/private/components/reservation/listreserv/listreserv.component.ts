@@ -67,41 +67,41 @@ async send(){
  onAddMoreClicked(): void {
   this.reservationService.sendAddMoreClicked();
 }
- validateReservation() {
+validateReservation() {
+  let hasRoom = false;
+  let hasEquipment = false;
+
   for (const item of this.reservationService.checkedItems) {
-    // Extraire les informations nécessaires de l'objet 'item'
-     this.selectedDate = item.selectedDate;
-     this.departureTime = item.selectedDepartureTime;
-     this.returnTime = item.selectedReturnTime;
-
-    // Vérifier si l'élément possède les propriétés nécessaires
-    if ('category' in item &&'type' in item && 'selectedDate' in item && 'selectedDepartureTime' in item && 'selectedReturnTime' in item && 'id' in item) {
-      const category = item.category;
-      const id = item.id;
-      const subcategory=item.type;
-      const selectedDate=this.selectedDate;
-    ///  equipmentIds.push(id);
-      // Maintenant, vous avez toutes les informations nécessaires pour chaque élément
-      // Faites ce que vous devez faire avec ces informations, comme les envoyer à un service ou les traiter directement ici
-      console.log('Selected Date:', this.selectedDate);
-      console.log('Departure Time:', this.departureTime);
-      console.log('Return Time:', this.returnTime);
-      console.log('Category:', category);
-      console.log('Subcategory:', subcategory);
-      console.log('ID:', id);
-
-      // Continuez à exécuter votre logique de validation ou d'autres opérations ici
+    // Check if the reservation has a room or just equipment
+    if (item.category === 'Rooms') {
+      hasRoom = true;
+    } else if (item.category === 'Equipments') {
+      hasEquipment = true;
     }
   }
-   // Stocker les identifiants d'équipements dans la liste avant d'appeler la méthode 'addReservationFromCheckedItems'
-  // console.log('Equipment IDs:', equipmentIds);// Appeler la méthode pour ajouter les réservations
 
-  
-  this.addReservationFromCheckedItems();
+  if (hasRoom && !hasEquipment) {
+    // Reservation has a room but no equipment
+    for (const item of this.reservationService.checkedItems) {
+      // Modify state to "On Hold"
+      item.state = 'On Hold';
+    }
+    this.addReservationFromCheckedItems(); // Add reservation
+    this.send(); // Send email
+    alert('Reservation created but needs admin permission.');
+  } else if (!hasRoom && hasEquipment) {
+    this.addReservationFromCheckedItems(); // Add reservation
+    this.send(); // Send email
+    alert('Reservation added successfully.');
+  } else {
+    // Both room and equipment are present, handle as per your requirements
+    // You may want to add a specific logic for this scenario
+    alert('Reservation contains both room and equipment. Please handle this case.');
+  }
+
   this.reservationService.sendAddMoreClicked();
-  this.send();
-  this.router.navigate(['/calendar']);
 }
+
 
 addReservationFromCheckedItems() {
   const username = localStorage.getItem('username') ?? ''; 
@@ -114,9 +114,9 @@ addReservationFromCheckedItems() {
       subCategory:item.type,
       username: username,
       name: item.name,
-      state:item.state
+      state: item.category === 'Rooms' ? 'On Hold' : 'Reserved'
     };
-console.log("fi add fama ???????",reservation);//nnonn 
+    console.log("fi add fama ???????",reservation);//nnonn 
     // Vérifiez si la catégorie est "Equipments" ou "Rooms"
     if (item.category === 'Equipments') {
       reservation.equipmentsId = item.id;
@@ -127,7 +127,7 @@ console.log("fi add fama ???????",reservation);//nnonn
     // Ajouter la réservation
     this.reservationService.addReservation(reservation).subscribe(
       (response) => {
-        console.log('Reservation added successfully:', response);
+        console.log('Reservation added successfully but needs admin Authority:', response);
       },
       (error) => {
         console.error('Error adding reservation:', error);
@@ -137,9 +137,6 @@ console.log("fi add fama ???????",reservation);//nnonn
    
 }
 
-showSuccessMessage() {
-  alert('Reservation added successfully');
-}
 
 goBack() {
 

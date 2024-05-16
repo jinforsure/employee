@@ -1,0 +1,62 @@
+<div class="modal-dialog">
+    <div class="modal-content">
+      <form #employeeForm="ngForm" (ngSubmit)="saveEmployee()">
+        <div class="modal-header">
+          <h4 class="modal-title">Edit Employee</h4>
+          <button type="button" class="normal-close-button" aria-label="Close" (click)="closeDialog()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>     
+        <div class="modal-body">
+          <div class="row">
+            <div class="col">
+              <label>Account Type</label>
+              <select id="account_type" [(ngModel)]="employee.account_type" name="account_type" required>
+                <option value="" disabled selected>Select Account Type</option>
+                <option *ngFor="let account_type of account_types" [value]="account_type">{{ account_type }}</option>
+              </select>
+              <div *ngIf="accountTypeInvalid && employeeForm.controls['account_type'].touched" class="text-danger">
+                Account Type is required.
+              </div>
+            </div>
+            <div class="col">
+              <label>Department</label>
+              <select id="department" [(ngModel)]="employee.department" name="department" required (ngModelChange)="checkFormValidity()">
+                <option value="" enabled selected>Select Department</option>
+                <option *ngFor="let department of departments" [value]="department">{{ department }}</option>
+              </select>
+              <div *ngIf="departmentInvalid && employeeForm.controls['department'].touched"  class="text-danger">
+                Departmentis required.
+            </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <label>State</label>
+              <select id="state" [(ngModel)]="employee.state" name="state" required (ngModelChange)="checkFormValidity()"
+                      [ngClass]="{ 'state-active': employee.state === 'Active', 'state-inactive': employee.state !== 'Active' }">
+                <option value="" enabled selected>Select state</option>
+                <option *ngFor="let state of states" [value]="state">{{ state }}</option>
+              </select>
+              <div *ngIf="stateInvalid && employeeForm.controls['state'].touched" class="text-danger">
+                State is required.
+              </div>
+            </div>          
+            <div class="col">
+              <label>Job</label>
+              <input type="text" [(ngModel)]="employee.job" name="job" class="form-control" required />
+              <div *ngIf="employeeForm.controls['job'].errors && employeeForm.controls['job'].touched" class="text-danger">
+                  Job is required.
+              </div>
+          </div>
+          
+          </div>
+        </div>
+  
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="closeDialog()">Back</button>
+            <input type="button" class="btn btn-success" value="Save Changes" (click)="saveEmployee()" [disabled]="employeeForm.invalid" />
+          </div>
+        </form>
+      </div>
+    </div>

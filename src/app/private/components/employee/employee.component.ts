@@ -6,6 +6,8 @@ import { ModalEmployeeComponent } from './modal-employee/modal-employee.componen
 import { MatDialog } from '@angular/material/dialog';
 import { ReservationService } from '../../services/reservation.service';
 import { Reservation } from '../../model/reservation';
+import { AddEmployeeModalComponent } from './add-employee-modal/add-employee-modal.component';
+import { EditEmployeeModalComponent } from './edit-employee-modal/edit-employee-modal.component';
 
 @Component({
   selector: 'app-employee',
@@ -126,8 +128,30 @@ export class EmployeeComponent {
   }
   
   
+  openAddEmployeeModal(): void {
+    const dialogRef = this.dialog.open(AddEmployeeModalComponent, {
+      width: '500px',
+      // Add any other configuration options here
+    });
 
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      // Add logic to handle modal close if needed
+    });
+  }
   
-  
+  openAddEditEmployeeModal(employeeId :any, employee: any): void {
+    const dialogRef = this.dialog.open(EditEmployeeModalComponent, {
+      width: '500px',
+      data: { employeeId, employee
+       }
+    });
+    console.log("employee : ",employee);
+    console.log("employee id: ",employeeId);
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      // Handle any necessary actions after the modal is closed
+    });
+  }
 
 }

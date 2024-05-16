@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { tap, catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -17,15 +17,32 @@ export class AuthService {
       .pipe(
         tap(result => {
           if (result.message === 'login success') {
-            this.loggedIn.next(true);
-            // Appel à la méthode du service Employee pour récupérer les détails de l'employé
+            // Call the method to fetch employee details
             this.getEmployeeDetails(email).subscribe(employee => {
-              localStorage.setItem('account_type', employee.account_type);
-              localStorage.setItem('id', employee.id);
-              localStorage.setItem('username', employee.username);
-              console.log("24",employee.account_type);
+              if (employee.state === 'Active') {
+                // If employee state is 'Active', proceed with login
+                this.loggedIn.next(true);
+                localStorage.setItem('account_type', employee.account_type);
+                localStorage.setItem('id', employee.id);
+                localStorage.setItem('username', employee.username);
+                console.log("24", employee.account_type);
+              } else {
+                // If employee state is 'Inactive', prevent login
+                // Clear any previous authentication state
+                this.loggedIn.next(false);
+                localStorage.clear();
+              }
             });
           }
+        }),
+        catchError(error => {
+          // Handle any errors
+          console.error('Error during login:', error);
+          // Clear any previous authentication state
+          this.loggedIn.next(false);
+          localStorage.clear();
+          // Rethrow the error to propagate it further
+          throw error;
         })
       );
   }
@@ -37,14 +54,15 @@ export class AuthService {
   logout(): void {
     localStorage.clear();
     this.loggedIn.next(false);
-    console.log("fel logout auth");
+    console.log("Logged out");
   }
 
   private getEmployeeDetails(email: string): Observable<any> {
     return this.http.get<any>(`http://localhost:8083/api/arsii/employee/email/${email}`);
   }
+
   getRole(): string | null {
-    // Récupérez l'account_type du stockage local
+    // Retrieve the account_type from local storage
     return localStorage.getItem('account_type');
   }
 }

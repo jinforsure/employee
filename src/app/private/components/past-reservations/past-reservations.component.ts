@@ -33,16 +33,26 @@ export class PastReservationsComponent implements OnInit {
         } else if (this.accountType === 'Employee' && this.username) {
           this.reservations = reservations.filter(reservation => reservation.username === this.username);
         }
-        // Filter out past reservations
+  
+        // Filter reservations based on both state and departure date
         this.filteredReservations = this.reservations.filter(reservation => {
-          if (reservation.departDate) {
-            return reservation.departDate < currentDate;
+          if (reservation.departDate && reservation.departDate < currentDate) {
+            return true; // Include reservations with departure date before current date
           }
-          return false; // Filter out reservations with undefined departureDate
+          return false; // Exclude reservations with undefined departure date or departDate not before currentDate
+        }).filter(reservation => {
+          // Filter reservations based on selected state
+          if (this.selectedStatus === 'all') {
+            return true; // Include all reservations
+          } else {
+            return reservation.state === this.selectedStatus; // Include reservations with matching state
+          }
         });
-        this.filterReservations(this.selectedStatus);
+  
+        console.log('Filtered reservations:', this.filteredReservations);
       });
   }
+  
 
   
   

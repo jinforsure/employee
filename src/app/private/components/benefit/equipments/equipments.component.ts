@@ -1,6 +1,10 @@
 import { Component } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { Equipments } from 'src/app/private/model/equipments';
 import { EquipmentsService } from 'src/app/private/services/equipments.service';
+import { AddEquipmentsModalComponent } from './add-equipments-modal/add-equipments-modal.component';
+import { EditEmployeeModalComponent } from '../../employee/edit-employee-modal/edit-employee-modal.component';
+import { EditEquipmentsModalComponent } from './edit-equipments-modal/edit-equipments-modal.component';
 
 @Component({
   selector: 'app-equipments',
@@ -12,7 +16,7 @@ export class EquipmentsComponent {
   searchText: string = '';
   filteredEquipmentList: Equipments []=[];
   constructor(
-    private equipmentsService: EquipmentsService,
+    private equipmentsService: EquipmentsService,private dialog: MatDialog 
   ){}
   ngOnInit(): void {
     this.displayEquipments();
@@ -55,6 +59,30 @@ export class EquipmentsComponent {
     }console.log('Filtered equipment List:', this.filteredEquipmentList);
   }
 
+openAddEquipmentsModal(): void {
+  const dialogRef = this.dialog.open(AddEquipmentsModalComponent, {
+    width: '500px',
+    // Add any other configuration options here
+  });
+
+  dialogRef.afterClosed().subscribe(result => {
+    console.log('The dialog was closed');
+    // Add logic to handle modal close if needed
+  });
+}
 
 
+openAddEditEquipmentsModal(equipmentId :any, equipment: any): void {
+  const dialogRef = this.dialog.open(EditEquipmentsModalComponent, {
+    width: '500px',
+    data: { equipmentId, equipment
+     }
+  });
+  console.log("employee : ",equipment);
+  console.log("employee id: ",equipmentId);
+  dialogRef.afterClosed().subscribe(result => {
+    console.log('The dialog was closed');
+    // Handle any necessary actions after the modal is closed
+  });
+}
 }

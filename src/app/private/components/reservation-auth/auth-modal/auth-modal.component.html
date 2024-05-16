@@ -1,0 +1,29 @@
+<div class="modal-dialog">
+  <div class="modal-content">
+    <form #employeeForm="ngForm" (ngSubmit)="saveEmployee()">
+      <div class="modal-header">
+        <h4 class="modal-title">Edit Reservation State</h4>
+        <button type="button" class="normal-close-button" aria-label="Close" (click)="closeModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>     
+      <div class="modal-body">
+        <div class="row">
+          <div class="col">
+            <label for="state">State</label>
+            <select id="state" [(ngModel)]="reservation.state" name="state" 
+                    [ngClass]="{ 'state-reseerved': reservation.state === 'Reserved', 'state-cancelled': reservation.state !== 'Cancelled' }">
+              <option value="" disabled selected>Select state</option>
+              <option value="Reserved">Reserved</option>
+              <option value="Cancelled">Cancelled</option>
+            </select>
+          </div>     
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="closeModal()">Back</button>
+        <button type="submit" class="btn btn-success" [disabled]="employeeForm.invalid">Save Changes</button>
+      </div>
+    </form>
+  </div>
+</div>

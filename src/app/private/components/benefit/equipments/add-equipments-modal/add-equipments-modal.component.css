@@ -1,18 +1,12 @@
 /* Modal Styles */
 .modal-dialog {
-    margin: 10px auto;
-    max-width: 1500px;
-    margin-top: -10px;
+    height: 570px;
   }
   
-  .modal-content {
-    border-radius: 10px;
-  }
   
   .modal-header {
-    background-color: #0A1E59;
-    color: #fff;
-    border-radius: 10px 10px 0 0;
+    background-color: #ffffff;
+    color: #0A1E59;
   }
   
   .modal-title {
@@ -130,4 +124,49 @@ label.required::after {
   content: "*";
   color: red; /* Change color as needed */
   margin-left: 2px; /* Adjust spacing as needed */
+}
+
+  
+  .normal-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #ccc; /* Add a border at the bottom */
+  }
+  
+  .normal-modal-title {
+    margin: 0;
+    font-size:medium ;
+  }
+  
+  .normal-modal-body {
+    padding: 20px 0;
+  }
+  
+  .normal-modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding-top: 10px;
+    border-top: 1px solid #ccc; /* Add a border at the top */
+  }
+  
+  .normal-close-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 2rem;
+    color: #0A1E59;
+    margin-right: 30px; /* Blue color for the close button */
+  }
+  
+  .normal-close-button:hover {
+    text-decoration: underline; /* Underline the close button on hover */
+  }
+
+  
+
+.btn {
+    margin: 5px;
 }

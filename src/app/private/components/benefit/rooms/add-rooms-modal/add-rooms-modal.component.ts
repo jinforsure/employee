@@ -1,15 +1,16 @@
-import { Component, ElementRef, HostListener, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, Inject, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Rooms } from 'src/app/private/model/rooms';
 import { RoomsService } from 'src/app/private/services/rooms.service';
 
 @Component({
-  selector: 'app-details-rooms',
-  templateUrl: './details-rooms.component.html',
-  styleUrls: ['./details-rooms.component.css']
+  selector: 'app-add-rooms-modal',
+  templateUrl: './add-rooms-modal.component.html',
+  styleUrls: ['./add-rooms-modal.component.css']
 })
-export class DetailsRoomsComponent {
+export class AddRoomsModalComponent {
   rooms : Rooms ={name: '',type:'',location:'',capacity:0,maintenance_status:'',state:'',checked:false,benefitId:2, category:'Rooms' };
   states: string[] = ['Enabled', 'Disabled'];
   roomsId: string |null = null;
@@ -25,17 +26,15 @@ export class DetailsRoomsComponent {
     private route: ActivatedRoute,
     private router: Router,
     private el: ElementRef,
-    
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    public dialogRef: MatDialogRef<AddRoomsModalComponent>
       ){ }
   
       ngOnInit(): void {
-        this.route.paramMap.subscribe(params => {
-            this.roomsId = params.get('id');
-            if (this.roomsId != null && this.roomsId != 'new') {
-                this.displayRooms(Number(this.roomsId));
-            }
-            console.log(this.roomsId);
-        });
+        this.roomsId = this.data.roomsId;
+        this.rooms = this.data.rooms;
+        console.log("employee : ", this.rooms);
+        console.log("employee : ", this.roomsId);
     }
     
 
@@ -44,32 +43,20 @@ export class DetailsRoomsComponent {
     {this.rooms = res ;});
   }
 
+
   saveRooms(){
-    if (this.rooms?.id){
-      this.updateRooms(this.rooms?.id);
-    }else {
-      this.addRooms();
-    }
-  }
+    this.addRooms();
+}
 
-  addRooms() {
-    this.roomsService.addRooms(this.rooms).subscribe((res) => { 
-      this.router.navigate(['/benefit/rooms']);
-      console.log(res);});
-  }
+addRooms() {
+  this.roomsService.addRooms(this.rooms).subscribe((res) => { 
+    console.log(res);
+    window.location.reload();
+    // If you want to reload the page after the request is successful
+  });
+  this.dialogRef.close();
+}
 
-  updateRooms (id: number){
-    this.roomsService
-    .editRooms(id, this.rooms)
-    .subscribe((res) => {
-      console.log(res);
-      this.router.navigate(['/benefit/rooms']);
-    });
-  }
-
-  goBack(): void {
-    this.router.navigate(['/benefit/rooms']);
-  }
 
 
   checkFormValidity() {
@@ -77,6 +64,7 @@ export class DetailsRoomsComponent {
     // Activer ou désactiver le bouton "Save" en fonction de la validité du formulaire
     this.saveDisabled = this.roomsForm.invalid || this.capacityInvalid ;
   }
-
+  closeDialog(): void {
+    this.dialogRef.close();
+  }
 }
-

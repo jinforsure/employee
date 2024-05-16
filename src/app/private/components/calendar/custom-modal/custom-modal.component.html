@@ -10,12 +10,14 @@
         <div class="normal-modal-body">
           <form [formGroup]="reservationForm">
             <div class="form-group">
-            <label for="departureDate">Select Date</label>
-            <input type="date" id="departureDate" name="departureDate" formControlName="departureDate">
-            <div *ngIf="reservationForm.get('departureDate')?.invalid && (reservationForm.get('departureDate')?.dirty || reservationForm.get('departureDate')?.touched)">
-              <small class="text-danger">Please select a valid departure date.</small>
+              <label for="departureDate">Select Date</label>
+              <input type="date" id="departureDate" name="departureDate" formControlName="departureDate">
+              <!-- Display error message if the date is in the past -->
+              <div *ngIf="reservationForm.get('departureDate')?.hasError('pastDate')">
+                <small class="text-danger">Please select a future date.</small>
+              </div>
             </div>
-            </div>
+            
             <div class="form-group">
               <label for="departureTime">Select Hour of Departure</label>
               <input type="time" id="departureTime" name="departureTime" formControlName="departureTime" class="form-control">

@@ -1,18 +1,18 @@
-import { Component, HostListener,ElementRef,Directive, ViewChild } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { Component, HostListener,ElementRef,Directive, ViewChild, Inject } from '@angular/core';
+import { FormBuilder, NgForm } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Employee } from 'src/app/private/model/employee';
 import { EmployeeService } from 'src/app/private/services/employee.service';
 
 @Component({
-  selector: 'app-details-employee',
-  templateUrl: './details-employee.component.html',
-  styleUrls: ['./details-employee.component.css']
+  selector: 'app-add-employee-modal',
+  templateUrl: './add-employee-modal.component.html',
+  styleUrls: ['./add-employee-modal.component.css']
 })
-export class DetailsEmployeeComponent {
-
+export class AddEmployeeModalComponent {
   employee : Employee ={firstName: '',lastName:'',phoneNumber:0,address:'',email:'',account_type:'Employee',department:'null',job:'',state:'' };
-  departments: string[] = ['web','mobile'];
+  departments: string[] = ['web','mobile','Security','Finance','Design'];
   account_types: string[]=['Employee','Technician','Admin'];
   states: string[] = ['Active', 'Inactive'];
   employeeId: string |null = null;
@@ -30,7 +30,9 @@ jobs: string[] = ['developper','HR'];
     private route: ActivatedRoute,
     private router: Router,
     private el: ElementRef,
-    
+    private fb: FormBuilder,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    public dialogRef: MatDialogRef<AddEmployeeModalComponent>
       ){ }
   
 
@@ -65,10 +67,13 @@ jobs: string[] = ['developper','HR'];
     }
   }
 
-  addEmployee() {
+  addEmployee(): void {
     this.employeeService.addEmployee(this.employee).subscribe((res) => { 
-      this.router.navigate(['/employee']);
-      console.log(res);});
+      console.log(res);
+      // If you want to reload the page after the request is successful
+      window.location.reload();
+    });
+    this.dialogRef.close();
   }
 
   updateEmployee (id: number){
@@ -80,16 +85,15 @@ jobs: string[] = ['developper','HR'];
     });
   }
 
-  goBack(): void {
-    this.router.navigate(['employee']);
-  }
-
-
   checkFormValidity() {
     this.accountTypeInvalid = this.employeeForm.controls['account_type'].invalid && this.employeeForm.controls['account_type'].touched;
     this.departmentInvalid = this.employeeForm.controls['department'].invalid && this.employeeForm.controls['department'].touched;
     // Activer ou désactiver le bouton "Save" en fonction de la validité du formulaire
     this.saveDisabled = this.employeeForm.invalid || this.accountTypeInvalid || this.departmentInvalid;
+  }
+
+  closeDialog(): void {
+    this.dialogRef.close();
   }
 
 }

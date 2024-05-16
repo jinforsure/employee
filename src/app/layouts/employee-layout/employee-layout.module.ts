@@ -15,11 +15,8 @@ import { CalendarDateFormatter, CalendarModule, CalendarNativeDateFormatter, Dat
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { CalendarComponent } from 'src/app/private/components/calendar/calendar.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { DetailsEmployeeComponent } from 'src/app/private/components/employee/details-employee/details-employee.component';
 import { EquipmentsComponent } from 'src/app/private/components/benefit/equipments/equipments.component';
 import { RoomsComponent } from 'src/app/private/components/benefit/rooms/rooms.component';
-import { DetailsEquipmentsComponent } from 'src/app/private/components/benefit/equipments/details-equipments/details-equipments.component';
-import { DetailsRoomsComponent } from 'src/app/private/components/benefit/rooms/details-rooms/details-rooms.component';
 import { ListreservComponent } from 'src/app/private/components/reservation/listreserv/listreserv.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import {MatButtonModule} from '@angular/material/button';
@@ -33,6 +30,14 @@ import { ModalEmployeeComponent } from 'src/app/private/components/employee/moda
 import { MatAutocomplete, MatAutocompleteModule } from '@angular/material/autocomplete'
 import { PastReservationsComponent } from 'src/app/private/components/past-reservations/past-reservations.component';
 import { CustomModalComponent } from 'src/app/private/components/calendar/custom-modal/custom-modal.component';
+import { AddEmployeeModalComponent } from 'src/app/private/components/employee/add-employee-modal/add-employee-modal.component';
+import { EditEmployeeModalComponent } from 'src/app/private/components/employee/edit-employee-modal/edit-employee-modal.component';
+import { AddEquipmentsModalComponent } from 'src/app/private/components/benefit/equipments/add-equipments-modal/add-equipments-modal.component';
+import { EditEquipmentsModalComponent } from 'src/app/private/components/benefit/equipments/edit-equipments-modal/edit-equipments-modal.component';
+import { AddRoomsModalComponent } from 'src/app/private/components/benefit/rooms/add-rooms-modal/add-rooms-modal.component';
+import { EditRoomsModalComponent } from 'src/app/private/components/benefit/rooms/edit-rooms-modal/edit-rooms-modal.component';
+import { ReservationAuthComponent } from 'src/app/private/components/reservation-auth/reservation-auth.component';
+import { AuthModalComponent } from 'src/app/private/components/reservation-auth/auth-modal/auth-modal.component';
 
 // import { ToastrModule } from 'ngx-toastr';
 
@@ -64,18 +69,23 @@ import { CustomModalComponent } from 'src/app/private/components/calendar/custom
      BenefitComponent,
      ReservationComponent,
      CalendarComponent,
-     DetailsEmployeeComponent,
      EquipmentsComponent,
      RoomsComponent,
-     DetailsEquipmentsComponent,
-     DetailsRoomsComponent,
      ListreservComponent,
      ProfileComponent,
      SettingsComponent,
      DetailsModalComponent,
      ModalEmployeeComponent,
      PastReservationsComponent,
-     CustomModalComponent
+     CustomModalComponent,
+     AddEmployeeModalComponent,
+     EditEmployeeModalComponent,
+     AddEquipmentsModalComponent,
+     EditEquipmentsModalComponent,
+     AddRoomsModalComponent,
+     EditRoomsModalComponent,
+     ReservationAuthComponent,
+     AuthModalComponent
   ]
 })
 

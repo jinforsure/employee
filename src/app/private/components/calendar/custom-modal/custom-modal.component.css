@@ -89,3 +89,8 @@ input[type="time"]:focus {
 .btn {
     margin: 5px;
 }
+
+.disabled-button {
+  opacity: 0.6; /* Adjust opacity to visually indicate the button is disabled */
+  cursor: not-allowed; /* Change cursor to not-allowed when button is disabled */
+}

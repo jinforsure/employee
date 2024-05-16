@@ -7,7 +7,13 @@ interface SideNavToggle {
   screenWidth: number;
   collapsed: boolean;
 }
-
+export interface InavbarData {
+  path : string;
+  icon?: string;
+  title: string;
+  expanded? : string;
+  items?: InavbarData[];
+}
 declare const $: any;
 declare interface RouteInfo {
     path: string;
@@ -16,13 +22,28 @@ declare interface RouteInfo {
     class: string;
 }
 
-export const navbarData = [
-  { path: '/dashboard', title: 'Dashboard',  icon: 'fal fa-dashboard', class: '' },
-  { path: '/calendar', title: 'Calendar',  icon: 'fal fa-calendar', class: '' },
-  { path: '/employee', title: 'Employee',  icon: 'fal fa-user', class: '' },
-  { path: '/benefit', title: 'Benefit',  icon: 'fal fa-box-open', class: '' },
-  { path: '/reservation', title: 'New Reservation',  icon: 'fal fa-bookmark', class: '' },
-  { path: '/pastReservation', title: 'Past Reservations',  icon: 'fal fa-history', class: '' },
+export const navbarData : InavbarData[] = [
+  { path: '/dashboard', title: 'Dashboard',  icon: 'fal fa-dashboard' },
+  { path: '/calendar', title: 'Calendar',  icon: 'fal fa-calendar' },
+  { path: '/employee', title: 'Employee',  icon: 'fal fa-user' },
+  {
+    path: '/benefit',
+    title: 'Benefit',
+    icon: 'fal fa-box-open',
+    items: [
+        {
+            path: '/benefit/equipments',
+            title: 'Equipments',
+        },
+        {
+            path: '/benefit/rooms',
+            title: 'Rooms',
+        },
+    ]
+},
+  { path: '/reservation', title: 'New Reservation',  icon: 'fal fa-bookmark' },
+  { path: '/reservationAuth', title: 'Upcoming Reservations',  icon: 'fal fa-key' },
+  { path: '/pastReservation', title: 'Past Reservations',  icon: 'fal fa-history' },
 ];
 
 @Component({
@@ -101,4 +122,5 @@ export class SidebarComponent  implements OnInit{
     this.router.navigateByUrl('/login');
     console.log("fel logout sidebar");
   }
+  
 }

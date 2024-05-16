@@ -19,7 +19,7 @@ export class LoginComponent {
    login() {
     this.authService.login(this.email, this.password).subscribe(
       result => {
-        console.log(result);
+        console.log("resultat",result);
         if (result.message === 'login success') {
           console.log("message",result.message);
           const storedAccountType = localStorage.getItem('account_type');

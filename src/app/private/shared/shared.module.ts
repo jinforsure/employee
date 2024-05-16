@@ -6,6 +6,7 @@ import { HeaderComponent } from './header/header.component';
 import { HomeComponent } from '../components/home/home.component';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { CdkMenuModule } from '@angular/cdk/menu';
+import { SublevelMenuComponent } from './sidebar/sublevel-menu.component';
 
 @NgModule({
   imports: [
@@ -18,7 +19,8 @@ import { CdkMenuModule } from '@angular/cdk/menu';
   declarations: [
     SidebarComponent,
     HeaderComponent,
-    HomeComponent
+    HomeComponent,
+    SublevelMenuComponent
   ],
   exports: [
     SidebarComponent,

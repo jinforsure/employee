@@ -234,3 +234,6 @@ body {
   padding: 3px 8px; /* Adjust padding on focus */
 }
 
+.edit {
+  cursor: pointer;
+}

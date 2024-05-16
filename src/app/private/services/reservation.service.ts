@@ -31,6 +31,10 @@ export class ReservationService {
   addReservation(reservation : Reservation) {
     return this.httpclient.post(this.baseUrl + '/reservation',reservation);
   }
+  
+  editReservation(id: number,reservation:Reservation){
+    return this.httpclient.put(this.baseUrl + '/reservation/' + id, reservation);
+  }
 
   updateReservation(id: number,reservation:Reservation){
     return this.httpclient.put(this.baseUrl + '/reservation/' + id, reservation);

@@ -1,9 +1,9 @@
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { FormControl, ValidatorFn, AbstractControl, ValidationErrors } from '@angular/forms';
+import { ValidatorFn, AbstractControl, ValidationErrors } from '@angular/forms';
 import { ReservationService } from '../../services/reservation.service';
 import { MatDialog } from '@angular/material/dialog';
-import { Component,ChangeDetectionStrategy,ViewChild,TemplateRef, } from '@angular/core';
+import { Component,ChangeDetectionStrategy } from '@angular/core';
 import {isSameDay,isSameMonth, } from 'date-fns';
 import { Subject } from 'rxjs';
 import {CalendarEvent, CalendarView} from 'angular-calendar';
@@ -136,9 +136,8 @@ export class CalendarComponent {
 
   getAllReservations() {
     const accountType = localStorage.getItem('account_type');
-    console.log("accout type : ",accountType)
     const username = localStorage.getItem('username');
-    console.log("username : ",username)
+    
     if (!accountType || !username) {
       console.error('Account type or username not found in local storage.');
       return;
@@ -147,14 +146,21 @@ export class CalendarComponent {
     this.reservationService.getAllReservations().subscribe(reservations => {
       this.events = reservations
         .filter(reservation => {
-          // If account type is Admin or Technician, show all reservations
+          // Filter out reservations in the "On Hold" and "Cancelled" states
+          return reservation.state !== 'On Hold' && reservation.state !== 'Cancelled';
+        })
+        .filter(reservation => {
+          // Filter reservations with state "Reserved" or without a state
+          return reservation.state === 'Reserved' || !reservation.state;
+        })
+        .filter(reservation => {
+          // Apply account type filter
           if (accountType === 'Admin' || accountType === 'Technician') {
             return true;
           }
-          // If account type is Employee, show only the employee's reservations
           return reservation.username === username;
         })
-        .filter(reservation => reservation.departDate) // Filter out reservations without departDate
+        .filter(reservation => reservation.departDate)
         .map(reservation => {
           const dateParts = reservation.departDate!.split('-');
           const formattedDate = `${dateParts[1]}-${dateParts[0]}-${dateParts[2]}`;
@@ -176,7 +182,7 @@ export class CalendarComponent {
           let color: EventColor = { primary: '', secondary: '' };
   
           // Determine event color based on reservation state
-          if (reservation.state === 'cancelled') {
+          if (reservation.state === 'Cancelled') {
             color = { primary: 'red', secondary: 'red' };
           } else {
             // Determine event color based on current date
@@ -326,5 +332,12 @@ export class CalendarComponent {
     });
   }
   
+
+  scrollToTable() {
+    const table = document.getElementById('reservation-table');
+    if (table) {
+      table.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }
   
 }

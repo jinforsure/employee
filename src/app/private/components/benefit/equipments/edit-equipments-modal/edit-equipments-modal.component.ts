@@ -1,15 +1,16 @@
-import { Component, ElementRef, HostListener, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, Inject, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Equipments } from 'src/app/private/model/equipments';
 import { EquipmentsService } from 'src/app/private/services/equipments.service';
 
 @Component({
-  selector: 'app-details-equipments',
-  templateUrl: './details-equipments.component.html',
-  styleUrls: ['./details-equipments.component.css']
+  selector: 'app-edit-equipments-modal',
+  templateUrl: './edit-equipments-modal.component.html',
+  styleUrls: ['./edit-equipments-modal.component.css']
 })
-export class DetailsEquipmentsComponent {
+export class EditEquipmentsModalComponent {
   equipments : Equipments ={name: '',type:'',manufactuer:'',model:'',quantity:0,price:0,maintenance_status:'',state:'',checked:false, benefitId:1, category:'Equipments' };
   departments: string[] = ['web','mobile'];
   account_types: string[]=['equipments','Technician','Admin'];
@@ -30,7 +31,8 @@ jobs: string[] = ['developper','HR'];
     private route: ActivatedRoute,
     private router: Router,
     private el: ElementRef,
-    
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    public dialogRef: MatDialogRef<EditEquipmentsModalComponent>
       ){ }
   
 
@@ -42,13 +44,10 @@ jobs: string[] = ['developper','HR'];
         }
       }
       ngOnInit(): void {
-        this.route.paramMap.subscribe(params => {
-            this.equipmentsId = params.get('id');
-            if (this.equipmentsId != null && this.equipmentsId != 'new') {
-                this.displayEquipments(Number(this.equipmentsId));
-            }
-            console.log(this.equipmentsId);
-        });
+        this.equipmentsId = this.data.equipmentId;
+        this.equipmentsId = this.data.equipmentId;
+        console.log("employee : ", this.equipmentsId);
+        console.log("employee : ", this.equipmentsId);
     }
     
 
@@ -57,31 +56,26 @@ jobs: string[] = ['developper','HR'];
     {this.equipments = res ;});
   }
 
+
   saveEquipments(){
-    if (this.equipments?.id){
-      this.updateEquipments(this.equipments?.id);
-    }else {
-      this.addEquipments();
+    const equipmentId = this.data.equipmentId;
+    console.log("employe 1 : ", equipmentId)
+    if (equipmentId) {
+      this.updateEquipments(equipmentId);
+      console.log("employe 2 : ", equipmentId)
     }
   }
 
-  addEquipments() {
-    this.equipmentsService.addEquipments(this.equipments).subscribe((res) => { 
-      this.router.navigate(['/benefit/equipments']);
-      console.log(res);});
-  }
 
   updateEquipments (id: number){
+    console.log("employe 2 : ", this.equipments)
     this.equipmentsService
     .editEquipments(id, this.equipments)
     .subscribe((res) => {
       console.log(res);
-      this.router.navigate(['/benefit/equipments']);
+      window.location.reload();
     });
-  }
-
-  goBack(): void {
-    this.router.navigate(['/benefit/equipments']);
+    this.dialogRef.close();
   }
 
 
@@ -90,6 +84,10 @@ jobs: string[] = ['developper','HR'];
     this.priceInvalid = this.equipmentsForm.controls['price'].invalid && this.equipmentsForm.controls['price'].touched;
     // Activer ou désactiver le bouton "Save" en fonction de la validité du formulaire
     this.saveDisabled = this.equipmentsForm.invalid || this.quantityInvalid || this.priceInvalid;
+  }
+
+  closeDialog(): void {
+    this.dialogRef.close();
   }
 
 }

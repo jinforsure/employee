@@ -495,7 +495,9 @@ extractDepartureDates(reservations: Reservation[]): { equipmentsId: number | und
       console.log('The dialog was closed');
     });
   }
-  
+
+
+ 
 
 
 }
