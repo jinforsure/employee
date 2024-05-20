@@ -11,7 +11,7 @@ import { RoomsService } from 'src/app/private/services/rooms.service';
   styleUrls: ['./add-rooms-modal.component.css']
 })
 export class AddRoomsModalComponent {
-  rooms : Rooms ={name: '',type:'',location:'',capacity:0,maintenance_status:'',state:'',checked:false,benefitId:2, category:'Rooms' };
+  rooms : Rooms ={name: '',type:'',location:'',capacity:0,maintenance_status:'',state:'',checked:false,benefitId:2, category:'Rooms',departDate:new Date(),departHour:'',returnHour:'' };
   states: string[] = ['Enabled', 'Disabled'];
   roomsId: string |null = null;
   @ViewChild('roomsForm') roomsForm!: NgForm;

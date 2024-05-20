@@ -38,9 +38,11 @@ import { AddRoomsModalComponent } from 'src/app/private/components/benefit/rooms
 import { EditRoomsModalComponent } from 'src/app/private/components/benefit/rooms/edit-rooms-modal/edit-rooms-modal.component';
 import { ReservationAuthComponent } from 'src/app/private/components/reservation-auth/reservation-auth.component';
 import { AuthModalComponent } from 'src/app/private/components/reservation-auth/auth-modal/auth-modal.component';
-
+import { TechnicienComponent } from 'src/app/private/components/technicien/technicien/technicien.component';
+import { MaintenanceRoomComponent } from 'src/app/private/components/technicien/technicien/maintenance-room/maintenance-room/maintenance-room.component';
+import { MaintenanceEquipComponent } from 'src/app/private/components/technicien/technicien/maintenance-equip/maintenance-equip/maintenance-equip.component';
 // import { ToastrModule } from 'ngx-toastr';
-
+import { DatePipe } from '@angular/common'; 
 @NgModule({
   imports: [
     CommonModule,
@@ -61,7 +63,8 @@ import { AuthModalComponent } from 'src/app/private/components/reservation-auth/
     MatTooltipModule,
     MatFormFieldModule,
     MatInputModule,
-    MatAutocompleteModule
+    MatAutocompleteModule,
+   
   ],
   declarations: [
      DashboardComponent,
@@ -85,8 +88,14 @@ import { AuthModalComponent } from 'src/app/private/components/reservation-auth/
      AddRoomsModalComponent,
      EditRoomsModalComponent,
      ReservationAuthComponent,
-     AuthModalComponent
-  ]
+     AuthModalComponent,
+     TechnicienComponent,
+     MaintenanceRoomComponent,
+     MaintenanceEquipComponent
+  ],
+  providers: [
+    DatePipe // Ajoutez cette ligne
+  ],
 })
 
 export class AdminLayoutModule {}

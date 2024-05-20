@@ -17,7 +17,12 @@
           <div class="row">
             <div class="col">
                 <label>Maintenance Status</label>
-                <input type="text" [(ngModel)]="rooms.maintenance_status" name="maintenance_status" class="form-control"  />
+                <select [(ngModel)]="rooms.maintenance_status" name="maintenance_status" class="form-control" required>
+                  <option value="" disabled selected>Select maintenance status</option>
+                  <option value="operational">Operational</option>
+                  <option value="under maintenance">Under Maintenance</option>
+                  <option value="damaged">Damaged</option>
+              </select>
             </div>
             <div class="col">
               <label>State</label>

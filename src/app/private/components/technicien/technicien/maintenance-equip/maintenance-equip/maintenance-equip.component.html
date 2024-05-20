@@ -1,0 +1,70 @@
+<div class="container">
+    <div class="table-responsive">
+      <div class="row">
+        <div class="col-sm-6"><h2><b>Maintenance Table</b></h2></div>
+      </div>
+      <table class="table table-bordered table-hover" style="width:100%">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Model</th>
+            <th>Type</th>
+            <th>Manufactuer</th>
+           
+            <th>Depart Date</th>
+            <th>Depart Hour</th>
+            <th>Return Hour</th>
+            <th>Maintenance Status</th>
+            <th>Reservation State</th>
+            <th>Benefit State</th>
+            <th>Equipment State</th>
+            <th>Action</th>
+           
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let equipmentData of FinalEquipmentData">
+            <td data-label="Name">{{ equipmentData.equipmentData.name }}</td>
+            <td data-label="Model">{{ equipmentData.equipmentData.model }}</td>
+            <td data-label="Type">{{ equipmentData.equipmentData.type }}</td>
+            <td data-label="Manufactuer">{{ equipmentData.equipmentData.manufactuer }}</td>
+            <td data-label="Depart Date">{{ equipmentData.date | date: 'dd/MM/yyyy' }}</td>
+            <td data-label="Depart Hour">{{ equipmentData.departureTime }}</td>
+            <td data-label="Return Hour">{{ equipmentData.returnTime }}</td>
+            <td data-label="Maintenance Status">
+              <select [(ngModel)]="equipmentData.equipmentData.maintenance_status" (ngModelChange)="onFieldChange($event, 'maintenance_status')">
+                <option [ngValue]="'Operational'" [selected]="equipmentData.equipmentData.maintenance_status === 'Operational'">Operational</option>
+                <option [ngValue]="'under maintenance'" [selected]="equipmentData.equipmentData.maintenance_status === 'under maintenance'">Under Maintenance</option>
+                <option [ngValue]="'Damaged'" [selected]="equipmentData.equipmentData.maintenance_status === 'Damaged'">Damaged</option>
+              </select>
+            </td>
+            <td data-label="Reservation State">
+              <select [(ngModel)]="equipmentData.equipmentData.reservation_State" (ngModelChange)="onFieldChange($event, 'reservation_State')" [disabled]="equipmentData.equipmentData.maintenance_status === 'under maintenance' || equipmentData.equipmentData.state==='Disabled'|| equipmentData.equipmentData.maintenance_status === 'Damaged'"[ngModel]="equipmentData.equipmentData.maintenance_status === 'under maintenance' || equipmentData.equipmentData.maintenance_status === 'Damaged' ? 'Not yet' : equipmentData.equipmentData.reservation_State">
+                <option [ngValue]="'Not yet'">Not yet</option>
+                <option [ngValue]="'Reserved'">Reserved</option>
+              </select>
+            </td>
+            <td data-label="Benefit State">
+              <select [(ngModel)]="equipmentData.equipmentData.taken" (ngModelChange)="updateFreeField($event, equipmentData)" [disabled]="equipmentData.equipmentData.maintenance_status === 'under maintenance' || equipmentData.equipmentData.state === 'Disabled' || equipmentData.equipmentData.maintenance_status === 'Damaged'">
+                <option [ngValue]="'taken'">taken</option>
+                <option [ngValue]="'Returned'">Retuned</option>
+              </select>
+            </td>
+            <td data-label="Equipment State">
+              <select [(ngModel)]="equipmentData.equipmentData.state">
+                <option [ngValue]="'Enabled'" [selected]="equipmentData.equipmentData.state === 'Enabled'">Enabled</option>
+                <option [ngValue]="'Disabled'" [selected]="equipmentData.equipmentData.state === 'Disabled'">Disabled</option>
+              </select>
+            </td>
+            <td data-label="Action">
+              <button (click)="performAction(equipmentData)">Update</button>
+            </td>
+          </tr>
+          <tr *ngIf="FinalEquipmentData.length > 0">
+            <td colspan="12">Total rows : {{ FinalEquipmentData.length }}</td>
+          </tr>
+        </tbody>        
+      </table>
+    </div>
+  </div>
+  

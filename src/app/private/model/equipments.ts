@@ -20,4 +20,9 @@ export interface Equipments{
     reservation_State?:string;
     description?:string;
     taken?:string;
+
+  
+ departHour: string; 
+ departDate:Date;
+ returnHour:string;
 }

@@ -11,6 +11,7 @@ export interface Reservation{
     departDate? : string;
     departHour? : string ;
     returnHour? : string;
+    benefit_status?: string;
     createdAt? : Date;
     updatedAt? : Date;
 }

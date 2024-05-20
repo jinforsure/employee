@@ -11,9 +11,9 @@ import { ReservationAuthComponent } from 'src/app/private/components/reservation
 import { ListreservComponent } from 'src/app/private/components/reservation/listreserv/listreserv.component';
 import { ReservationComponent } from 'src/app/private/components/reservation/reservation.component';
 import { SettingsComponent } from 'src/app/private/components/settings/settings.component';
-
-
-
+import { MaintenanceEquipComponent } from 'src/app/private/components/technicien/technicien/maintenance-equip/maintenance-equip/maintenance-equip.component';
+import { MaintenanceRoomComponent } from 'src/app/private/components/technicien/technicien/maintenance-room/maintenance-room/maintenance-room.component';
+import { TechnicienComponent } from 'src/app/private/components/technicien/technicien/technicien.component';
 export const AdminLayoutRoutes: Routes = [
     { path: 'dashboard',      component: DashboardComponent},
     { path: 'calendar',      component: CalendarComponent },
@@ -27,4 +27,7 @@ export const AdminLayoutRoutes: Routes = [
     { path: 'settings',   component: SettingsComponent},
     { path: 'pastReservation',   component: PastReservationsComponent},
     { path: 'reservationAuth',   component: ReservationAuthComponent},
+    { path: 'technicien',   component: TechnicienComponent},
+    { path: 'technicien/maintenance-room',   component: MaintenanceRoomComponent},
+    { path: 'technicien/maintenance-equipment',   component: MaintenanceEquipComponent},
 ];

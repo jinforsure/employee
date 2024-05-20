@@ -24,6 +24,8 @@ import { NotFoundComponent } from './private/components/not-found/not-found.comp
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 
+
+
 class CustomDateFormatter extends CalendarNativeDateFormatter{
   public override dayViewHour({ date,locale}: DateFormatterParams) : string{
     return new Intl.DateTimeFormat(locale, {hour: 'numeric', minute: 'numeric'}).format(date);
@@ -41,8 +43,10 @@ class CustomDateFormatter extends CalendarNativeDateFormatter{
         LoginComponent,
         EmployeeLayoutComponent,
         ForgotPasswordComponent,
-        NotFoundComponent
-
+        NotFoundComponent,
+      
+        
+        
     ],
     providers: [
         { provide: CalendarDateFormatter, useClass: CustomDateFormatter }

@@ -1,45 +1,53 @@
 <div class="normal-modal" id="addReservationModal" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
-    <div class="normal-modal-dialog" role="document">
-      <div class="normal-modal-content">
-        <div class="normal-modal-header">
-          <h5 class="normal-modal-title" id="modalTitle">Choose your Reservation's Date and Hours</h5>
-          <button type="button" class="normal-close-button" aria-label="Close" (click)="closeDialog()">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="normal-modal-body">
-          <form [formGroup]="reservationForm">
-            <div class="form-group">
-              <label for="departureDate">Select Date</label>
-              <input type="date" id="departureDate" name="departureDate" formControlName="departureDate">
-              <!-- Display error message if the date is in the past -->
-              <div *ngIf="reservationForm.get('departureDate')?.hasError('pastDate')">
-                <small class="text-danger">Please select a future date.</small>
-              </div>
-            </div>
-            
-            <div class="form-group">
-              <label for="departureTime">Select Hour of Departure</label>
-              <input type="time" id="departureTime" name="departureTime" formControlName="departureTime" class="form-control">
-              <div *ngIf="reservationForm.get('departureTime')?.invalid && (reservationForm.get('departureTime')?.dirty || reservationForm.get('departureTime')?.touched)">
-                <small class="text-danger">Please select a valid departure time.</small>
-              </div>
-            </div>
-  
-            <div class="form-group">
-              <label for="returnTime">Select Hour of Return</label>
-              <input type="time" id="returnTime" name="returnTime" formControlName="returnTime" class="form-control">
-              <div *ngIf="reservationForm.get('returnTime')?.invalid && (reservationForm.get('returnTime')?.dirty || reservationForm.get('returnTime')?.touched)">
-                <small class="text-danger">Please select a valid return time.</small>
-              </div>
-            </div>
-          </form>
-        </div>
-        <div class="normal-modal-footer">
-          <button type="button" class="btn btn-outline-dark" (click)="closeDialog()">Close</button>
-          <button type="button" class="normal-primary-button" (click)="navigateAndSave()" [disabled]="!reservationForm.valid">Choose Benefits</button>
-        </div>
+  <div class="normal-modal-dialog" role="document">
+    <div class="normal-modal-content">
+      <div class="normal-modal-header">
+        <h5 class="normal-modal-title" id="modalTitle">Choose your Reservation's Date and Hours</h5>
+        <button type="button" class="normal-close-button" aria-label="Close" (click)="closeDialog()">
+          <span aria-hidden="true">&times;</span>
+        </button>
       </div>
-    </div>
+      <div class="normal-modal-body">
+        <form [formGroup]="reservationForm">
+          <div class="form-group">
+            <label for="departureDate">Select Date</label>
+            <input type="date" id="departureDate" name="departureDate" formControlName="departureDate">
+            <!-- Display error message if the date is in the past -->
+            <div *ngIf="reservationForm.get('departureDate')?.hasError('pastDate')">
+              <small class="text-danger">Please select a future date.</small>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="departureTime">Select Hour of Departure</label>
+            <input type="time" id="departureTime" name="departureTime" formControlName="departureTime" class="form-control">
+            <div *ngIf="reservationForm.hasError('invalidTimeRange')">
+              <small class="text-danger">Time must be between 08:00 and 18:00.</small>
+            </div>
+            <div *ngIf="reservationForm.hasError('invalidTimeOrder')">
+              <small class="text-danger">Departure time must be before return time.</small>
+            </div>
+            <div *ngIf="reservationForm.get('departureTime')?.hasError('pastDepartureTime')">
+              <small class="text-danger">Please select a valid departure time.</small>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="returnTime">Select Hour of Return</label>
+            <input type="time" id="returnTime" name="returnTime" formControlName="returnTime" class="form-control">
+            <div *ngIf="reservationForm.hasError('invalidTimeRange')">
+              <small class="text-danger">Time must be between 08:00 and 18:00.</small>
+            </div>
+            <div *ngIf="reservationForm.hasError('invalidTimeOrder')">
+              <small class="text-danger">Return time must be after departure time.</small>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="normal-modal-footer">
+        <button type="button" class="btn btn-outline-dark" (click)="closeDialog()">Close</button>
+        <button type="button" class="normal-primary-button" (click)="navigateAndSave()" [disabled]="!reservationForm.valid">Choose Benefits</button>
+      </div>
+    </div>
   </div>
-  
+</div>

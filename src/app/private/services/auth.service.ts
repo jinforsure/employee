@@ -25,6 +25,7 @@ export class AuthService {
                 localStorage.setItem('account_type', employee.account_type);
                 localStorage.setItem('id', employee.id);
                 localStorage.setItem('username', employee.username);
+                localStorage.setItem('email', employee.email);
                 console.log("24", employee.account_type);
               } else {
                 // If employee state is 'Inactive', prevent login

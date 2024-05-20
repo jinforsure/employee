@@ -18,6 +18,9 @@ export class PastReservationsComponent implements OnInit {
 
   constructor(private reservationService: ReservationService) { }
 
+
+  
+
   ngOnInit(): void {
     this.accountType = localStorage.getItem('account_type');
     this.username = localStorage.getItem('username');
@@ -28,7 +31,7 @@ export class PastReservationsComponent implements OnInit {
     this.reservationService.getAllReservations()
       .subscribe(reservations => {
         const currentDate = this.getCurrentDateInDDMMYYYY();
-        if (this.accountType === 'Admin' || this.accountType === 'technician') {
+        if (this.accountType === 'Admin' || this.accountType === 'Technician') {
           this.reservations = reservations;
         } else if (this.accountType === 'Employee' && this.username) {
           this.reservations = reservations.filter(reservation => reservation.username === this.username);

@@ -211,7 +211,10 @@ export class CalendarComponent {
                   console.log('Event deleted', event);
                 },
               },
-            ]
+            ],
+            meta: {
+              equipmentStatus: reservation.benefit_status
+            }
           };
         });
   
@@ -330,6 +333,9 @@ export class CalendarComponent {
         returnTime: returnTime
       }
     });
+    console.log("departDate : ",selectedDate);
+    console.log("departHour : ",departureTime);
+    console.log("returnHour : ",returnTime);
   }
   
 
@@ -337,6 +343,17 @@ export class CalendarComponent {
     const table = document.getElementById('reservation-table');
     if (table) {
       table.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }
+  
+  getColorBasedOnStatus(status: string): EventColor {
+    switch (status) {
+      case 'taken':
+        return { primary: '#ad2121', secondary: '#FAE3E3' }; // Red
+      case 'returned':
+        return { primary: '#1e90ff', secondary: '#D1E8FF' }; // Blue
+      default:
+        return { primary: '#e3bc08', secondary: '#FDF1BA' }; // Yellow
     }
   }
   

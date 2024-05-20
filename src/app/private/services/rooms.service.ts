@@ -38,4 +38,5 @@ export class RoomsService {
   editRooms(id: number,rooms:Rooms){
     return this.httpclient.put(this.baseUrl + '/rooms/' + id, rooms);
   }
+  
 }

@@ -46,6 +46,23 @@ export const navbarData : InavbarData[] = [
   { path: '/reservation', title: 'New Reservation',  icon: 'fal fa-bookmark' },
   { path: '/reservationAuth', title: 'Upcoming Reservations',  icon: 'fal fa-key' },
   { path: '/pastReservation', title: 'Past Reservations',  icon: 'fal fa-history' },
+  {
+    path: '/technicien',
+    title: 'Maintenance',
+    icon: 'fal fa-wrench',
+    items: [
+        {
+            path: '/technicien/maintenance-equipment',
+            title: 'Equipments',
+            icon: 'fas fa-computer', // Add an icon if necessary
+        },
+        {
+            path: '/technicien/maintenance-room',
+            title: 'Rooms',
+            icon: 'fal fa-door-closed', // Add an icon if necessary
+        },
+    ]
+}
 ];
 
 @Component({
@@ -86,6 +103,8 @@ export class SidebarComponent  implements OnInit{
   screenWidth= 0;
   navData = navbarData;
   role : boolean =false;
+  isAdmin = false;
+  isTechnician = false;
   constructor (private service : AuthService, private router : Router) {}
   @HostListener('window:resize', ['$event'])
   onResize(event : any){
@@ -110,13 +129,10 @@ export class SidebarComponent  implements OnInit{
     this.onToggleSideNav.emit({collapsed: this.collapsed, screenWidth: this.screenWidth});
   }
 
-  onChecked() : void {
-    if(this.service.getRole()=== "Admin"){
-      this.role=true;
-      console.log("cest admin");
-    }else{
-      this.role =false;
-    }
+  onChecked(): void {
+    const role = this.service.getRole();
+    this.isAdmin = role === 'Admin';
+    this.isTechnician = role === 'Technician';
   }
   
   logout(): void {

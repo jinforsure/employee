@@ -6,6 +6,8 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import * as emailjs from 'emailjs-com';
 import { Reservation } from 'src/app/private/model/reservation';
+import { EmailService } from 'src/app/private/services/email.service';
+import { NotifService,AppNotification } from 'src/app/private/services/notif.service';
 @Component({
   selector: 'app-listreserv',
   templateUrl: './listreserv.component.html',
@@ -17,9 +19,95 @@ export class ListreservComponent {
   departureTime:string='';
   returnTime:string='';
  data:any[]=[];
+
+ email:string|null=localStorage.getItem('email') ;
+ username=localStorage.getItem('username') ;
   constructor(public reservationService: ReservationService,
-    private router: Router,private fb:FormBuilder
+    private router: Router,private fb:FormBuilder,
+    public emailService:EmailService,
+    private NotifService: NotifService
+    
    ) {}
+
+
+   notifications: AppNotification[] = [];
+
+   sendEmail() {
+  const emaill =this.email;
+     const to: string[] = [this.email!]; // Adreslse e-mail du destinataire
+     const cc: string[] = [this.email!]; // Adresse e-mail en copie
+     const subject = "Reservation "; // Sujet du courriel
+     const body = "Dear "+this.username+",\n your Order Has Been Successfully Placed! \n Best regards, \n Admin"; 
+   
+     this.emailService.sendEmail(to, cc, subject, body).subscribe(
+       response => {
+         console.log('Email sent successfully', response);
+         const newNotification: AppNotification = {
+           date_envoi: new Date().toISOString().split('T')[0], // Date au format YYYY-MM-DD
+           heure: new Date().toLocaleTimeString(), // Heure actuelle
+           type: 'Email',
+           titre: subject,
+           message: body
+         };
+         this.NotifService.addNotification(newNotification).subscribe(
+           notifResponse => {
+             console.log('Notification stored successfully', notifResponse);
+             this.notifications.push(notifResponse); // Ajouter la nouvelle notification à la liste
+           },
+           notifError => {
+             console.error('Error storing notification', notifError);
+           }
+         );
+       
+   
+   
+   
+       },
+       error => {
+         console.error('Error sending email', error);
+       }
+     );
+   }
+   
+
+   sendEmail1() {
+    const emaill =this.email;
+       const to: string[] = [this.email!]; // Adreslse e-mail du destinataire
+       const cc: string[] = [this.email!]; // Adresse e-mail en copie
+       const subject = "reservation request"; // Sujet du courriel
+       const body = "Dear "+this.username+",\n Your reservation has been successfully made.\n However, it requires the administrator's approval.\n We will inform you as soon as the validation is complete.\nThank you for your understanding. \nBest regards,  \n Admin"; 
+     
+       this.emailService.sendEmail(to, cc, subject, body).subscribe(
+         response => {
+           console.log('Email sent successfully', response);
+           const newNotification: AppNotification = {
+             date_envoi: new Date().toISOString().split('T')[0], // Date au format YYYY-MM-DD
+             heure: new Date().toLocaleTimeString(), // Heure actuelle
+             type: 'Email',
+             titre: subject,
+             message: body
+           };
+           this.NotifService.addNotification(newNotification).subscribe(
+             notifResponse => {
+               console.log('Notification stored successfully', notifResponse);
+               this.notifications.push(notifResponse); // Ajouter la nouvelle notification à la liste
+             },
+             notifError => {
+               console.error('Error storing notification', notifError);
+             }
+           );
+         
+     
+     
+     
+         },
+         error => {
+           console.error('Error sending email', error);
+         }
+       );
+     }
+     
+  
 
   ngOnInit() {
     console.log("ahaya",this.reservationService.checkedItems);
@@ -35,33 +123,8 @@ export class ListreservComponent {
     });
   }
   
-  form :FormGroup=this.fb.group({
   
-    to_name: "asma",
-    
-    from_name: '',
-    from_email:'',
-    subject:'',
-    message:''
-    });
 
-async send(){
-  emailjs.init('GDIu91oJLy4x2Qpry');
-  let response =await emailjs.send("service_a7y27df","template_g4ch4ug",{
-    from_name: 'Admin', // Remplacez par votre nom
-    to_name: 'Asma', // Remplacez par le nom du destinataire
-    from_email: 'contact@teamdev.tn ', // Remplacez par votre adresse e-mail
-    subject: 'Reservation', // Remplacez par le sujet du message
-    message: 'Your Reservation is added successfully'
-  }).then(response => {
-    // Traitez la réponse si nécessaire
-    alert('Message sent successfully!');
-  }).catch(error => {
-    // Traitez les erreurs si nécessaire
-    console.error('Error sending message:', error);
-    alert('An error occurred while sending the message.');
-  });
-}
   
  // Méthode appelée lors du clic sur le bouton de validation
  onAddMoreClicked(): void {
@@ -85,21 +148,26 @@ validateReservation() {
     for (const item of this.reservationService.checkedItems) {
       // Modify state to "On Hold"
       item.state = 'On Hold';
+      this.sendEmail1();
+
+
     }
     this.addReservationFromCheckedItems(); // Add reservation
-    this.send(); // Send email
-    alert('Reservation created but needs admin permission.');
+ // Send email
+   // alert('Reservation created but needs admin permission.');
   } else if (!hasRoom && hasEquipment) {
-    this.addReservationFromCheckedItems(); // Add reservation
-    this.send(); // Send email
-    alert('Reservation added successfully.');
+    this.addReservationFromCheckedItems();
+    this.sendEmail(); // Add reservation
+   // Send email
+   // alert('Reservation added successfully.');
   } else {
     // Both room and equipment are present, handle as per your requirements
     // You may want to add a specific logic for this scenario
-    alert('Reservation contains both room and equipment. Please handle this case.');
+    //alert('Reservation contains both room and equipment. Please handle this case.');
   }
 
   this.reservationService.sendAddMoreClicked();
+ 
 }
 
 
@@ -114,7 +182,8 @@ addReservationFromCheckedItems() {
       subCategory:item.type,
       username: username,
       name: item.name,
-      state: item.category === 'Rooms' ? 'On Hold' : 'Reserved'
+      state: item.category === 'Rooms' ? 'On Hold' : 'Reserved',
+      benefit_status: "default"
     };
     console.log("fi add fama ???????",reservation);//nnonn 
     // Vérifiez si la catégorie est "Equipments" ou "Rooms"

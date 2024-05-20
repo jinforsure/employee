@@ -51,7 +51,12 @@
                 <div class="row">
                   <div class="col">
                       <label>Maintenance Status</label>
-                      <input type="text" [(ngModel)]="equipments.maintenance_status" name="maintenance_status" class="form-control" />
+                      <select [(ngModel)]="equipments.maintenance_status" name="maintenance_status" class="form-control" required>
+                        <option value="" disabled selected>Select maintenance status</option>
+                        <option value="operational">Operational</option>
+                        <option value="under maintenance">Under Maintenance</option>
+                        <option value="damaged">Damaged</option>
+                    </select>
                       <div *ngIf="equipmentsForm && equipmentsForm.controls['maintenance_status'] && equipmentsForm.controls['maintenance_status'].touched" class="text-danger">
                           Maintenance Status is required.
                       </div>

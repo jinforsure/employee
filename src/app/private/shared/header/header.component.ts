@@ -2,24 +2,8 @@ import { Component, HostListener, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { Subject, filter } from 'rxjs';
 import { Location } from '@angular/common';
+import { NotifService,AppNotification } from '../../services/notif.service';
 
-export const notfications = [
-  {
-    icon: 'fal fa-cloud-download',
-    Subject: 'Download complete',
-    description: 'lorem ipsum dolor sit amet, constructor.'
-  },
-  {
-    icon: 'fal fa-cloud-upload',
-    Subject: 'upload complete',
-    description: 'lorem ipsum dolor sit amet, constructor.'
-  },
-  {
-    icon: 'fal fa-trash',
-    Subject: '350 MB trash files',
-    description: 'lorem ipsum dolor sit amet, constructor.'
-  }
-];
 
 export const userItems = [
   {
@@ -49,12 +33,15 @@ export class HeaderComponent implements OnInit{
 
   canShowSearchAsOverlay = false;
 
-  notfifications = notfications;
+  notifications :AppNotification[]=[];
   userItems = userItems;
 
   ngOnInit(): void {
     this.chackCanShowSearchOverlay(window.innerWidth);
+    this.loadNotifications();
   }
+ 
+
 
   @HostListener('window:resize', ['$event'])
   onResize(event : any){
@@ -82,7 +69,7 @@ export class HeaderComponent implements OnInit{
 
   breadcrumbs: any[] = [];
 
-  constructor(private router: Router, private activatedRoute: ActivatedRoute, private location: Location) {
+  constructor(private router: Router, private activatedRoute: ActivatedRoute, private location: Location,private NotifService: NotifService) {
     // Subscribe to router events
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
@@ -100,7 +87,17 @@ export class HeaderComponent implements OnInit{
       }
     });
   }
-
+  private loadNotifications(): void {
+    this.NotifService.getNotifications().subscribe(
+      (data: AppNotification[]) => {
+        this.notifications = data;
+        console.log("notiff",this.notifications);
+      },
+      (error) => {
+        console.error('Erreur lors du chargement des notifications', error);
+      }
+    );
+  }
   navigateBack(): void {
     this.location.back();
 }

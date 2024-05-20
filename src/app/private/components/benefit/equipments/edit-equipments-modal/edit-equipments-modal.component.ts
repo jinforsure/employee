@@ -11,7 +11,7 @@ import { EquipmentsService } from 'src/app/private/services/equipments.service';
   styleUrls: ['./edit-equipments-modal.component.css']
 })
 export class EditEquipmentsModalComponent {
-  equipments : Equipments ={name: '',type:'',manufactuer:'',model:'',quantity:0,price:0,maintenance_status:'',state:'',checked:false, benefitId:1, category:'Equipments' };
+  equipments : Equipments ={name: '',type:'',manufactuer:'',model:'',quantity:0,price:0,maintenance_status:'',state:'',checked:false, benefitId:1, category:'Equipments',departDate:new Date(),departHour:'',returnHour:''  };
   departments: string[] = ['web','mobile'];
   account_types: string[]=['equipments','Technician','Admin'];
   states: string[] = ['Enabled', 'Diabled'];
