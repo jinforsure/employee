@@ -31,7 +31,7 @@ export class ReservationAuthComponent {
     this.reservationService.getAllReservations()
       .subscribe(reservations => {
         const currentDate = this.getCurrentDateInDDMMYYYY();
-        if (this.accountType === 'Admin' || this.accountType === 'technician') {
+        if (this.accountType === 'Admin' || this.accountType === 'Technician') {
           this.reservations = reservations;
         } else if (this.accountType === 'Employee' && this.username) {
           this.reservations = reservations.filter(reservation => reservation.username === this.username);
@@ -39,7 +39,7 @@ export class ReservationAuthComponent {
   
         // Filter reservations based on both state and departure date
         this.filteredReservations = this.reservations.filter(reservation => {
-          if (reservation.departDate && reservation.departDate > currentDate) {
+          if (reservation.departDate && reservation.departDate >= currentDate) {
             return true; // Include reservations with departure date before current date
           }
           return false; // Exclude reservations with undefined departure date or departDate not before currentDate

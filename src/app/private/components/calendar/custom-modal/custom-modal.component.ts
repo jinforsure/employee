@@ -15,6 +15,16 @@ export class CustomModalComponent {
   selectedReturnTime: string = '';
   reservationForm: FormGroup;
 
+  // List of holidays in Tunisia
+  holidays: Date[] = [
+    new Date('2024-06-16'), // Eid Al Adha
+    new Date('2024-06-17'), // Eid Al Adha
+    new Date('2024-07-07'), // Ras El Am Hijri
+    new Date('2024-07-25'), // Fête Nationale de la République
+    new Date('2024-09-15'), // Mouled
+    new Date('2024-10-15')  // Fête de l'évacuation
+  ];
+
   constructor(
     private fb: FormBuilder,
     private router: Router,
@@ -22,7 +32,7 @@ export class CustomModalComponent {
     public dialogRef: MatDialogRef<CustomModalComponent>
   ) {
     this.reservationForm = this.fb.group({
-      departureDate: ['', [Validators.required, this.futureDateValidator()]],
+      departureDate: ['', [Validators.required, this.futureDateValidator(), this.holidayDateValidator()]],
       departureTime: ['', Validators.required],
       returnTime: ['', Validators.required]
     }, { validators: this.timeRangeValidator() });
@@ -103,6 +113,24 @@ export class CustomModalComponent {
     };
   }
 
+  holidayDateValidator(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const selectedDate = new Date(control.value);
+      const selectedMonth = selectedDate.getMonth();
+  
+      // Check if the selected date is a holiday
+      for (let holiday of this.holidays) {
+        if (isSameDay(selectedDate, holiday)) {
+          return { holidayDate: true };
+        }
+      }
+  
+      return null;
+    };
+  }
+  
+  
+
   timeRangeValidator(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
       if (control instanceof FormGroup) {
@@ -137,12 +165,28 @@ export class CustomModalComponent {
           if (departureHour >= returnHour) {
             return { invalidTimeOrder: true };
           }
+          if (this.isDepartureTimeInJulyAugustAfter14(departureDate, departureTime)) {
+            return { invalidDepartureTime: true };
+          }
         }
       }
 
       return null;
     };
   }
+  
+  isDepartureTimeInJulyAugustAfter14(departureDate: string, departureTime: string): boolean {
+    const selectedDate = new Date(departureDate);
+    const selectedMonth = selectedDate.getMonth();
+    const selectedDepartureTime = new Date(`2000-01-01T${departureTime}`);
+    const selectedHour = selectedDepartureTime.getHours();
+
+    const isAfter14JulyAugust = (selectedMonth === 6 || selectedMonth === 7) && selectedHour >= 14;
+    console.log(`Departure date: ${departureDate}, Departure time: ${departureTime}, Is after 14:00 in July/August: ${isAfter14JulyAugust}`);
+    
+    return isAfter14JulyAugust;
+}
+
 
   isFormValid(): boolean {
     return this.reservationForm.valid && !this.reservationForm.hasError('pastDate');

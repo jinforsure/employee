@@ -63,6 +63,7 @@
          *ngSwitchCase="CalendarView.Month" 
          [viewDate]="viewDate" 
          [events]="events"
+         [events]="events.concat(holidayEvents)"
          [activeDayIsOpen]="activeDayIsOpen"
          (dayClicked)="dayClicked($event.day)"
          (eventClicked)="eventClicked($event)"
@@ -73,6 +74,7 @@
          *ngSwitchCase="CalendarView.Week" 
          [viewDate]="viewDate" 
          [events]="events"
+         [events]="events.concat(holidayEvents)"
          [dayStartHour]="8"
          [dayEndHour]="18"
          (eventClicked)="eventClicked($event)"
@@ -82,6 +84,7 @@
       <mwl-calendar-day-view 
          *ngSwitchCase="CalendarView.Day" 
          [viewDate]="viewDate" 
+         [events]="events.concat(holidayEvents)"
          [events]="events"
          [dayStartHour]="8"
          [dayEndHour]="18"

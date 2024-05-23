@@ -12,6 +12,8 @@ import { DatePipe } from '@angular/common';
   styleUrls: ['./maintenance-equip.component.css']
 })
 export class MaintenanceEquipComponent {
+
+
   equipments: Equipments[] = [];
   selectedEquipment: Equipments | undefined;
   tableauResultat: { equipmentId: number , departureDate: Date, departureHour: string, returnHour: string }[] = [];
@@ -48,12 +50,11 @@ disableTaken: boolean = false;
     private emailService:EmailService,
     private NotifService: NotifService,
     private datePipe: DatePipe
-   
+
+
   ) { }
+
   notifications: AppNotification[] = [];
-
-
-  
 
   sendEmail() {
  const emaill =this.email;
@@ -87,7 +88,6 @@ disableTaken: boolean = false;
       }
     );
   }
-  
   
   sendEmail3() {
     const emaill =this.email;
@@ -126,8 +126,6 @@ disableTaken: boolean = false;
   ngOnInit(): void {
     
     this.loadFutureReservationsAndEquipments();
-
-   
   }
   
   
@@ -153,9 +151,9 @@ disableTaken: boolean = false;
         // Convertir la date de départ de la réservation en objet Date avec le bon format
         const [day, month, year] = reservation.departDate.split('-').map(part => parseInt(part));
         const departureDate = new Date(year, month - 1, day); // Soustraire 1 de month car les mois sont indexés à partir de 0
-  
+        const departureHour = parseInt(reservation.departHour, 10);
         // Vérifier si la date de départ est après la date actuelle et que la date de retour est la même que la date de départ
-        return departureDate >= currentDate;
+        return departureDate >= currentDate || (departureDate.toDateString() === currentDate.toDateString() && departureHour > currentDate.getHours());
       });
   
       // Traiter les réservations futures
@@ -201,22 +199,13 @@ disableTaken: boolean = false;
   
       // Stockez les équipements dans la variable de classe equipments
       this.equipments = equipement;
-  
+    }); this.checkReminder();
     
-
-
-
-    });
-    setInterval(() => {
-      this.checkReminder();
-    }, 60000);
-
-
   }
   checkReminder(): void {
     const currentDate = new Date();
     const currentDateString = this.datePipe.transform(currentDate, 'dd/MM/yyyy');
-
+    let emailSent = false;
     this.FinalEquipmentData.forEach(equipmentData => {
       const departDateString = this.datePipe.transform(equipmentData.date, 'dd/MM/yyyy');
       if (currentDateString === departDateString) {
@@ -227,10 +216,14 @@ disableTaken: boolean = false;
         departDate.setHours(departHourNumber, departMinuteNumber, 0);
 
         const reminderTime = new Date(departDate.getTime() - 30 * 60000);
-
-        if (currentDate >= reminderTime && currentDate < departDate) {
+       
+        if (currentDate >= reminderTime && currentDate < departDate && !emailSent) {
+          // Envoie l'email de rappel
           this.sendEmail3();
-        }
+          
+          // Met à jour la variable de contrôle pour indiquer que l'email a été envoyé
+          emailSent = true;
+      }
       }
     });
   }
@@ -272,13 +265,20 @@ disableTaken: boolean = false;
         }
       });
   
-      // Trier les données par date
-      this.FinalEquipmentData.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
-  
+      this.FinalEquipmentData.sort((a, b) => {
+        // Compare les dates
+        const dateComparison = new Date(a.date).getTime() - new Date(b.date).getTime();
+        if (dateComparison !== 0) {
+          return dateComparison; // Si les dates sont différentes, retourne la comparaison des dates
+        }
+        // Si les dates sont les mêmes, compare les heures
+        return (parseInt(a.departureTime.split(':')[0], 10) * 60 + parseInt(a.departureTime.split(':')[1], 10)) -
+               (parseInt(b.departureTime.split(':')[0], 10) * 60 + parseInt(b.departureTime.split(':')[1], 10));
+      });
+    
       // Afficher les données finales
       console.log("Final Equipment Data", this.FinalEquipmentData);
-    ;
-  }
+    }
   
   
 

@@ -96,10 +96,6 @@ export class ListreservComponent {
                console.error('Error storing notification', notifError);
              }
            );
-         
-     
-     
-     
          },
          error => {
            console.error('Error sending email', error);
@@ -150,7 +146,6 @@ validateReservation() {
       item.state = 'On Hold';
       this.sendEmail1();
 
-
     }
     this.addReservationFromCheckedItems(); // Add reservation
  // Send email
@@ -167,7 +162,7 @@ validateReservation() {
   }
 
   this.reservationService.sendAddMoreClicked();
- 
+  this.router.navigate(['/calendar']);
 }
 
 

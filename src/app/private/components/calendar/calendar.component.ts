@@ -22,6 +22,7 @@ export class CalendarComponent {
     green: '#008000', // Event is already done
     yellow: '#FFFF00', // Event is ongoing
     blue: '#0000FF', // Event is not happening yet
+    grey: '#808080'  // Holiday
   };
 
   viewDate: Date = new Date();
@@ -42,6 +43,17 @@ export class CalendarComponent {
   selectedDepartureTime: string='';
   selectedReturnTime: string='';
   reservationForm: FormGroup ;
+
+  holidays: { date: string, name: string }[] = [
+    { date: '2024-06-16', name: 'Eid Al Adha' },
+    { date: '2024-06-17', name: 'Eid Al Adha' },
+    { date: '2024-07-07', name: 'Ras El Am Hijri' },
+    { date: '2024-07-25', name: 'National Day of the Republic' },
+    { date: '2024-09-15', name: 'Mouled' },
+    { date: '2024-10-15', name: 'Evacuation day' },
+  ];
+  holidayEvents: CalendarEvent[] = [];
+
 
   constructor(private router :Router ,private fb: FormBuilder, private reservationService: ReservationService, private dialog: MatDialog ){
       this.reservationForm = this.fb.group({  
@@ -86,6 +98,7 @@ export class CalendarComponent {
   ngOnInit(): void {
     this.getAllReservations();
     this.timeRangeValidator();
+    this.addHolidaysToCalendar();
   }
   setView(view : CalendarView) {
     this.view = view;
@@ -203,15 +216,6 @@ export class CalendarComponent {
             start: start,
             end: end,
             color: color,
-            actions: [
-              {
-                label: '<i class="fas fa-fw fa-trash-alt"></i>',
-                onClick: ({ event }: { event: CalendarEvent<any> }): void => {
-                  this.events = this.events.filter((iEvent) => iEvent !== event);
-                  console.log('Event deleted', event);
-                },
-              },
-            ],
             meta: {
               equipmentStatus: reservation.benefit_status
             }
@@ -308,7 +312,7 @@ export class CalendarComponent {
       console.log("reservation id : ", reservationId);
       
       // Call the service method to update the reservation state
-      this.reservationService.updateReservation(reservationId, { state: 'cancelled' }).subscribe(() => {
+      this.reservationService.updateReservation(reservationId, { state: 'Cancelled' }).subscribe(() => {
         // On successful cancellation, log a message and possibly refresh the reservation data
         console.log('Reservation cancelled:', event);
         // Change the color of the cancelled reservation to red
@@ -356,5 +360,29 @@ export class CalendarComponent {
         return { primary: '#e3bc08', secondary: '#FDF1BA' }; // Yellow
     }
   }
+
+  addHolidaysToCalendar() {
+    this.holidays.forEach(holiday => {
+      const dateParts = holiday.date.split('-');
+      const holidayDate = new Date(parseInt(dateParts[0]), parseInt(dateParts[1]) - 1, parseInt(dateParts[2]));
+      const startDateTime = new Date(holidayDate);
+      startDateTime.setHours(8, 0, 0); // Set start time to 8 am
+      console.log("start date ",startDateTime)
+      const endDateTime = new Date(holidayDate);
+      endDateTime.setHours(19, 0, 0); // Set end time to 6 pm
+      console.log("start date ",endDateTime)
+      const holidayEvent: CalendarEvent = {
+        title: holiday.name,
+        start: startDateTime,
+        end: endDateTime,
+        color: { primary: '#e3bc08', secondary: '#FDF1BA' },
+      };
+  
+      this.holidayEvents.push(holidayEvent);
+    });
+  
+    this.refresh.next();
+  }
+  
   
 }

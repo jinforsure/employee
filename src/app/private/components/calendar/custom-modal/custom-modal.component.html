@@ -30,6 +30,10 @@
             <div *ngIf="reservationForm.get('departureTime')?.hasError('pastDepartureTime')">
               <small class="text-danger">Please select a valid departure time.</small>
             </div>
+
+            <div *ngIf="reservationForm.hasError('invalidDepartureTime')">
+              <small class="text-danger">Departure time in July/August must be before 14:00.</small>
+            </div>
           </div>
 
           <div class="form-group">

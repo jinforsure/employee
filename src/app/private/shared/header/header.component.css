@@ -186,61 +186,6 @@
     padding: 0.47rem 0.75rem;
     border-radius: 0.25rem;
 }
-.overlay-notification ul {
-    list-style: none;
-    width: 320px;
-}
-
-.overlay-notification ul {
-    padding: 1rem;
-}
-
-.overlay-notification ul .notification-head-container{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.overlay-notification ul .notification-head-container .notifiaction-head {
-    font-size: 16px;
-    color: #495057;
-}
-
-.overlay-notification ul .notification-head-container .view-all-link{
-    font-size: 80%;
-    color: #699dfa;
-    cursor: pointer;
-}
-
-.overlay-notification ul .notification-message-container{
-    cursor: pointer;
-    display: flex;
-}
-
-.overlay-notification ul .notification-message-container i{
-    margin-right: 15px;
-    font-size: 20px;
-    color: #699dfa;
-    width: 25px;
-    text-align: center;
-}
-
-.overlay-notification ul .notification-message-container .notifiaction-subject{
-    margin-bottom: 0.25rem;
-    font-size: 15px;
-    color: #495057;
-}
-
-.overlay-notification ul .notification-message-container .notfification-desc{
-    font-size: 12px;
-    color: #74788d;
-}
-
-.overlay-notification ul .notification-message-container:hover{
-    background: #eff2f3;
-}
-
-
 .overlay-user ul{
     padding: 0.5rem 0;
     list-style: none;
@@ -279,5 +224,66 @@
 
 .no-underline {
     text-decoration: none; /* Remove underline */
+  }
+  
+
+  .head-menu-item {
+    position: relative;
+  }
+  
+  .overlay-notification {
+    position: absolute;
+    top: 30px; /* Adjust this value to fine-tune the vertical position */
+    right: 0;
+    width: 300px; /* Adjust width as needed */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    background-color: #f5f4f4;
+    border-radius: 4px;
+    z-index: 1000;
+    max-height: 400px; /* Max height for the dropdown */
+    overflow-y: auto; /* Enable scrolling if there are many notifications */
+    margin-top: -33px;
+    margin-right: 120px;
+  }
+  
+  .overlay-notification ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .notification-head-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .notification-message-container {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .notification-head {
+    font-weight: bold;
+  }
+  
+  .view-all-link a {
+    text-decoration: none;
+    color: #007bff;
+    cursor: pointer;
+  }
+  
+  
+  .notification-badge {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 10px;
+    height: 10px;
+    background-color: red;
+    border-radius: 50%;
+    z-index: 1;
   }
   

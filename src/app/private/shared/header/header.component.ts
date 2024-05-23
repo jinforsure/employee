@@ -1,9 +1,8 @@
 import { Component, HostListener, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { Subject, filter } from 'rxjs';
+import { filter } from 'rxjs/operators';
 import { Location } from '@angular/common';
-import { NotifService,AppNotification } from '../../services/notif.service';
-
+import { NotifService, AppNotification } from '../../services/notif.service';
 
 export const userItems = [
   {
@@ -18,58 +17,55 @@ export const userItems = [
     icon: 'fal fa-power-off',
     label: 'Log out'
   },
-
-]
+];
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
-export class HeaderComponent implements OnInit{
+export class HeaderComponent implements OnInit {
 
   @Input() collapsed = false;
   @Input() screenWidth = 0;
 
   canShowSearchAsOverlay = false;
-
-  notifications :AppNotification[]=[];
+  notifications: AppNotification[] = [];
+  hasNewNotification = false;
   userItems = userItems;
 
   ngOnInit(): void {
-    this.chackCanShowSearchOverlay(window.innerWidth);
+    this.checkCanShowSearchOverlay(window.innerWidth);
     this.loadNotifications();
   }
- 
-
 
   @HostListener('window:resize', ['$event'])
-  onResize(event : any){
-    this.chackCanShowSearchOverlay(window.innerWidth);
+  onResize(event: any): void {
+    this.checkCanShowSearchOverlay(window.innerWidth);
   }
 
   getHeadClass(): string {
     let styleClass = '';
-    if(this.collapsed && this.screenWidth > 768){
+    if (this.collapsed && this.screenWidth > 768) {
       styleClass = 'head-trimmed';
-    } else{
+    } else {
       styleClass = 'head-md-screen';
     }
     return styleClass;
   }
 
-  chackCanShowSearchOverlay(innerWidth: number): void{
-    if(innerWidth <845){
-      this.canShowSearchAsOverlay = true;
-    } else {
-      this.canShowSearchAsOverlay= false;
-    }
+  checkCanShowSearchOverlay(innerWidth: number): void {
+    this.canShowSearchAsOverlay = innerWidth < 845;
   }
-  
 
   breadcrumbs: any[] = [];
 
-  constructor(private router: Router, private activatedRoute: ActivatedRoute, private location: Location,private NotifService: NotifService) {
+  constructor(
+    private router: Router,
+    private activatedRoute: ActivatedRoute,
+    private location: Location,
+    private notifService: NotifService
+  ) {
     // Subscribe to router events
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
@@ -87,19 +83,21 @@ export class HeaderComponent implements OnInit{
       }
     });
   }
+
   private loadNotifications(): void {
-    this.NotifService.getNotifications().subscribe(
+    this.notifService.getNotifications().subscribe(
       (data: AppNotification[]) => {
-        this.notifications = data;
-        console.log("notiff",this.notifications);
+        this.notifications = data.reverse(); // Reverse the order of notifications
+        this.hasNewNotification = this.notifications.length > 0;
+        console.log("notiff", this.notifications);
       },
       (error) => {
         console.error('Erreur lors du chargement des notifications', error);
-      }
-    );
-  }
+      }
+    );
+  }
+
   navigateBack(): void {
     this.location.back();
-}
-
+  }
 }
