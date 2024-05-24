@@ -11,7 +11,7 @@ export function createChartDoughunt(ctx: CanvasRenderingContext2D, equipmentData
   const doughnutConfig: ChartConfiguration<'doughnut', number[], string> = {
     type: 'doughnut',
     data: {
-      labels: ['Operational', 'Under Maintenance', 'Damaged'],
+      labels: ['Operational', 'Damaged', 'Under Maintenance'],
       datasets: [{
         label: 'Equipment Maintenance Status',
         data: [operationalCount, underMaintenanceCount, damagedCount],

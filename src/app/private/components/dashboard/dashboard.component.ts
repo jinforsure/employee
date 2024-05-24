@@ -1,10 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { Chart } from 'chart.js';
 
+import Chart from 'chart.js/auto';
 //import { createChart } from './charts1';
 import { createChartDoughunt } from './charts2';
 import { ReservationService } from '../../services/reservation.service';
 import { EquipmentsService } from '../../services/equipments.service';
+import { Reservation } from '../../model/reservation';
+import { Equipments } from '../../model/equipments';
+
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -19,11 +22,14 @@ export class DashboardComponent  {
   totalEquipments: number = 0; // Variable pour stocker le nombre total d'équipements
   pour:number=0;
 
-
+  mostReservedEquipment: Equipments | undefined;
+   maxCount:number=0;
   lineChart: any;
   monthOccurrences: Map<number, number> = new Map();
 
-  constructor(private reservationService: ReservationService,private equipmentService: EquipmentsService) { }
+  constructor(private reservationService: ReservationService,private equipmentService: EquipmentsService) {  
+
+   }
 
 
   ngOnInit(): void {
@@ -31,11 +37,47 @@ export class DashboardComponent  {
     this.getReservationDepartDates();
     this.getEquipmentStates();
     this.getAllReservationsAndCountOccurrences(); 
-   
-   
+    this.generatePieChart();
+    this.getMostReservedEquipment();
   }
 
+ 
+  getMostReservedEquipment(): void {
+    this.reservationService.getAllReservations().subscribe(reservations => {
+      const equipmentCounts: Map<number, number> = new Map();
 
+      // Comptez le nombre de réservations pour chaque équipement
+      reservations.forEach(reservation => {
+        const equipmentId = reservation.equipmentsId; // Assurez-vous que equipmentId est un nombre
+        if (equipmentId) {
+          if (equipmentCounts.has(equipmentId)) {
+            equipmentCounts.set(equipmentId, equipmentCounts.get(equipmentId)! + 1);
+          } else {
+            equipmentCounts.set(equipmentId, 1);
+          }
+        }
+      });
+
+      // Trouvez l'équipement le plus réservé
+      let maxCount = 0;
+      let mostReservedEquipmentId = 0;
+      equipmentCounts.forEach((count, equipmentId) => {
+        if (count > maxCount) {
+          maxCount = count;
+          mostReservedEquipmentId = equipmentId;
+        }console.log("maxCount",maxCount);
+        this.maxCount=maxCount;
+      });
+
+      // Récupérez les détails de l'équipement le plus réservé
+      // Utilisez le service pour récupérer les détails de l'équipement en fonction de l'ID
+      if (mostReservedEquipmentId) {
+        this.equipmentService.getEquipmentsById(mostReservedEquipmentId).subscribe(equipment => {
+          this.mostReservedEquipment = equipment;
+        });
+      }
+    });
+  }
  
   getAllReservationsAndCountOccurrences(): void {
     this.reservationService.getAllReservations().subscribe(reservations => {
@@ -55,7 +97,7 @@ export class DashboardComponent  {
       });
   
       this.monthOccurrences.forEach((occurrences, month) => {
-        console.log(`Month ${month}: ${occurrences} occurrences`);
+        console.log('Month ${month}: ${occurrences} occurrences');
       });
   
       // Créez le graphique une fois que la boucle forEach est terminée
@@ -105,6 +147,30 @@ export class DashboardComponent  {
   
   
   
+  generatePieChart() {
+    const ctx = document.getElementById('pieChart') as HTMLCanvasElement;
+    const pieChart = new Chart(ctx, {
+      type: 'pie',
+      data: {
+        labels: ['Reservations', 'Remaining'],
+        datasets: [{
+          data: [this.reservationsThisMonth, 100 - this.reservationsThisMonth], // Utilisez la valeur actuelle et le complément à 100 pour les données
+          backgroundColor: [
+            'rgb(255, 99, 132)', // Couleur pour les réservations
+            'rgb(54, 162, 235)' // Couleur pour le reste
+          ]
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false
+      }
+    });
+  }
+
+
+
+
   
  
   
@@ -149,12 +215,12 @@ export class DashboardComponent  {
   getEquipmentStates(): void {
     this.equipmentService.getAllEquipments().subscribe(equipments => {
       // Bouclez à travers tous les équipements et extrayez les états
-      const equipmentStates = equipments.map(equipment => equipment.state)
+      const equipmentStates = equipments.map(equipment => equipment.maintenance_status)
         .filter(state => state !== undefined) // Filtrez les valeurs undefined
         .map(state => state as string); // Convertissez le type en string si nécessaire
 
       // Calculer le nombre d'états égaux à "disabled"
-      this.disabledCount = equipmentStates.filter(state => state === 'Disabled').length;
+      this.disabledCount = equipmentStates.filter(state => state === 'Damaged').length;
       console.log(this.disabledCount);
       // Mettre à jour le nombre total d'équipements
       this.totalEquipments = equipmentStates.length;
@@ -196,20 +262,15 @@ export class DashboardComponent  {
     }
     this.createLineChart();
   }
+  // Circonférence du cercle
 
-
-  calculateStrokeOffset(value: number): number {
-    if (value < 0) {
-      value = 0; // Assurez-vous que la valeur est au moins égale à 0
-    } else if (value > 100) {
-      value = 100; // Assurez-vous que la valeur est au plus égale à 100
-    }
   
-    const circleLength = 2 * Math.PI * 36; // Circonférence du cercle avec un rayon de 36 pixels
-    const filledLength = circleLength * (value / 100); // Longueur remplie en fonction de la valeur donnée
-    const remainingLength = circleLength - filledLength; // Calcul de la longueur restante
-    
-    return remainingLength;
+  calculateStrokeOffset(value: number): number {
+    if (value < 0) value = 0;
+    if (value > 100) value = 100;
+
+    const filledLength = 226.08 * (value / 100); // 226.08 is the circumference of the circle
+    return 226.08 - filledLength;
   }
   
 

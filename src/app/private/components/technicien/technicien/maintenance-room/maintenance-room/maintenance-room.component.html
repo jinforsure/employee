@@ -46,9 +46,9 @@
             </td>
 
             <td data-label="Benefit State">
-              <select [(ngModel)]="equipmentData.roomData.taken" (ngModelChange)="updateFreeField($event, equipmentData)" [disabled]="equipmentData.roomData.maintenance_status === 'under maintenance' || equipmentData.roomData.state === 'Disabled' || equipmentData.roomData.maintenance_status === 'Damaged'">
-                <option [ngValue]="'occupied'">taken</option>
-                <option [ngValue]="'free'">Retuned</option>
+              <select [(ngModel)]="equipmentData.roomData.occupied" (ngModelChange)="updateFreeField($event, equipmentData)" [disabled]="equipmentData.roomData.maintenance_status === 'under maintenance' || equipmentData.roomData.state === 'Disabled' || equipmentData.roomData.maintenance_status === 'Damaged'">
+                <option [ngValue]="'occupied'">occupied</option>
+                <option [ngValue]="'free'">free</option>
               </select>
             </td>
             

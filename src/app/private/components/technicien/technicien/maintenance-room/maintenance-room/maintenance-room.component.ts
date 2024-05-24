@@ -318,7 +318,7 @@ performAction(room: any) {
       this.disablefree = true;
       this.disableoccupied = true;
        // Mettre à jour reservation_State à "Not yet"
-  room.roomData.reservation_State = 'Not yet';
+      room.roomData.reservation_State = 'Not yet';
      
     } else {
       // Activer tous les champs s'ils ne correspondent pas aux conditions de désactivation
@@ -328,7 +328,9 @@ performAction(room: any) {
        // Mettre à jour reservation_State à "Reserved"
  
       
-    } const roomIdToUpdate = room.roomId;
+    } 
+    
+    const roomIdToUpdate = room.roomId;
     const index = this.FinalRoomData.findIndex((e: any) => e.roomId === room.roomId);
    
     if (room.roomData.reservation_State === 'Not yet') {
@@ -363,10 +365,44 @@ performAction(room: any) {
       );
     }
     
+  if (room.roomData) {
+    const equipData = room.roomData.occupied;  
+    console.log("equipdata",equipData)  
+   
+    const heure1=room.departureTime;
+    console.log("date1",heure1)
+    const heure2=room.returnTime  ;
+    console.log("date1",heure2)
+    const departureDate = formatDateToString(room.date);
+    console.log("depature date ",departureDate)
+    // Vérifier et mettre à jour le Benefit State si taken ou returned
+    if (equipData === 'occupied' || equipData=== 'free') {
+      console.log("equipData.occup",equipData)
 
+      this.reservationService.getAllReservations().subscribe((reservations: any[]) => {
+        reservations.forEach((reservation: any) => {
+          if (reservation.roomsId === roomIdToUpdate && reservation.departHour === heure1 && reservation.returnHour === heure2 && reservation.departDate === departureDate) {
+            if (equipData === 'occupied') {
+              reservation.benefit_status = 'occupied';
+            } else if (equipData === 'free') {
+              reservation.benefit_status = 'free';
+            }
+
+            this.reservationService.updateReservation(reservation.id, { benefit_status: reservation.benefit_status }).subscribe(() => {
+              console.log(`Benefit State updated for reservation ${reservation.id}`);
+            }, error => {
+              console.error(`Error updating Benefit State for reservation ${reservation.id}`, error);
+            });
+          }
+        });
+      });
+    }
+  }
+    // Trouver l'index de l'équipement dans donneesEquipements
+  
     // Mettez ici le code pour gérer l'action pour l'équipement spécifique
     console.log("Action performed for equipment:", room);
-console.log("---------",this.donneesrooms);
+    console.log("---------",this.donneesrooms);
     // Trouver l'index de l'équipement dans donneesEquipements
   
   
@@ -428,6 +464,11 @@ updateOccupiedField(newValue: string, equipmentData: any) {
 
   }
 
-
+function formatDateToString(date: Date): string {
+  const day = date.getDate().toString().padStart(2, '0');
+  const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Month is zero-based
+  const year = date.getFullYear();
+  return `${day}-${month}-${year}`;
+}
 
 

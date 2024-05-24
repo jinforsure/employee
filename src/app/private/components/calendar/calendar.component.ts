@@ -96,6 +96,7 @@ export class CalendarComponent {
   }
 
   ngOnInit(): void {
+   
     this.getAllReservations();
     this.timeRangeValidator();
     this.addHolidaysToCalendar();
@@ -148,9 +149,10 @@ export class CalendarComponent {
   }
 
   getAllReservations() {
+    
     const accountType = localStorage.getItem('account_type');
     const username = localStorage.getItem('username');
-    
+  
     if (!accountType || !username) {
       console.error('Account type or username not found in local storage.');
       return;
@@ -198,14 +200,23 @@ export class CalendarComponent {
           if (reservation.state === 'Cancelled') {
             color = { primary: 'red', secondary: 'red' };
           } else {
-            // Determine event color based on current date
-            const now = new Date();
-            if (now > end) {
-              color = { primary: 'green', secondary: 'green' }; // Event has already ended
-            } else if (now >= start && now <= end) {
-              color = { primary: 'yellow', secondary: 'yellow' }; // Event is ongoing
+            // Determine event color based on benefit_status
+            if (reservation.benefit_status === 'taken') {
+              color = { primary: 'yellow', secondary: 'yellow' };
+            } else if (reservation.benefit_status === 'returned') {
+              color = { primary: 'green', secondary: 'green' };
             } else {
-              color = { primary: 'blue', secondary: 'blue' }; // Event has not yet started
+              // Default color for other cases
+              color = { primary: 'blue', secondary: 'blue' };
+            }
+
+            if (reservation.benefit_status === 'occupied') {
+              color = { primary: 'yellow', secondary: 'yellow' };
+            } else if (reservation.benefit_status === 'free') {
+              color = { primary: 'green', secondary: 'green' };
+            } else {
+              // Default color for other cases
+              color = { primary: 'blue', secondary: 'blue' };
             }
           }
   
@@ -225,6 +236,7 @@ export class CalendarComponent {
       console.log('All Reservations:', this.events);
     });
   }
+  
 
 
   timeRangeValidator(): ValidatorFn {

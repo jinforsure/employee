@@ -162,7 +162,10 @@ validateReservation() {
   }
 
   this.reservationService.sendAddMoreClicked();
+  window.location.reload();
   this.router.navigate(['/calendar']);
+
+  
 }
 
 

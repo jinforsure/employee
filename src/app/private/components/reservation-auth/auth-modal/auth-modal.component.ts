@@ -4,6 +4,8 @@ import { Reservation } from 'src/app/private/model/reservation';
 import { ReservationService } from 'src/app/private/services/reservation.service';
 import { EmailService } from 'src/app/private/services/email.service';
 import { NotifService,AppNotification } from 'src/app/private/services/notif.service';
+import { EmployeeService } from 'src/app/private/services/employee.service';
+import { Employee } from 'src/app/private/model/employee';
 @Component({
   selector: 'app-auth-modal',
   templateUrl: './auth-modal.component.html',
@@ -14,7 +16,8 @@ export class AuthModalComponent {
   public dialogRef: MatDialogRef<AuthModalComponent>,
   private reservationService: ReservationService,
   public emailService:EmailService,
-  private NotifService: NotifService
+  private NotifService: NotifService,
+  private employeeservice:EmployeeService
 ){}
 email:string|null=localStorage.getItem('email') ;
  username=localStorage.getItem('username') ;
@@ -87,16 +90,79 @@ if (reservationId) {
 }
 }
 
+updateEmployee(id: number) {
+  // Récupérer les détails de la réservation à partir de son ID
+  this.reservationService.getReservationById(id).subscribe((res) => {
+    this.reservation = res;
 
-updateEmployee (id: number){
-console.log("employe 2 : ", this.reservation)
-this.reservationService
-.editReservation(id, this.reservation)
-.subscribe((res) => {
-  console.log(res);
-  window.location.reload();
-});
-this.dialogRef.close();
+    // Récupérer le nom d'utilisateur associé à la réservation
+    const username = this.reservation.username;
+
+    // Récupérer tous les employés
+    this.employeeservice.getAllEmployee().subscribe((employees: Employee[]) => {
+      // Trouver l'employé avec le bon nom d'utilisateur
+      const employee = employees.find((emp) => emp.username === username);
+
+      if (employee) {
+        // Récupérer l'e-mail uniquement si l'employé est trouvé
+        const email = employee.email;
+
+        // Vérifier si l'e-mail est défini avant de l'utiliser
+        if (email) {
+          // Déterminer l'e-mail à envoyer en fonction de l'état de la réservation
+          let subject = '';
+          let body = '';
+
+          if (this.reservation.state === 'Reserved') {
+            subject = "Reservation Confirmation";
+            body = `Dear ${employee.username},\nYour Reservation has been successfully updated.\nBest regards,\nAdmin`;
+          } else if (this.reservation.state === 'Cancelled') {
+            subject = "Reservation Cancellation";
+            body = `Dear ${employee.username},\nYour Reservation has been cancelled.\nBest regards,\nAdmin`;
+          }
+
+          // Vérifier si le sujet et le corps ont été définis
+          if (subject && body) {
+            const to: string[] = [email];
+            const cc: string[] = [email];
+
+            // Envoyer l'e-mail
+            this.emailService.sendEmail(to, cc, subject, body).subscribe(
+              (response) => {
+                // Gérez la réponse
+              },
+              (error) => {
+                // Gérez les erreurs
+              }
+            );
+          } else {
+            console.error("Invalid state for sending email:", this.reservation.state);
+          }
+        } else {
+          console.error("Email not found for employee:", username);
+        }
+      } else {
+        console.error("Employee not found for username:", username);
+      }
+    });
+  });
+
+  // Mettre à jour la réservation
+  this.reservationService.editReservation(id, this.reservation).subscribe((res) => {
+    console.log(res);
+    window.location.reload();
+  });
+
+  // Fermer le modal
+  this.dialogRef.close();
 }
 
+
+
+
 }
+
+
+
+
+

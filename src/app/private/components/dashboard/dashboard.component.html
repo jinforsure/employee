@@ -1,61 +1,62 @@
 <div class="container">
-    <div class="row">
-      <div class="insights">
-        <div class="sales">
-          <span class="fal fa-bar-chart"></span>
+  <div class="row">
+    <div class="insights">
+      <div class="sales">
+        <span class="fal fa-bar-chart"></span>
+        <div class="middle">
+            <div class="left">
+              <h3>Total Reservations This Month</h3>
+              <h1>{{ reservationsThisMonth }}</h1>
+            </div>
+            <svg>
+              <circle cx='38' cy='38' r='36' [style.strokeDashoffset]="calculateStrokeOffset(reservationsThisMonth)"></circle>
+            </svg>
+        </div>
+        <small class="text-muted">Current Month</small>
+      </div>
+        <!----------------END OF SALES ------------>
+        <div class="income">
+          <span class="fal fa-line-chart"></span>
           <div class="middle">
               <div class="left">
-                <h3>Total Reservations This Month</h3>
-                <h1>{{ reservationsThisMonth }}</h1>
+                  <h3>Damaged Equipments</h3>
+                  <h1>{{ pour.toFixed(2) }}</h1> <!-- Utilise toFixed(2) pour afficher 2 décimales -->
               </div>
               <svg>
-                <circle cx='38' cy='38' r='36' [style.strokeDashoffset]="calculateStrokeOffset(reservationsThisMonth)"></circle>
+                  <circle cx='38' cy='38' r='36' [style.strokeDashoffset]="calculateStrokeOffset(pour)"></circle>
               </svg>
           </div>
-          <small class="text-muted">Current Month</small>
-        </div>
-          <!----------------END OF SALES ------------>
-          <div class="income">
-              <span class="fal fa-line-chart"></span>
-              <div class="middle">
-                  <div class="left">
-                      <h3>Total Disabled Equipments</h3>
-                      <h1>{{ pour }}</h1>
-                  </div>
-                  <svg>
-                    <circle cx='38' cy='38' r='36' [style.strokeDashoffset]="calculateStrokeOffset(pour)"></circle>
-                  </svg>
-              </div>
-              <small class="text-muted">STATE OF DISABLED EQUIPMENTS %</small>
-            </div>
-              <!----------------END OF SALES ------------>
-              <div class="expense">
-                  <span class="fal fa-pie-chart"></span>
-                  <div class="middle">
-                      <div class="left">
-                          <h3>Total Expenses</h3>
-                          <h1>100</h1>
-                      </div>
-                      <svg>
-                        <circle cx='38' cy='38' r='36' [style.strokeDashoffset]="calculateStrokeOffset(2)"></circle>
-                      </svg>
-                  </div>
-                  <small class="text-muted">Last 24 Hours</small>
-              </div>
-                  <!----------------END OF SALES ------------>
-              
-              
+          <small class="text-muted">STATE OF Damaged EQUIPMENTS %</small>
       </div>
       
-      <div class="charts">
-          <div class="chart">
-              <h2>Reservation Occurrences (past 12 months)</h2>
-              <canvas id="lineChart" ></canvas>
-          </div>
-          <div class="chart" id="doughunt-chart">
-              <h2>Maintenance</h2>
-              <canvas id="doughuntChart" ></canvas>
-          </div>
-      </div>
-    </div>
+            <!----------------END OF SALES ------------>
+            <div class="expense">
+                <span class="fal fa-pie-chart"></span>
+                <div class="middle">
+                    <div class="left">
+                        <h3>Most Reserved Equipment</h3>
+                        <h1>{{ mostReservedEquipment?.name }}</h1>
+                    </div>
+                    <svg>
+                      <circle cx='38' cy='38' r='36' [style.strokeDashoffset]="calculateStrokeOffset(maxCount)"></circle>
+                    </svg>
+                </div>
+                <small class="text-muted">From All Passed Reservation</small>
+            </div>
+                <!----------------END OF SALES ------------>
+            
+            
+    </div>
+    
+    <div class="charts">
+        <div class="chart">
+            <h2>Reservation Occurrences (past 12 months)</h2>
+            <canvas id="lineChart" ></canvas>
+        </div>
+        <div class="chart" id="doughunt-chart">
+            <h2>Maintenance</h2>
+            <canvas id="doughuntChart" ></canvas>
+        </div>
+    </div>
+  </div>
   </div>

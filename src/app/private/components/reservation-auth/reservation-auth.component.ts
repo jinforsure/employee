@@ -3,6 +3,7 @@ import { Reservation } from '../../model/reservation';
 import { ReservationService } from '../../services/reservation.service';
 import { AuthModalComponent } from './auth-modal/auth-modal.component';
 import { MatDialog } from '@angular/material/dialog';
+import { EmployeeService } from '../../services/employee.service';
 
 @Component({
   selector: 'app-reservation-auth',
@@ -19,34 +20,40 @@ export class ReservationAuthComponent {
   isModalOpen: boolean = false;
   selectedReservation: Reservation | null = null;
 
-  constructor(private reservationService: ReservationService , private dialog: MatDialog) { }
+  constructor(
+    private reservationService: ReservationService ,
+     private dialog: MatDialog,
+     private employeeService: EmployeeService 
+    ) { }
 
   ngOnInit(): void {
     this.accountType = localStorage.getItem('account_type');
     this.username = localStorage.getItem('username');
     this.getReservations();
   }
-
   getReservations(): void {
     this.reservationService.getAllReservations()
       .subscribe(reservations => {
         const currentDate = this.getCurrentDateInDDMMYYYY();
+        let filteredSet = new Set<Reservation>(); // Utiliser un ensemble pour éliminer les doublons
+  
         if (this.accountType === 'Admin' || this.accountType === 'Technician') {
-          this.reservations = reservations;
+          filteredSet = new Set(reservations);
         } else if (this.accountType === 'Employee' && this.username) {
-          this.reservations = reservations.filter(reservation => reservation.username === this.username);
+          filteredSet = new Set(reservations.filter(reservation => reservation.username === this.username));
         }
   
-        // Filter reservations based on both state and departure date
-        this.filteredReservations = this.reservations.filter(reservation => {
+        // Filtrer les réservations en fonction à la fois de l'état et de la date de départ
+        filteredSet.forEach(reservation => {
           if (reservation.departDate && reservation.departDate >= currentDate) {
-            return true; // Include reservations with departure date before current date
+            this.filteredReservations.push(reservation); // Ajouter les réservations qui respectent les critères au tableau
           }
-          return false; // Exclude reservations with undefined departure date or departDate not before currentDate
-        })
+        });
+  
         console.log('Filtered reservations:', this.filteredReservations);
       });
   }
+  
 
   
   
