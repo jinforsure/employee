@@ -201,23 +201,23 @@ export class CalendarComponent {
             color = { primary: 'red', secondary: 'red' };
           } else {
             // Determine event color based on benefit_status
-            if (reservation.benefit_status === 'taken') {
+            if ((reservation.benefit_status === 'taken') || (reservation.benefit_status === 'occupied')) {
               color = { primary: 'yellow', secondary: 'yellow' };
-            } else if (reservation.benefit_status === 'returned') {
+            } else if ((reservation.benefit_status === 'returned') || (reservation.benefit_status === 'free')) {
               color = { primary: 'green', secondary: 'green' };
             } else {
               // Default color for other cases
               color = { primary: 'blue', secondary: 'blue' };
             }
 
-            if (reservation.benefit_status === 'occupied') {
+           /* if (reservation.benefit_status === 'occupied') {
               color = { primary: 'yellow', secondary: 'yellow' };
             } else if (reservation.benefit_status === 'free') {
               color = { primary: 'green', secondary: 'green' };
             } else {
               // Default color for other cases
               color = { primary: 'blue', secondary: 'blue' };
-            }
+            }*/
           }
   
           return {

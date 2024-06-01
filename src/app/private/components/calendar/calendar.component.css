@@ -141,3 +141,26 @@ input[type="time"]:focus {
 .title {
   font-size: x-large;
 }
+
+
+#cal-buttons {
+  display: flex;
+  flex-wrap: wrap; /* Allow buttons to wrap to the next line if necessary */
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.btn-group {
+  display: flex;
+  gap: 10px;
+}
+
+.btn {
+  flex-shrink: 0; /* Prevent buttons from shrinking */
+}
+
+.btn-success,
+.btn-info {
+  width: auto; /* Allow buttons to adjust their width according to content */
+}

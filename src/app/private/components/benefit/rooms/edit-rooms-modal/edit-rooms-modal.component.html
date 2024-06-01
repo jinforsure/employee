@@ -10,23 +10,24 @@
             <div class="col">
                 <label>Capacity</label>
                 <input type="number" [(ngModel)]="rooms.capacity" name="capacity" class="form-control"  />
-                <div *ngIf="capacityInvalid && roomsForm.controls['capacity'].touched" class="text-danger"></div>
-                  Capacity is required.
             </div>
           </div>
           <div class="row">
             <div class="col">
                 <label>Maintenance Status</label>
-                <select [(ngModel)]="rooms.maintenance_status" name="maintenance_status" class="form-control" required>
-                  <option value="" disabled selected>Select maintenance status</option>
-                  <option value="operational">Operational</option>
-                  <option value="under maintenance">Under Maintenance</option>
-                  <option value="damaged">Damaged</option>
+                <select [(ngModel)]="rooms.maintenance_status" name="maintenance_status" required (change)="onMaintenanceStatusChange()">
+                  <option value="" disabled selected>Select maintenance</option>
+                  <option value="operational">operational</option>
+                  <option value="under maintenance">under maintenance</option>
+                  <option value="damaged">damaged</option>
               </select>
+              <div *ngIf="roomsForm && roomsForm.controls['maintenance_status'] && roomsForm.controls['maintenance_status'].touched" class="text-danger">
+                Maintenance Status is required.
+            </div>
             </div>
             <div class="col">
               <label>State</label>
-              <select id="state" [(ngModel)]="rooms.state" name="state" required (ngModelChange)="checkFormValidity()"
+              <select id="state" [(ngModel)]="rooms.state" name="state" required 
                       [ngClass]="{ 'state-active': rooms.state === 'Enabled', 'state-inactive': rooms.state !== 'Disabled' }">
                 <option value="" enabled selected>Select state</option>
                 <option *ngFor="let state of states" [value]="state">{{state}}</option>

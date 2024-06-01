@@ -11,14 +11,14 @@ import { RoomsService } from 'src/app/private/services/rooms.service';
   styleUrls: ['./add-rooms-modal.component.css']
 })
 export class AddRoomsModalComponent {
-  rooms : Rooms ={name: '',type:'',location:'',capacity:0,maintenance_status:'',state:'',checked:false,benefitId:2, category:'Rooms',departDate:new Date(),departHour:'',returnHour:'' };
+  rooms : Rooms ={name: '',type:'',location:'',capacity:0,maintenance_status:'operational',state:'Enabled',checked:false,benefitId:2, category:'Rooms',departDate:new Date(),departHour:'',returnHour:'' };
   states: string[] = ['Enabled', 'Disabled'];
   roomsId: string |null = null;
   @ViewChild('roomsForm') roomsForm!: NgForm;
   capacityInvalid: boolean = true;
   stateInvalid:boolean=true;
   saveDisabled: boolean = true;
-  types: String[]=['Meeting Room','Conference Room','Reading Room'];
+  types: String[]=['Meeting Room','Conference Room','Reading Room','Eating Room','Events'];
 
 
   constructor(
@@ -58,12 +58,14 @@ addRooms() {
 }
 
 
-
-  checkFormValidity() {
-    this.capacityInvalid = this.roomsForm.controls['capacity'].invalid && this.roomsForm.controls['capacity'].touched;
-    // Activer ou désactiver le bouton "Save" en fonction de la validité du formulaire
-    this.saveDisabled = this.roomsForm.invalid || this.capacityInvalid ;
+checkFormValidity() {
+  // Check if all fields have values
+  if (this.rooms.name && this.rooms.type && this.rooms.location && this.rooms.capacity) {
+    return true; // All fields are filled
+  } else {
+    return false; // Not all fields are filled
   }
+}
   closeDialog(): void {
     this.dialogRef.close();
   }

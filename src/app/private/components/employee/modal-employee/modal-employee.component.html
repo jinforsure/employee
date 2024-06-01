@@ -1,28 +1,45 @@
-<h1 mat-dialog-title>Reservations Information</h1>
+<div class="dialog-header">
+  <h1  class="title">Reservations Information</h1>
+  <button class="close-icon" (click)="closeDialog()">&#x2715;</button>
+</div>
 <div mat-dialog-content>
-  <ul>
-    <li><strong>Username:</strong> {{ data.employee.username }}</li>
-    <!-- Add other employee information here -->
+  <ul class="employee-info">
+    <li><strong>Username: </strong> <span class="username">{{ employee.username }}</span></li>
+    <!-- Add other employee information here if needed -->
   </ul>
 
-  <h2>Reservations:</h2>
-  <ul>
-    <ng-container *ngIf="data.reservations.length > 0; else noReservations">
-      <li *ngFor="let reservation of data.reservations">
-        <strong>Reservation ID:</strong> {{ reservation.id }}<br>
-        <strong>Reservation Name:</strong> {{ reservation.name }}<br>
-        <strong>Reservation State:</strong> {{ reservation.state }}<br>
-        <strong>Reservation Depart Date:</strong> {{ reservation.departDate }}<br>
-        <strong>Reservation Depart Hour:</strong> {{ reservation.departHour }}<br>
-        <strong>Reservation Return Hour:</strong> {{ reservation.returnHour }}<br>
-        <!-- Display other reservation details as needed -->
-      </li>
-    </ng-container>
-    <ng-template #noReservations>
-      <li>No reservations</li>
-    </ng-template>
-  </ul>
+  <ng-container *ngIf="reservations.length > 0; else noReservations">
+    <table class="reservation-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Reservation Name</th>
+          <th>Benefit Subcategory</th>
+          <th>Reservation State</th>
+          <th>Reservation Depart Date</th>
+          <th>Reservation Depart Hour</th>
+          <th>Reservation Return Hour</th>
+          <!-- Add other headers as needed -->
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let reservation of reservations">
+          <td>{{ reservation.id }}</td>
+          <td>{{ reservation.name }}</td>
+          <td>{{ reservation.subCategory }}</td>
+          <td>{{ reservation.state }}</td>
+          <td>{{ reservation.departDate }}</td>
+          <td>{{ reservation.departHour }}</td>
+          <td>{{ reservation.returnHour }}</td>
+          <!-- Add other details as needed -->
+        </tr>
+      </tbody>
+    </table>
+  </ng-container>
+  <ng-template #noReservations>
+    <p>No reservations</p>
+  </ng-template>
 </div>
-<div mat-dialog-actions>
-  <button mat-button (click)="closeDialog()">Close</button>
+<div mat-dialog-actions class="dialog-actions">
+  <button class="button-louta" (click)="closeDialog()">Close</button>
 </div>

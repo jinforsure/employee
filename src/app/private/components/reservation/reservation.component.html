@@ -92,12 +92,26 @@
             <td>{{equipments.name }}</td>
             <td>{{equipments.category}}</td>
             <td>{{equipments.type}}</td>
-            <td [ngStyle]="{ 'color': equipments.state === 'Enabled' ? 'green' : 'red' }">{{ equipments.state }}</td>
+            <td>
+              <ng-container *ngIf="equipments.state === 'Enabled'; else inactiveButton">
+                  <button type="button" class="btn btn-success">{{ equipments.state }}</button>
+              </ng-container>
+              <ng-template #inactiveButton>
+                  <button type="button" class="btn btn-danger">{{ equipments.state }}</button>
+              </ng-template>
+          </td>
 
-            <td>{{equipments.maintenance_status}}</td>
+          <td>
+            <ng-container [ngSwitch]="equipments.maintenance_status">
+                <button *ngSwitchCase="'operational'" type="button" class="btn btn-outline-success">{{ equipments.maintenance_status }}</button>
+                <button *ngSwitchCase="'under maintenance'" type="button" class="btn btn-outline-warning">{{ equipments.maintenance_status }}</button>
+                <button *ngSwitchCase="'damaged'" type="button" class="btn btn-outline-danger">{{ equipments.maintenance_status }}</button>
+                <button *ngSwitchDefault type="button" class="btn btn-outline-primary">{{ equipments.maintenance_status }}</button>
+            </ng-container>
+        </td> 
             <td>
               <mat-checkbox [(ngModel)]="equipments.checked" (change)="onCheckboxChange($event, equipments, selectedDate, selectedDepartureTime, selectedReturnTime)" [disabled]="equipments.state === 'Disabled' || equipments.maintenance_status==='under maintenance'||equipments.maintenance_status==='Damaged'"  ></mat-checkbox>
-              <button class="btn btn-primary" (click)="openDetailsModal(equipments)">Check Details</button>
+              <button class="btn btn-info" (click)="openDetailsModal(equipments)">More Details</button>
             </td>
             
           </tr>
@@ -105,12 +119,26 @@
             <td>{{rooms.name }}</td>
             <td>{{rooms.category}}</td>
             <td>{{rooms.type}}</td>
-            <td [ngStyle]="{ 'color': rooms.state === 'Enabled' ? 'green' : 'red' }">{{ rooms.state }}</td>
+            <td>
+              <ng-container *ngIf="rooms.state === 'Enabled'; else inactiveButton">
+                  <button type="button" class="btn btn-success">{{ rooms.state }}</button>
+              </ng-container>
+              <ng-template #inactiveButton>
+                  <button type="button" class="btn btn-danger">{{ rooms.state }}</button>
+              </ng-template>
+          </td>
 
-            <td>{{rooms.maintenance_status}}</td>
+          <td>
+            <ng-container [ngSwitch]="rooms.maintenance_status">
+                <button *ngSwitchCase="'operational'" type="button" class="btn btn-outline-success">{{ rooms.maintenance_status }}</button>
+                <button *ngSwitchCase="'under maintenance'" type="button" class="btn btn-outline-warning">{{ rooms.maintenance_status }}</button>
+                <button *ngSwitchCase="'damaged'" type="button" class="btn btn-outline-danger">{{ rooms.maintenance_status }}</button>
+                <button *ngSwitchDefault type="button" class="btn btn-outline-primary">{{ rooms.maintenance_status }}</button>
+            </ng-container>
+        </td> 
             <td>
               <mat-checkbox  [(ngModel)]="rooms.checked" (change)="onCheckboxChange($event, rooms,selectedDate, selectedDepartureTime, selectedReturnTime)" [disabled]="rooms.state === 'Disabled' || rooms.maintenance_status==='under maintenance'||rooms.maintenance_status==='Damaged'"  ></mat-checkbox>
-              <button class="btn btn-primary" (click)="openDetailsModal(rooms)">Check Details</button>
+              <button class="btn btn-info" (click)="openDetailsModal(rooms)">More Details</button>
               
             </td>
             
@@ -121,7 +149,7 @@
   </div>
     <div class="button-container">
     <div class="button-container">
-      <button *ngIf="!selectedDate || !selectedDepartureTime || !selectedReturnTime" class="btn btn-info" (click)="chooseDateFirst()" enabled>Choose Date First</button>
+      <button *ngIf="!selectedDate || !selectedDepartureTime || !selectedReturnTime" class="btn btn-danger" (click)="chooseDateFirst()" enabled>Choose Date First</button>
       <button class="btn btn-success " [ngClass]="{'btn-disabled': !isButtonEnabled, 'btn-enabled': isButtonEnabled}"[disabled]="!isButtonEnabled " (click)="onSubmit()" >Submit</button>
     </div>
     

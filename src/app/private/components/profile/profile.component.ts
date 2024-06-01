@@ -22,9 +22,10 @@ export class ProfileComponent {
     state: ''
   };
   employeeId: string | null = null;
-  updatedEmployee: Employee[]=[];
+  updatedEmployee: Employee[] = [];
   @ViewChild('employeeForm') employeeForm!: NgForm;
   changesSaved: boolean = false;
+
   constructor(
     private employeeService: EmployeeService,
     private route: ActivatedRoute,
@@ -41,7 +42,6 @@ export class ProfileComponent {
       event.stopPropagation();
     }
   }
-  
 
   ngOnInit(): void {
     // Retrieve employee ID from local storage
@@ -57,6 +57,7 @@ export class ProfileComponent {
   displayEmployee(id: number) {
     this.employeeService.getEmployeeById(id).subscribe((res) => {
       this.employee = res;
+      this.updateLocalStorageEmail(); // Update local storage with initial email
     });
     console.log(this.employee)
   }
@@ -67,14 +68,25 @@ export class ProfileComponent {
       console.log(this.employee?.id)
     }
   }
+
   updateEmployee(id: number) {
     this.employeeService.editEmployee(id, this.employee).subscribe(updatedEmployee => {
       // Update this.employee with the updated data received from the server
       this.employee = updatedEmployee;
       console.log("Employee details updated successfully:", updatedEmployee);
+      this.updateLocalStorageEmail(); // Update local storage email after saving
+      window.location.reload();
       // Optionally, you can navigate to another route or perform any other action here
     });
-  }  
-  
+  }
 
+  @HostListener('ngModelChange', ['$event']) onNgModelChange(event: any) {
+    this.updateLocalStorageEmail();
+  }
+
+  updateLocalStorageEmail() {
+    if (this.employee.email) {
+      localStorage.setItem('email', this.employee.email);
+    }
+  }
 }

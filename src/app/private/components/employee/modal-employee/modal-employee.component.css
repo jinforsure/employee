@@ -1,49 +1,113 @@
 /* Style the modal content */
 .mat-dialog-content {
-    padding: 20px;
-  }
-  
-  /* Style the modal title */
-  .mat-dialog-title {
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 10px;
-    color: black;
-  }
-  
-  /* Style the list items */
-  ul {
-    list-style-type: none;
-    padding: 0;
-  }
-  
-  /* Style the reservation details */
-  li {
-    margin-bottom: 10px;
-  }
-  
-  /* Style the close button */
-  .mat-dialog-actions {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    margin-top: 20px;
-    border-top: 1px solid #ccc; /* Add a line above the button */
-  }
-  
-  /* Style the close button */
-  button {
-    background-color: #b1b1b1;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    margin-left: 240px;
-  }
-  
-  /* Hover effect for close button */
-  button:hover {
-    background-color: #ff0a0a;
-  }
-  
+  padding: 20px;
+}
+
+/* Style the modal title and close icon */
+.dialog-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #0A1E59;
+}
+
+.title {
+  font-size: 24px;
+  font-weight:bolder;
+  color: #0A1E59;
+  margin-top: 15px;
+  margin-left: 15px;
+}
+
+li {
+  font-size: 18px;
+  font-weight:bolder;
+  color: #0A1E59;
+  margin-top: -15px;
+  margin-left: 15px;
+}
+
+
+.close-icon {
+  background-color: white;
+  background: white;
+  font-size: 24px;
+  cursor: pointer;
+  transition: color 0.3s;
+  margin-right: 20px;
+  border: none;
+  color: #0A1E59;
+}
+
+.close-icon:hover {
+  color: #ff0a0a;
+}
+
+/* Style the list items */
+.employee-info {
+  list-style-type: none;
+  padding: 0;
+  font-weight: bold;
+}
+
+.username {
+  color: #007bff;
+}
+
+/* Style the reservation table */
+.reservation-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+  font-family: Arial, sans-serif;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+th, td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+th {
+  background-color: #f4f4f4;
+  font-weight: bold;
+}
+
+tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+tr:hover {
+  background-color: #f1f1f1;
+}
+
+/* Style the no reservations message */
+.no-reservations {
+  margin-top: 10px;
+  color: #888;
+}
+
+/* Style the close button container */
+.dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: 20px;
+  border-top: 1px solid #ccc; /* Add a line above the button */
+}
+
+/* Style the close button */
+.button-louta {
+  background-color: #b1b1b1;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+/* Hover effect for close button */
+.button-louta:hover {
+  background-color: #ff0a0a;
+}

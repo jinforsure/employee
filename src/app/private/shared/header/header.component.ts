@@ -3,19 +3,23 @@ import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { Location } from '@angular/common';
 import { NotifService, AppNotification } from '../../services/notif.service';
+import { AuthService } from '../../services/auth.service'; // Import AuthService
 
 export const userItems = [
   {
     icon: 'fal fa-user',
-    label: 'Profile'
+    label: 'Profile',
+    route: '/profile'
   },
   {
     icon: 'fal fa-cog',
-    label: 'Settings'
+    label: 'Settings',
+    route: '/settings'
   },
   {
     icon: 'fal fa-power-off',
-    label: 'Log out'
+    label: 'Log out',
+    action: 'logout'
   },
 ];
 
@@ -33,6 +37,31 @@ export class HeaderComponent implements OnInit {
   notifications: AppNotification[] = [];
   hasNewNotification = false;
   userItems = userItems;
+  isMenuOpen = false;
+  breadcrumbs: any[] = [];
+
+  constructor(
+    private router: Router,
+    private activatedRoute: ActivatedRoute,
+    private location: Location,
+    private notifService: NotifService,
+    private authService: AuthService // Inject AuthService
+  ) {
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe(() => {
+      let route = this.activatedRoute.firstChild;
+      this.breadcrumbs = [];
+      while (route) {
+        const routePath = route.snapshot.url.map(segment => segment.path);
+        this.breadcrumbs.push({
+          label: route.snapshot.data['breadcrumb'] || route.snapshot.url.map(segment => segment.path).join('/'),
+          url: '/' + routePath.join('/')
+        });
+        route = route.firstChild;
+      }
+    });
+  }
 
   ngOnInit(): void {
     this.checkCanShowSearchOverlay(window.innerWidth);
@@ -58,41 +87,25 @@ export class HeaderComponent implements OnInit {
     this.canShowSearchAsOverlay = innerWidth < 845;
   }
 
-  breadcrumbs: any[] = [];
-
-  constructor(
-    private router: Router,
-    private activatedRoute: ActivatedRoute,
-    private location: Location,
-    private notifService: NotifService
-  ) {
-    // Subscribe to router events
-    this.router.events.pipe(
-      filter(event => event instanceof NavigationEnd)
-    ).subscribe(() => {
-      // Get the current route and its parent routes
-      let route = this.activatedRoute.firstChild;
-      this.breadcrumbs = [];
-      while (route) {
-        const routePath = route.snapshot.url.map(segment => segment.path);
-        this.breadcrumbs.push({
-          label: route.snapshot.data['breadcrumb'] || route.snapshot.url.map(segment => segment.path).join('/'),
-          url: '/' + routePath.join('/')
-        });
-        route = route.firstChild;
-      }
-    });
-  }
-
   private loadNotifications(): void {
+    // Get the username from local storage
+    const username = localStorage.getItem('username');
+    if (!username) {
+      console.error('Username not found in local storage');
+      return;
+    }
+
     this.notifService.getNotifications().subscribe(
       (data: AppNotification[]) => {
-        this.notifications = data.reverse(); // Reverse the order of notifications
+        // Filter notifications based on the username extracted from the message
+        const usernameRegex = new RegExp(`Dear\\s+${username}\\b`, 'i');
+        console.log("username : ",usernameRegex)
+        this.notifications = data.filter(notification => usernameRegex.test(notification.message)).reverse();
         this.hasNewNotification = this.notifications.length > 0;
-        console.log("notiff", this.notifications);
+        console.log("Filtered notifications:", this.notifications);
       },
       (error) => {
-        console.error('Erreur lors du chargement des notifications', error);
+        console.error('Error loading notifications', error);
       }
     );
   }
@@ -100,4 +113,39 @@ export class HeaderComponent implements OnInit {
   navigateBack(): void {
     this.location.back();
   }
+
+  logout(): void {
+    this.authService.logout();
+    this.router.navigate(['/login']); // Redirect to login page after logout
+  }
+
+  onUserItemClicked(item: any): void {
+    if (item.action === 'logout') {
+      this.logout();
+    } else {
+      this.router.navigate([item.route]);
+    }
+  }
+  
+
+  markAllAsRead(): void {
+    // Implement the logic to mark all notifications as read
+    this.hasNewNotification = false;
+}
+
+getNotificationIcon(message: string): string {
+  if (message.includes('successfully')) {
+      return 'fas fa-check-circle';
+  } else if (message.includes('edited') || message.includes('updated')) {
+      return 'fas fa-info-circle';
+  } else if (message.includes('error') || message.includes('failed')) {
+      return 'fas fa-exclamation-circle';
+  } else if (message.includes('cancelled') || message.includes('deleted')) {
+      return 'fas fa-times-circle';
+  } else {
+      return 'fas fa-bell';
+  }
+}
+
+
 }

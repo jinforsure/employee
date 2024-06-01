@@ -3,7 +3,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { Equipments } from 'src/app/private/model/equipments';
 import { EquipmentsService } from 'src/app/private/services/equipments.service';
 import { AddEquipmentsModalComponent } from './add-equipments-modal/add-equipments-modal.component';
-import { EditEmployeeModalComponent } from '../../employee/edit-employee-modal/edit-employee-modal.component';
 import { EditEquipmentsModalComponent } from './edit-equipments-modal/edit-equipments-modal.component';
 
 @Component({

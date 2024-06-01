@@ -72,3 +72,8 @@ body{margin-top:20px;
     .btn{
         margin-top: 10px;
     }
+
+ /* CSS to make the asterisk in span elements red */
+span.required {
+    color: red;
+}

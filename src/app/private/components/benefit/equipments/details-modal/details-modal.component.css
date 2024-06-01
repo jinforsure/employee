@@ -1,12 +1,34 @@
-/* Style du modal */
-.mat-dialog-container {
-    background-color: white; /* Fond blanc */
-  }
-  
-  /* Style du bouton Close */
-  .mat-dialog-actions button {
-    background-color: blue; /* Bouton bleu */
-    color: white; /* Texte blanc */
-    /* Ajoutez d'autres styles personnalisés si nécessaire */
-  }
-  
+.modal-content {
+  padding: 20px;
+  margin-top: -20px;
+}
+
+.details-section {
+  margin-bottom: 20px;
+}
+
+.detail {
+  margin-bottom: 10px;
+}
+
+.detail-label {
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.detail-value {
+  color: #555;
+}
+.modal-title{
+  padding-bottom: 15px;
+  background: #ffffff;
+  color: #000000; /* Changed to black */
+  padding: 16px 30px;
+  margin: -20px -25px 10px;
+  margin-top: 3px;
+  margin-left: 3px;
+}
+
+.modal-footer{
+  margin-top: -20px;
+}

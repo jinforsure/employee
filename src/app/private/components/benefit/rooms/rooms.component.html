@@ -35,7 +35,14 @@
             <td>{{rooms.type}}</td>
             <td>{{rooms.location}}</td>
             <td>{{rooms.capacity}}</td>
-            <td>{{rooms.maintenance_status}}</td>
+            <td>
+              <ng-container [ngSwitch]="rooms.maintenance_status">
+                  <button *ngSwitchCase="'operational'" type="button" class="btn btn-outline-success">{{ rooms.maintenance_status }}</button>
+                  <button *ngSwitchCase="'under maintenance'" type="button" class="btn btn-outline-warning">{{ rooms.maintenance_status }}</button>
+                  <button *ngSwitchCase="'damaged'" type="button" class="btn btn-outline-danger">{{ rooms.maintenance_status }}</button>
+                  <button *ngSwitchDefault type="button" class="btn btn-outline-primary">{{ rooms.maintenance_status }}</button>
+              </ng-container>
+          </td>  
             <td>
               <ng-container *ngIf="rooms.state === 'Enabled'; else inactiveButton">
                 <button type="button" class="btn btn-success">{{ rooms.state }}</button>

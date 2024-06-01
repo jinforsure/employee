@@ -12,24 +12,13 @@ import { EquipmentsService } from 'src/app/private/services/equipments.service';
 })
 export class EditEquipmentsModalComponent {
   equipments : Equipments ={name: '',type:'',manufactuer:'',model:'',quantity:0,price:0,maintenance_status:'',state:'',checked:false, benefitId:1, category:'Equipments',departDate:new Date(),departHour:'',returnHour:''  };
-  departments: string[] = ['web','mobile'];
-  account_types: string[]=['equipments','Technician','Admin'];
-  states: string[] = ['Enabled', 'Diabled'];
+  states: string[] = ['Enabled', 'Disabled'];
   equipmentsId: string |null = null;
   @ViewChild('equipmentsForm') equipmentsForm!: NgForm;
-  quantityInvalid: boolean = true;
-  priceInvalid: boolean = true;
   stateInvalid:boolean=true;
-  saveDisabled: boolean = true;
-  jobInvalid: boolean = true;
-  types: String[]=['Computer Equipments','Security Equipments','Production Equipments'];
-
-jobs: string[] = ['developper','HR'];
 
   constructor(
     private equipmentsService: EquipmentsService ,
-    private route: ActivatedRoute,
-    private router: Router,
     private el: ElementRef,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<EditEquipmentsModalComponent>
@@ -79,15 +68,15 @@ jobs: string[] = ['developper','HR'];
   }
 
 
-  checkFormValidity() {
-    this.quantityInvalid = this.equipmentsForm.controls['quantity'].invalid && this.equipmentsForm.controls['quantity'].touched;
-    this.priceInvalid = this.equipmentsForm.controls['price'].invalid && this.equipmentsForm.controls['price'].touched;
-    // Activer ou désactiver le bouton "Save" en fonction de la validité du formulaire
-    this.saveDisabled = this.equipmentsForm.invalid || this.quantityInvalid || this.priceInvalid;
-  }
-
   closeDialog(): void {
     this.dialogRef.close();
   }
 
+  onMaintenanceStatusChange() {
+    if (this.equipments.maintenance_status === 'damaged') {
+      this.equipments.state = 'Disabled';
+    } else {
+      this.equipments.state = 'Enabled';
+    }
+  }
 }

@@ -1,12 +1,13 @@
 /* Modal Styles */
 .modal-dialog {
-    height: 700px;
+    height: 660px;
   }
   
   
   .modal-header {
     background-color: #ffffff;
     color: #0A1E59;
+    height: 50px;
   }
   
   .modal-title {
@@ -24,8 +25,8 @@
     margin-left: -15px;
   }
   .col {
-    flex: 0 0 calc(50% - 10px); /* Adjust the width and margin as needed */
-    max-width: calc(50% - 10px); /* Adjust the width and margin as needed */
+    width: 50px;
+    height: 50px;
     padding-right: 15px;
     padding-left: 15px;
     margin-bottom: 20px;

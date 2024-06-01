@@ -11,9 +11,9 @@
         <div class="row">
           <div class="col">
             <label for="state">State</label>
-            <select id="state" [(ngModel)]="reservation.state" name="state" 
-                    [ngClass]="{ 'state-reseerved': reservation.state === 'Reserved', 'state-cancelled': reservation.state !== 'Cancelled' }">
-              <option value="" disabled selected>Select state</option>
+            <select id="state" [(ngModel)]="updatedState" (change)="onStateChange($event)" name="state" 
+                    [ngClass]="{ 'state-reserved': updatedState === 'Reserved', 'state-cancelled': updatedState === 'Cancelled' }">
+              <option value="" disabled>Select state</option>
               <option value="Reserved">Reserved</option>
               <option value="Cancelled">Cancelled</option>
             </select>

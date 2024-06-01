@@ -69,13 +69,15 @@ export class EditRoomsModalComponent {
   }
 
 
-
-  checkFormValidity() {
-    this.capacityInvalid = this.roomsForm.controls['capacity'].invalid && this.roomsForm.controls['capacity'].touched;
-    // Activer ou désactiver le bouton "Save" en fonction de la validité du formulaire
-    this.saveDisabled = this.roomsForm.invalid || this.capacityInvalid ;
-  }
   closeDialog(): void {
     this.dialogRef.close();
+  }
+
+  onMaintenanceStatusChange() {
+    if (this.rooms.maintenance_status === 'damaged') {
+      this.rooms.state = 'Disabled';
+    } else {
+      this.rooms.state = 'Enabled';
+    }
   }
 }

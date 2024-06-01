@@ -20,7 +20,7 @@ export class MaintenanceEquipComponent {
   searchText: string ='';
   email:string|null=localStorage.getItem('email') ;
   username=localStorage.getItem('username') ;
-  equipmentsWithDate: { equipmentId: number, departureDate: Date, departureHour: string, returnHour:string ,equipmentData:Equipments}[] = [];
+  equipmentsWithDate: { equipmentId: number, departureDate: Date, departureHour: string, returnHour:string ,equipmentData:Equipments,benefit_status: string;}[] = [];
 
   FinalEquipmentData: {
     equipmentId: number;
@@ -28,6 +28,7 @@ export class MaintenanceEquipComponent {
     departureTime: string; // Ajout de l'heure de départ
     returnTime: string; // Ajout de l'heure de retour
     equipmentData: any;
+    benefit_status: string;
   }[]=[];
   filteredEquipmentData: {
     equipmentId: number;
@@ -39,8 +40,9 @@ export class MaintenanceEquipComponent {
   }[] = [];
 
   disableReservationState: boolean = false;
-disableReturned: boolean = false;
-disableTaken: boolean = false;
+  disableReturned: boolean = false;
+  disableTaken: boolean = false;
+  maintenanceStatuses: string[] = ['operational', 'under maintenance', 'damaged'];
 
    donneesFinales: any[] = [];
     donneesEquipements: any[] = [];
@@ -126,6 +128,17 @@ disableTaken: boolean = false;
   ngOnInit(): void {
     
     this.loadFutureReservationsAndEquipments();
+    // Inside the ngOnInit or relevant initialization method
+   this.equipmentService.getAllEquipments().subscribe((equipments: Equipments[]) => {
+   this.equipments = equipments.map(equipment => {
+    // Set default maintenance status to 'Operational' if not already set
+    if (!equipment.maintenance_status) {
+      equipment.maintenance_status = 'operational';
+    }
+    return equipment;
+  });
+});
+
   }
   
   
@@ -151,9 +164,29 @@ disableTaken: boolean = false;
         // Convertir la date de départ de la réservation en objet Date avec le bon format
         const [day, month, year] = reservation.departDate.split('-').map(part => parseInt(part));
         const departureDate = new Date(year, month - 1, day); // Soustraire 1 de month car les mois sont indexés à partir de 0
-        const departureHour = parseInt(reservation.departHour, 10);
+        const departHourParts = reservation.departHour.split(':');
+        const departHour = parseInt(departHourParts[0], 10);
+        const departMinutes = parseInt(departHourParts[1], 10);
+        const returnHourParts = reservation.returnHour.split(':');
+        const returnHour = parseInt(returnHourParts[0], 10);
+        const returnMinutes = parseInt(returnHourParts[1], 10);
+        
+
+        if (departureDate.toDateString() === currentDate.toDateString() &&
+        (returnHour > currentDate.getHours() || (returnHour === currentDate.getHours() && returnMinutes >= currentDate.getMinutes()))) {
+        return true;
+    }
+
+    // Check if departure date is after current date
+    if (departureDate > currentDate) {
+        return true;
+    }
+        console.log("depart date : ",departureDate.toDateString())
+        console.log("current date : ",currentDate.toDateString())
+        console.log("depart hour : ",departHour)
+        console.log("current hour : ",currentDate.getHours())
         // Vérifier si la date de départ est après la date actuelle et que la date de retour est la même que la date de départ
-        return departureDate >= currentDate || (departureDate.toDateString() === currentDate.toDateString() && departureHour > currentDate.getHours());
+        return departureDate >= currentDate || (departureDate.toDateString() === currentDate.toDateString() && (departHour > currentDate.getHours() || (departHour === currentDate.getHours() && departMinutes > currentDate.getMinutes())));
       });
   
       // Traiter les réservations futures
@@ -176,6 +209,7 @@ disableTaken: boolean = false;
                 departureDate: departureDate,
                 departureHour: reservation.departHour,
                 returnHour: reservation.returnHour,
+                benefit_status:reservation.benefit_status!,
                 equipmentData: equipment
               });
   
@@ -229,11 +263,6 @@ disableTaken: boolean = false;
   }
   
   filterAndProcessData() {
-
-    
-  console.log("eeee");
-  console.log(this.tableauResultat);
-  console.log(this.equipments);
       // Parcourir chaque élément de tableauResultat
       this.equipmentsWithDate.forEach(element => {
         // Extraire l'ID de l'équipement
@@ -244,14 +273,14 @@ disableTaken: boolean = false;
           const date = element.departureDate;
           const departureTime = element.departureHour;
           const returnTime = element.returnHour;
-  
+          const benefit_status = element.benefit_status
           // Rechercher les données de l'équipement correspondant à cet ID, à cette date et à cette heure
           const equipmentDataForId = this.equipments.find(equipment => equipment.id === equipmentId );
-  console.log(equipmentDataForId);
+          console.log(equipmentDataForId);
           // Vérifier si des données ont été trouvées
           if (equipmentDataForId) {
             equipmentDataForId.returned = "returned";
-            equipmentDataForId.taken = "Not taken";
+            equipmentDataForId.taken = "taken";
             equipmentDataForId.reservation_State = "Reserved";
             // Ajouter les données trouvées au tableau final
             this.FinalEquipmentData.push({
@@ -259,8 +288,10 @@ disableTaken: boolean = false;
               date: date,
               departureTime: departureTime,
               returnTime: returnTime,
+              benefit_status: benefit_status,
               equipmentData: equipmentDataForId
             });
+            console.log("benefit_status", benefit_status);
           }
         }
       });
@@ -281,48 +312,49 @@ disableTaken: boolean = false;
     }
   
   
-
-onFieldChange(newValue: any, fieldName: string) {
-  // Stockez la nouvelle valeur avec le nom du champ modifié
-  console.log('Nouvelle valeur de', fieldName, ':', newValue);
-
-  // Désactiver les autres champs si la condition est remplie
-  if (fieldName === 'maintenance_status' && ['under maintenance', 'Damaged'].includes(newValue)) {
-    this.disableReservationState = true;
-    this.disableReturned = true;
-    this.disableTaken = true;
-  
-    this.FinalEquipmentData.forEach((equipmentData: any) => {
-      if (equipmentData.equipmentData && equipmentData.equipmentData.taken &&equipmentData.equipmentData.returned) {
-        equipmentData.equipmentData.taken="Not taken";
-        equipmentData.equipmentData.returned="returned";
+    onFieldChange(newValue: any, fieldName: string) {
+      // Store the new value with the name of the modified field
+      console.log('New value of', fieldName, ':', newValue);
     
-        equipmentData.equipmentData.reservation_State = 'Not yet';
-      const occupiedValue = equipmentData.equipmentData.reservation_State;
-        //console.log('Occupied value:', occupiedValue);
-       
+      // Disable other fields if the condition is met
+      if (fieldName === 'maintenance_status' && newValue === 'under maintenance') {
+        this.disableReservationState = false; // Enable Reservation State
+        this.disableReturned = true; // Disable Returned
+        this.disableTaken = true; // Disable Taken
+    
+        // Set Reservation State to 'Not yet' for all equipment data
+        this.FinalEquipmentData.forEach((equipmentData: any) => {
+          if (equipmentData.equipmentData) {
+            equipmentData.equipmentData.reservation_State = 'Not yet';
+          }
+        });
+      } else if (fieldName === 'maintenance_status' && newValue === 'damaged') {
+        this.disableReservationState = false; // Enable Reservation State
+        this.disableReturned = true; // Disable Returned
+        this.disableTaken = true; // Disable Taken
+    
+        // Set Reservation State to 'Not yet' for all equipment data
+        this.FinalEquipmentData.forEach((equipmentData: any) => {
+          if (equipmentData.equipmentData) {
+            equipmentData.equipmentData.reservation_State = 'Not yet';
+          }
+        });
+      } else if (fieldName === 'state' && newValue === 'Disabled') {
+        // Disable fields if Equipment State is 'Disabled'
+        this.disableReservationState = true;
+        this.disableReturned = true;
+        this.disableTaken = true;
+      } else {
+        // Enable all fields if they don't match the disable conditions
+        this.disableReservationState = false;
+        this.disableReturned = false;
+        this.disableTaken = false;
       }
-    });
-
-  } else if (fieldName === 'state' && newValue === 'Disabled') {
-    this.disableReservationState = true;
-    this.disableReturned = true;
-    this.disableTaken = true;
-   // equipmentData.equipmentData.reservation_State="Not yet";
     
-
-   
+      // You can store the new value in an object or array as needed
+    }
     
-  } else {
-    // Activer tous les champs s'ils ne correspondent pas aux conditions de désactivation
-    this.disableReservationState = false;
-    this.disableReturned = false;
-    this.disableTaken = false;
-   
-  }
-
-  // Vous pouvez stocker la nouvelle valeur dans un objet ou un tableau selon vos besoins
-}
+    
 
 // Définir des variables de contrôle pour activer ou désactiver l'édition des champs
 performAction(equipement: any) {
@@ -331,10 +363,9 @@ performAction(equipement: any) {
 
   // Vérifier si l'utilisateur a confirmé
   if (confirmation) { 
- 
     // Vérifier si les champs Maintenance Status et Equipment State ont les valeurs nécessaires pour désactiver les autres champs
     if (
-      (equipement.equipmentData.maintenance_status === 'Damaged' || equipement.equipmentData.maintenance_status === 'under maintenance') &&
+      (equipement.equipmentData.maintenance_status === 'damaged' || equipement.equipmentData.maintenance_status === 'under maintenance') &&
       equipement.equipmentData.state === 'Disabled'
     ) {
       // Désactiver les autres champs
@@ -342,40 +373,32 @@ performAction(equipement: any) {
       this.disableReturned = true;
       this.disableTaken = true;
       equipement.equipmentData.reservation_State = 'Not yet';
-    
     } else {
       // Activer tous les champs s'ils ne correspondent pas aux conditions de désactivation
       this.disableReservationState = false;
       this.disableReturned = false;
       this.disableTaken = false;
-      
     }
+
     const roomIdToUpdate = equipement.equipmentId;
     const index = this.FinalEquipmentData.findIndex((e: any) => e.equipmentId === equipement.equipmentId);
-    console.log("equipement.equipmentData.reservation_State ",equipement.equipmentData.reservation_State );
+    console.log("equipement.equipmentData.reservation_State ", equipement.equipmentData.reservation_State);
+    
     if (equipement.equipmentData.reservation_State === 'Not yet') {
       // Stocker l'ID de la salle dans une variable
-     
       console.log('ID de la equip à mettre à jour:', roomIdToUpdate);
-
 
       // Supprimer les réservations associées à cette salle
       this.reservationService.getAllReservations().subscribe(
-       
         (reservations: any[]) => {
-          // Parcourir toutes les réservations
           reservations.forEach((reservation: any) => {
-            console.log("rrrrrrrrr",reservation.equipmentId, roomIdToUpdate);
-            // Vérifier si la réservation a le même rooms_id que roomIdToUpdate
+            console.log("rrrrrrrrr", reservation.equipmentId, roomIdToUpdate);
             if (reservation.equipmentsId === roomIdToUpdate) {
               console.log("'''''''''");
-              // Supprimer la réservation
               this.reservationService.deleteReservation(reservation.id).subscribe(
                 () => {
-                
                   console.log('La réservation associée à la equip a été supprimée avec succès.');
                   this.sendEmail();
-                  // Mettez ici le code pour gérer l'action pour l'équipement spécifique
                   console.log("Action performed for equipment:", equipement);
                 }
               );
@@ -383,65 +406,87 @@ performAction(equipement: any) {
           });
         }
       );
-    }  
-    const equipData = equipement.equipmentData.taken;    
-   
-    const heure1=equipement.departureTime;
-    console.log("date1",heure1)
-    const heure2=equipement.returnTime  ;
-    console.log("date1",heure2)
-    const departureDate = formatDateToString(equipement.date);
-    console.log("depature date ",departureDate)
-    // Vérifier et mettre à jour le Benefit State si taken ou returned
-    if (equipData === 'taken' || equipData=== 'Returned') {
-      console.log("equipData.taken",equipData)
-
-      this.reservationService.getAllReservations().subscribe((reservations: any[]) => {
-        reservations.forEach((reservation: any) => {
-          if (reservation.equipmentsId === roomIdToUpdate && reservation.departHour === heure1 && reservation.returnHour === heure2 && reservation.departDate === departureDate) {
-            if (equipData === 'taken') {
-              reservation.benefit_status = 'taken';
-            } else if (equipData === 'Returned') {
-              reservation.benefit_status = 'returned';
-            }
-
-            this.reservationService.updateReservation(reservation.id, { benefit_status: reservation.benefit_status }).subscribe(() => {
-              console.log(`Benefit State updated for reservation ${reservation.id}`);
-            }, error => {
-              console.error(`Error updating Benefit State for reservation ${reservation.id}`, error);
-            });
-          }
-        });
-      });
     }
-    // Mettez ici le code pour gérer l'action pour l'équipement spécifique
+
+    const equipData = equipement.equipmentData.taken;    
+    const heure1 = equipement.departureTime;
+    const heure2 = equipement.returnTime;
+    const departureDate = formatDateToString(equipement.date);
+
+    // Vérifier la date et l'heure actuelles
+    const currentDate = new Date();
+    const currentHour = currentDate.getHours().toString().padStart(2, '0') + ':' + currentDate.getMinutes().toString().padStart(2, '0');
+    const currentDateString = currentDate.toISOString().split('T')[0];
+
+    console.log("Current Date: ", currentDateString);
+    console.log("Current Time: ", currentHour);
+    console.log("Departure Date: ", departureDate);
+    console.log("Departure Time: ", heure1);
+    console.log("Return Time: ", heure2);
+    console.log("equip data : ", equipData);
+    // Vérifier et mettre à jour le Benefit State si taken ou returned
+    if (equipData === 'taken' || equipData === 'returned') {
+      // Additional condition to check if the return time is <= current time
+      const returnTime = new Date(`${currentDateString}T${heure2}:00`);
+      console.log("430 : ",returnTime);
+      const currentTime = new Date(`${currentDateString}T${currentHour}:00`);
+      console.log("432 : ", currentTime);
+
+      console.log("equip data : ", (departureDate === currentDateString));
+      console.log("equip data : ", (heure1 === currentHour));
+      console.log("equip data : ", (returnTime >= currentTime));
+      console.log("equip data : ", (departureDate === currentDateString && heure1 === currentHour));
+      console.log("equip data : ", (departureDate === currentDateString && returnTime >= currentTime));
+      if ( (departureDate === currentDateString && heure1 === currentHour) || (departureDate === currentDateString && returnTime >= currentTime)){
+        const departDateequip = this.formatDateToDDMMYYYY(departureDate);
+        this.reservationService.getAllReservations().subscribe((reservations: any[]) => {
+          reservations.forEach((reservation: any) => {
+             //console.log("448: ", departDateequip)
+             //console.log("448: ", reservation.departDate)
+             //console.log("448: ", reservation.departDate === departDateequip)
+            if (reservation.equipmentsId === roomIdToUpdate && reservation.departHour === heure1 && reservation.returnHour === heure2 && reservation.departDate === departDateequip) {
+              //console.log("448: ", reservation.departDate)
+              //console.log("equip id : ", reservation.equipmentsId);
+              //console.log("equip id : ", roomIdToUpdate);
+              if (equipData === 'taken' && reservation.benefit_status=== 'default') {
+                console.log("be state : ",reservation.benefit_status)
+                reservation.benefit_status = 'taken';
+                console.log("be state 452: ",reservation.benefit_status)
+              } else if ( reservation.benefit_status=== 'taken' ) {
+                console.log("be state : ",reservation.benefit_status)
+                reservation.benefit_status = 'returned';
+                console.log("be state 455: ",reservation.benefit_status)
+              }
+              console.log("be state : ",reservation.benefit_status)
+              console.log("be state : ",equipData)
+              this.reservationService.updateReservation(reservation.id, { benefit_status: reservation.benefit_status }).subscribe(() => {
+                console.log(`Benefit State updated for reservation ${reservation.id}`);
+              }, error => {
+                console.error(`Error updating Benefit State for reservation ${reservation.id}`, error);
+              });
+            }
+          });
+        });
+      } else {
+        alert("Can't change benefit state before date and time");
+        return;
+      }
+    }
+
     console.log("Action performed for equipment:", equipement);
-console.log("---------",this.donneesEquipements);
-    // Trouver l'index de l'équipement dans donneesEquipements
-  
 
-    // Vérifier si l'index est valide
     if (index !== -1) {
-      // Stocker l'ID de l'équipement
       const equipmentId = equipement.equipmentId;
-
-      // Stocker les caractéristiques modifiées
       const modifiedCharacteristics = {
-        // Ajoutez ici les caractéristiques modifiées que vous souhaitez stocker
-        // Par exemple, si vous souhaitez stocker la quantité modifiée
         quantity: equipement.equipmentData.quantity,
         maintenance_status: equipement.equipmentData.maintenance_status,
         reservation_State: equipement.equipmentData.reservation_State,
         state: equipement.equipmentData.state,
-        
-        // Ajoutez d'autres caractéristiques modifiées si nécessaire
       };
-
 
       console.log("ID de l'équipement modifié:", equipmentId);
       console.log("Caractéristiques modifiées:", modifiedCharacteristics);
 
-      // Effectuez la mise à jour de l'équipement
       this.equipmentService.editEquipments(equipement.equipmentId, equipement.equipmentData).subscribe(response => {
         console.log('Mise à jour réussie', response);
       }, error => {
@@ -451,25 +496,80 @@ console.log("---------",this.donneesEquipements);
       console.error("ID d'équipement non trouvé dans donneesEquipements.");
     }
   } else {
-    // Afficher un message d'annulation
     console.log("L'exécution de l'action a été annulée.");
   }
 }
 
-
-updateFreeField(newValue: string, equipmentData: any) {
-  if (newValue === 'taken') {
-      equipmentData.equipmentData.returned = 'Not returned';
-  } else {
-      equipmentData.equipmentData.returned = 'returned';
-  }
+formatDateToDDMMYYYY(dateString: string): string {
+  const [year, month, day] = dateString.split('-');
+  return `${day}-${month}-${year}`;
 }
 
-updateOccupiedField(newValue: string, equipmentData: any) {
-  if (newValue === 'returned') {
-      equipmentData.equipmentData.taken = 'Not taken';
+
+
+toggleBenefitState(equipmentData: any) {
+  console.log('Initial equipmentData:', equipmentData);
+  console.log(' equipmentData.benefit_status    :', equipmentData.benefit_status);
+  // Toggle benefit status
+  if (equipmentData.benefit_status === 'taken') {
+    console.log(' equipmentData.benefit_status    :', equipmentData.benefit_status);
+    equipmentData.benefit_status = 'returned';
   } else {
-      equipmentData.equipmentData.taken = 'taken';
+    equipmentData.benefit_status = 'taken';
+  }
+
+  console.log('Updated equipmentData:', equipmentData);
+
+  // Update the reservation status based on the new benefit status
+  const roomIdToUpdate = equipmentData.equipmentId;
+  const heure1 = equipmentData.departureTime;
+  const heure2 = equipmentData.returnTime;
+  const departureDate = this.formatDateToString(equipmentData.date);
+
+ /* this.reservationService.getAllReservations().subscribe((reservations: any[]) => {
+    reservations.forEach((reservation: any) => {
+      console.log('Checking reservation:', reservation);
+
+      if (
+        reservation.equipmentsId === roomIdToUpdate &&
+        reservation.departHour === heure1 &&
+        reservation.returnHour === heure2 &&
+        reservation.departDate === departureDate
+      ) {
+        reservation.benefit_status = equipmentData.benefit_status;
+        console.log("Updating benefit_status to:", reservation.benefit_status);
+
+        this.reservationService.updateReservation(reservation.id,reservation.benefit_status ).subscribe(
+          () => {
+            console.log(`Benefit State updated for reservation ${reservation.id}`);
+          },
+          (error) => {
+            console.error(`Error updating Benefit State for reservation ${reservation.id}`, error);
+          }
+        );
+      }
+    });
+  });*/
+}
+
+formatDateToString(date: any): string {
+  const day = date.getDate().toString().padStart(2, '0');
+  const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Month is zero-based
+  const year = date.getFullYear();
+  return `${day}-${month}-${year}`;
+}
+
+
+getBenefitStateColor(status: string): string {
+  switch (status) {
+    case 'taken':
+      return 'yellow';
+    case 'returned':
+      return 'green';
+    case 'default':
+      return 'grey';
+    default:
+      return 'white';
   }
 }
 
@@ -477,8 +577,8 @@ updateOccupiedField(newValue: string, equipmentData: any) {
 }
 
 function formatDateToString(date: Date): string {
-  const day = date.getDate().toString().padStart(2, '0');
-  const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Month is zero-based
   const year = date.getFullYear();
-  return `${day}-${month}-${year}`;
+  const month = (date.getMonth() + 1).toString().padStart(2, '0');
+  const day = date.getDate().toString().padStart(2, '0');
+  return `${year}-${month}-${day}`;
 }

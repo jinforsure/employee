@@ -20,7 +20,7 @@
           <div class="middle">
               <div class="left">
                   <h3>Damaged Equipments</h3>
-                  <h1>{{ pour.toFixed(2) }}</h1> <!-- Utilise toFixed(2) pour afficher 2 décimales -->
+                  <h1>{{ pour | number:'1.0-0' }}</h1> <!-- Utilise toFixed(2) pour afficher 2 décimales -->
               </div>
               <svg>
                   <circle cx='38' cy='38' r='36' [style.strokeDashoffset]="calculateStrokeOffset(pour)"></circle>

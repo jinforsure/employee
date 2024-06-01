@@ -91,7 +91,7 @@ import { DatePipe } from '@angular/common';
      AuthModalComponent,
      TechnicienComponent,
      MaintenanceRoomComponent,
-     MaintenanceEquipComponent
+     MaintenanceEquipComponent,
   ],
   providers: [
     DatePipe // Ajoutez cette ligne

@@ -2,7 +2,7 @@
 .container {
     padding: 20px;
     background-color: #f8f9fa;
-    margin-top: -20px;
+    margin-top: -25px;
   }
 
   /* Table styling */
@@ -121,5 +121,36 @@
     .table td:last-child {
       border-bottom: 0;
     }
+  }
+  
+  .benefit-button {
+    padding: 5px 10px;
+    border: none;
+    color: white;
+    cursor: pointer;
+  }
+  
+  .btn-default {
+    background-color: grey;
+  }
+  
+  .btn-taken {
+    background-color: yellow;
+    color: black; /* Adjust text color for better readability */
+  }
+  
+  .btn-returned {
+    background-color: green;
+  }
+  .default-option {
+    background-color: grey;
+  }
+  
+  .taken-option {
+    background-color: yellow;
+  }
+  
+  .returned-option {
+    background-color: green;
   }
   

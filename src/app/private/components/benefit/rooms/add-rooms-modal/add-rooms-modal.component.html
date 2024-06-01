@@ -2,7 +2,10 @@
     <div class="modal-content">
       <form #roomsForm="ngForm">
         <div class="modal-header">
-          <h4 class="modal-title">{{rooms.id ? "Edit" : "Add"}} rooms</h4>
+          <h4 class="modal-title">Add rooms</h4>
+          <button type="button" class="normal-close-button" aria-label="Close" (click)="closeDialog()">
+            <span aria-hidden="true">&times;</span>
+          </button>
         </div>
 
         <div class="modal-body">
@@ -27,36 +30,12 @@
             <div class="col">
                 <label>Capacity</label>
                 <input type="number" [(ngModel)]="rooms.capacity" name="capacity" class="form-control"  />
-                <div *ngIf="capacityInvalid && roomsForm.controls['capacity'].touched" class="text-danger"></div>
-                  Capacity is required.
             </div>
-          </div>
-          <div class="row">
-            <div class="col">
-                <label>Maintenance Status</label>
-                <select [(ngModel)]="rooms.maintenance_status" name="maintenance_status" class="form-control" required>
-                  <option value="" disabled selected>Select maintenance status</option>
-                  <option value="operational">Operational</option>
-                  <option value="under maintenance">Under Maintenance</option>
-                  <option value="damaged">Damaged</option>
-              </select>
-            </div>
-            <div class="col">
-              <label>State</label>
-              <select id="state" [(ngModel)]="rooms.state" name="state" required (ngModelChange)="checkFormValidity()"
-                      [ngClass]="{ 'state-active': rooms.state === 'Enabled', 'state-inactive': rooms.state !== 'Disabled' }">
-                <option value="" enabled selected>Select state</option>
-                <option *ngFor="let state of states" [value]="state">{{ state }}</option>
-              </select>
-              <div *ngIf="stateInvalid && roomsForm.controls['state'].touched" class="text-danger">
-                State is required.
-              </div>
-            </div>          
           </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" (click)="closeDialog()">Back</button>
-          <input type="submit" class="btn btn-success" value="Save" (click)="saveRooms()" [disabled]="roomsForm.invalid" />
+          <input type="submit" class="btn btn-success" (click)="saveRooms()" value="Save" [disabled]="!checkFormValidity() || roomsForm.invalid" />
         </div>
       </form>
     </div>

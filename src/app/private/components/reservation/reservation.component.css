@@ -65,4 +65,35 @@
     margin-left: 200px;
   }
     
+  .container-search {
+    max-width: 100%; /* Allow the container to take up the full width of its parent */
+    margin-left: auto; /* Center the container horizontally */
+    margin-right: auto; /* Center the container horizontally */
+    padding-left: 15px; /* Add some padding to the left */
+    padding-right: 15px; /* Add some padding to the right */
+  }
   
+  @media (min-width: 576px) {
+    .container-search {
+      width: 540px; /* Adjust width for small screens */
+    }
+  }
+  
+  @media (min-width: 768px) {
+    .container-search {
+      width: 720px; /* Adjust width for medium screens */
+    }
+  }
+  
+  @media (min-width: 992px) {
+    .container-search {
+      width: 960px; /* Adjust width for large screens */
+    }
+  }
+  
+  @media (min-width: 1200px) {
+    .container-search {
+      width: 1140px; /* Adjust width for extra large screens */
+    }
+  }
+   

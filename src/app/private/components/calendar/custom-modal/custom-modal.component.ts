@@ -188,9 +188,10 @@ export class CustomModalComponent {
 }
 
 
-  isFormValid(): boolean {
-    return this.reservationForm.valid && !this.reservationForm.hasError('pastDate');
-  }
+isFormValid(): boolean {
+  return this.reservationForm.valid && !this.reservationForm.hasError('pastDate') && !this.reservationForm.hasError('invalidDepartureTime') && !this.reservationForm.hasError('invalidReturnTime') && !this.reservationForm.hasError('invalidReturnTimeOrder');
+}
+
 
   ngOnInit(): void {
     this.timeRangeValidator();

@@ -6,6 +6,8 @@ export function createChartDoughunt(ctx: CanvasRenderingContext2D, equipmentData
   const operationalCount = equipmentData.filter(equipment => equipment.maintenance_status === 'Operational').length;
   const underMaintenanceCount = equipmentData.filter(equipment => equipment.maintenance_status === 'under maintenance').length;
   const damagedCount = equipmentData.filter(equipment => equipment.maintenance_status === 'Damaged').length;
+  
+  console.log(`Operational: ${operationalCount}, Under Maintenance: ${underMaintenanceCount}, Damaged: ${damagedCount}`);
 
   // Configuration du graphique doughnut avec les données mises à jour
   const doughnutConfig: ChartConfiguration<'doughnut', number[], string> = {
@@ -14,7 +16,7 @@ export function createChartDoughunt(ctx: CanvasRenderingContext2D, equipmentData
       labels: ['Operational', 'Damaged', 'Under Maintenance'],
       datasets: [{
         label: 'Equipment Maintenance Status',
-        data: [operationalCount, underMaintenanceCount, damagedCount],
+        data: [operationalCount, damagedCount, underMaintenanceCount],
         backgroundColor: [
           'rgba(75, 192, 192, 0.2)',
           'rgba(255, 99, 132, 0.2)',

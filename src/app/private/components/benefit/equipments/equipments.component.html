@@ -1,71 +1,66 @@
-<!-- Inclusion du lien vers les polices Google Material Icons -->
-<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-
-<!-- Conteneur principal avec classe 'container' -->
 <div class="container">
     <div class="table-wrapper">
         <div class="table-title">
-            <!-- Ligne contenant le titre de la table -->
             <div class="row">
-                <!-- Colonne pour le titre de la table -->
                 <div class="col-sm-6">
                     <h2>Equipments List</h2>
                 </div>
-                    <div class="col-sm-6">
-                        <a (click)="openAddEquipmentsModal()" class="btn btn-success">
-                          <i class="material-icons">&#xE147;</i> <span>Add New</span>
-                        </a>
-                    </div>
+                <div class="col-sm-6">
+                    <a (click)="openAddEquipmentsModal()" class="btn btn-success">
+                        <i class="material-icons">&#xE147;</i> <span>Add New</span>
+                    </a>
+                </div>
             </div>
         </div>
         <div class="search-container">
             <input type="text" [(ngModel)]="searchText" (input)="search()" class="form-control" placeholder="Search...">
         </div>
-        <!-- Tableau responsive avec classes Bootstrap -->
         <div class="table-responsive">
             <table class="table table-bordered table-hover">
-                <!-- En-têtes de colonnes -->
                 <thead>
                     <tr>
                         <th>Name</th>
                         <th>Subcategory</th>
                         <th>Manufactuer</th>
                         <th>Model</th>
-                        <th>Quantity</th>
                         <th>Price</th>
                         <th>Maintenance Status</th>
                         <th>State</th>
                         <th>Action</th>
                     </tr>
                 </thead>
-                <!-- Corps du tableau avec boucle *ngFor -->
                 <tbody>
                     <tr *ngFor="let equipment of filteredEquipmentList">
                         <td>{{equipment.name}}</td>
                         <td>{{equipment.type}}</td>
                         <td>{{equipment.manufactuer}}</td>
                         <td>{{equipment.model}}</td>
-                        <td>{{equipment.quantity}}</td>
                         <td>{{equipment.price}}</td>
-                        <td>{{equipment.maintenance_status}}</td>
+                        <td>
+                            <ng-container [ngSwitch]="equipment.maintenance_status">
+                                <button *ngSwitchCase="'operational'" type="button" class="btn btn-outline-success">{{ equipment.maintenance_status }}</button>
+                                <button *ngSwitchCase="'under maintenance'" type="button" class="btn btn-outline-warning">{{ equipment.maintenance_status }}</button>
+                                <button *ngSwitchCase="'damaged'" type="button" class="btn btn-outline-danger">{{ equipment.maintenance_status }}</button>
+                                <button *ngSwitchDefault type="button" class="btn btn-outline-primary">{{ equipment.maintenance_status }}</button>
+                            </ng-container>
+                        </td>                                               
                         <td>
                             <ng-container *ngIf="equipment.state === 'Enabled'; else inactiveButton">
-                              <button type="button" class="btn btn-success">{{ equipment.state }}</button>
+                                <button type="button" class="btn btn-success">{{ equipment.state }}</button>
                             </ng-container>
                             <ng-template #inactiveButton>
-                              <button type="button" class="btn btn-danger">{{ equipment.state }}</button>
+                                <button type="button" class="btn btn-danger">{{ equipment.state }}</button>
                             </ng-template>
-                          </td>
-                          <td>
-                            <a (click)="openAddEditEquipmentsModal(equipment.id,equipment)" class="edit" data-toggle="edit">
-                              <i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i>
-                            </a>              
-                          </td>
+                        </td>
+                        <td>
+                            <a (click)="openAddEditEquipmentsModal(equipment.id, equipment)" class="edit" data-toggle="edit">
+                                <i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i>
+                            </a>
+                        </td>
                     </tr>
                 </tbody>
             </table>
         </div>
-        <!-- Affichage du nombre d'entrées dans la liste d'équipements -->
         <div class="hint-text" *ngIf="equipmentsList">
             Affichage de <b>{{equipmentsList.length}}</b> entrées
         </div>

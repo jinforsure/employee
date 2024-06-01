@@ -34,19 +34,37 @@ export class ReservationAuthComponent {
   getReservations(): void {
     this.reservationService.getAllReservations()
       .subscribe(reservations => {
-        const currentDate = this.getCurrentDateInDDMMYYYY();
+        const currentDate = new Date(); // Current date object
         let filteredSet = new Set<Reservation>(); // Utiliser un ensemble pour éliminer les doublons
   
         if (this.accountType === 'Admin' || this.accountType === 'Technician') {
-          filteredSet = new Set(reservations);
+          filteredSet = new Set(reservations.filter(reservation => reservation.category === 'Rooms'));
         } else if (this.accountType === 'Employee' && this.username) {
-          filteredSet = new Set(reservations.filter(reservation => reservation.username === this.username));
+          filteredSet = new Set(reservations.filter(reservation => reservation.username === this.username && reservation.category === 'Rooms'));
         }
   
         // Filtrer les réservations en fonction à la fois de l'état et de la date de départ
         filteredSet.forEach(reservation => {
-          if (reservation.departDate && reservation.departDate >= currentDate) {
-            this.filteredReservations.push(reservation); // Ajouter les réservations qui respectent les critères au tableau
+          if (reservation.departDate) {
+            const departDateParts = reservation.departDate.split('-');
+            const departDate = new Date(parseInt(departDateParts[2]), parseInt(departDateParts[1]) - 1, parseInt(departDateParts[0]));
+            console.log("departDate",departDate)
+            // Extract day, month, and year from departure date
+            const departDay = departDate.getDate();
+            const departMonth = departDate.getMonth() + 1; // Month is zero-based
+            const departYear = departDate.getFullYear();
+           
+            // Extract day, month, and year from current date
+            const currentDay = currentDate.getDate();
+            const currentMonth = currentDate.getMonth() + 1; // Month is zero-based
+            const currentYear = currentDate.getFullYear();
+  
+            // Compare year first
+            if (departYear > currentYear ||
+                (departYear === currentYear && departMonth > currentMonth) ||
+                (departYear === currentYear && departMonth === currentMonth && departDay >= currentDay)) {
+              this.filteredReservations.push(reservation);
+            }
           }
         });
   
@@ -54,7 +72,6 @@ export class ReservationAuthComponent {
       });
   }
   
-
   
   
   getCurrentDateInDDMMYYYY(): string {

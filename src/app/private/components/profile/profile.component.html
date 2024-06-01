@@ -7,7 +7,7 @@
             <div class="card mb-4 mb-xl-0">
                 <div class="card-header">Profile Picture</div>
                 <div class="card-body text-center">
-                    <img class="img-account-profile rounded-circle mb-2" id="profilePicture" src="assets/images/user.png" alt="">
+                    <img class="img-account-profile rounded-circle mb-2" id="profilePicture" src="assets/images/userphoto.png" alt="">
                 </div>
             </div>
         </div>
@@ -19,32 +19,32 @@
                     <form #employeeForm="ngForm" (ngSubmit)="saveEmployee()">
                             <div >
                               <label>UserName</label>
-                              <input type="text" [(ngModel)]="employee.username" name="username" class="form-control"  />
+                              <input type="text" [(ngModel)]="employee.username" name="username" class="form-control" disabled />
                             </div>
                             <div class="row">
                             <div class="col">
                               <label>First Name</label>
-                              <input type="text" [(ngModel)]="employee.firstName" name="firstName" class="form-control"  />
+                              <input type="text" [(ngModel)]="employee.firstName" name="firstName" class="form-control" disabled />
                               
                             </div>
                             <div class="col">
                               <label>Last Name</label>
-                              <input type="text" [(ngModel)]="employee.lastName" name="lastName" class="form-control"  />
+                              <input type="text" [(ngModel)]="employee.lastName" name="lastName" class="form-control" disabled />
                             </div>
                             </div>
                             <div class="col">
-                                <label>Email</label>
+                                <label>Email<span class="required">*</span></label>
                                 <input type="email" [(ngModel)]="employee.email" name="email" class="form-control"  />
                                 
                               </div>  
                             <div class="row">
                             <div class="col">
-                              <label>Phone Number</label>
+                              <label>Phone Number<span class="required">*</span></label>
                               <input type="number" [(ngModel)]="employee.phoneNumber" name="phoneNumber" class="form-control" appNumbersOnly required 
                                      pattern="[0-9]{8}" title="Phone number must be 8 digits long"/>
                             </div>
                             <div class="col">
-                              <label>Address <span></span></label>
+                              <label>Address<span class="required">*</span></label>
                               <input type="text" [(ngModel)]="employee.address" name="address" class="form-control"  />
                               
                             </div>

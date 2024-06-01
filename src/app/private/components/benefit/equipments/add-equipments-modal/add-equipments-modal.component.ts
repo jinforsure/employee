@@ -1,7 +1,6 @@
 import { Component, ElementRef, HostListener, Inject, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { ActivatedRoute, Router } from '@angular/router';
 import { Equipments } from 'src/app/private/model/equipments';
 import { EquipmentsService } from 'src/app/private/services/equipments.service';
 
@@ -11,9 +10,10 @@ import { EquipmentsService } from 'src/app/private/services/equipments.service';
   styleUrls: ['./add-equipments-modal.component.css']
 })
 export class AddEquipmentsModalComponent {
-  equipments : Equipments ={name: '',type:'',manufactuer:'',model:'',quantity:0,price:0,maintenance_status:'',state:'',checked:false, benefitId:1, category:'Equipments',departDate:new Date(),departHour:'',returnHour:'' };
+  equipments : Equipments ={name: '',type:'',manufactuer:'',model:'',quantity:0,price:0,maintenance_status:'operational',state:'Enabled',checked:false, benefitId:1, category:'Equipments',departDate:new Date(),departHour:'',returnHour:'' };
   departments: string[] = ['web','mobile'];
   account_types: string[]=['equipments','Technician','Admin'];
+  maintenance: string[]=['operational','under maintenance','damaged'];
   states: string[] = ['Enabled', 'Diabled'];
   equipmentsId: string |null = null;
   @ViewChild('equipmentsForm') equipmentsForm!: NgForm;
@@ -22,14 +22,12 @@ export class AddEquipmentsModalComponent {
   stateInvalid:boolean=true;
   saveDisabled: boolean = true;
   jobInvalid: boolean = true;
-  types: String[]=['Computer Equipments','Security Equipments','Production Equipments'];
+  types: String[]=['Computer Equipments','Security Equipments','Production Equipments','Audio Visuel','Cables'];
 
 jobs: string[] = ['developper','HR'];
 
   constructor(
     private equipmentsService: EquipmentsService ,
-    private route: ActivatedRoute,
-    private router: Router,
     private el: ElementRef,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<AddEquipmentsModalComponent>
@@ -69,12 +67,13 @@ jobs: string[] = ['developper','HR'];
     this.dialogRef.close();
   }
 
-
   checkFormValidity() {
-    this.quantityInvalid = this.equipmentsForm.controls['quantity'].invalid && this.equipmentsForm.controls['quantity'].touched;
-    this.priceInvalid = this.equipmentsForm.controls['price'].invalid && this.equipmentsForm.controls['price'].touched;
-    // Activer ou désactiver le bouton "Save" en fonction de la validité du formulaire
-    this.saveDisabled = this.equipmentsForm.invalid || this.quantityInvalid || this.priceInvalid;
+    // Check if all fields have values
+    if (this.equipments.name && this.equipments.type && this.equipments.manufactuer && this.equipments.model && this.equipments.price) {
+      return true; // All fields are filled
+    } else {
+      return false; // Not all fields are filled
+    }
   }
 
   closeDialog(): void {

@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Employee } from '../model/employee';
 import { Observable } from 'rxjs';
@@ -39,4 +39,14 @@ export class EmployeeService {
   getEmployeeByEmail(email: string): Observable<Employee> {
     return this.httpclient.get<Employee>(`${this.baseUrl}/employee/email/${email}`);
   }
+
+  changePassword(email: string, currentPassword: string, newPassword: string): Observable<any> {
+    let params = new HttpParams()
+      .set('email', email)
+      .set('currentPassword', currentPassword)
+      .set('newPassword', newPassword);
+
+    return this.httpclient.post(`${this.baseUrl}/employee/change-password`, {}, { params, responseType: 'text' });
+  }
+
 }
