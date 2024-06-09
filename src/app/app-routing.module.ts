@@ -4,6 +4,7 @@ import { LoginComponent } from './private/components/login/login.component';
 import { EmployeeLayoutComponent } from './layouts/employee-layout/employee-layout.component';
 import { ForgotPasswordComponent } from './private/components/forgot-password/forgot-password.component';
 import { NotFoundComponent } from './private/components/not-found/not-found.component';
+import { ResetPasswordComponent } from './private/components/reset-password/reset-password.component';
 
 
 
@@ -21,6 +22,7 @@ const routes: Routes = [
     path: 'forgot-password',
     component: ForgotPasswordComponent,
   },
+  { path: 'reset-password', component: ResetPasswordComponent },
   {
     path: '',
     redirectTo: 'dashboard',

@@ -30,6 +30,13 @@ export class SettingsComponent {
   }
 
   changePassword() {
+    if (this.newPassword !== this.confirmPassword) {
+      this.isSuccess = false;
+      this.message = 'New password and confirm password do not match.';
+      this.cdr.detectChanges();
+      return; // Stop further execution
+    }
+  
     if (this.email) {
       this.employeeService.changePassword(this.email, this.currentPassword, this.newPassword)
         .subscribe(

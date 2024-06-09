@@ -33,6 +33,8 @@ export class CalendarComponent {
 
   events: CalendarEvent<any>[] = [];
   refresh = new Subject<void>();
+  message: string = '';
+  isSuccess: boolean = true;
 
   reservations: {
       username: any; name: string, departDate: string, departHour: string, returnHour: string 
@@ -51,6 +53,7 @@ export class CalendarComponent {
     { date: '2024-07-25', name: 'National Day of the Republic' },
     { date: '2024-09-15', name: 'Mouled' },
     { date: '2024-10-15', name: 'Evacuation day' },
+    { date: '2024-12-31', name: 'New years eve' },
   ];
   holidayEvents: CalendarEvent[] = [];
 
@@ -313,7 +316,8 @@ export class CalendarComponent {
     // Check if the reservation is in the past or ongoing
     if (!start || start <= now) {
       console.error('Cannot cancel past or ongoing reservation.');
-      alert('Cannot cancel past or ongoing reservation.');
+      this.isSuccess = false;
+      this.message = 'Cannot cancel past or ongoing reservation.';
       return; // Exit the method if the reservation is in the past or ongoing
     }
     
@@ -329,6 +333,7 @@ export class CalendarComponent {
         console.log('Reservation cancelled:', event);
         // Change the color of the cancelled reservation to red
         event.color = { primary: 'red', secondary: 'red' };
+        window.location.reload();
         // You might want to refresh the reservations after cancellation
         this.getAllReservations();
       }, error => {

@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Reservation } from '../../model/reservation';
 import { ReservationService } from '../../services/reservation.service';
-import { state } from '@angular/animations';
 
 @Component({
   selector: 'app-past-reservations',
@@ -15,11 +14,7 @@ export class PastReservationsComponent implements OnInit {
   accountType: string | null = '';
   username: string | null = '';
 
-
   constructor(private reservationService: ReservationService) { }
-
-
-  
 
   ngOnInit(): void {
     this.accountType = localStorage.getItem('account_type');
@@ -30,58 +25,51 @@ export class PastReservationsComponent implements OnInit {
   getReservations(): void {
     this.reservationService.getAllReservations()
       .subscribe(reservations => {
-        const currentDate = this.getCurrentDateInDDMMYYYY();
         if (this.accountType === 'Admin' || this.accountType === 'Technician') {
           this.reservations = reservations;
         } else if (this.accountType === 'Employee' && this.username) {
           this.reservations = reservations.filter(reservation => reservation.username === this.username);
         }
-  
-        // Filter reservations based on both state and departure date
-        this.filteredReservations = this.reservations.filter(reservation => {
-          if (reservation.departDate && reservation.departDate < currentDate) {
-            return true; // Include reservations with departure date before current date
-          }
-          return false; // Exclude reservations with undefined departure date or departDate not before currentDate
-        }).filter(reservation => {
-          // Filter reservations based on selected state
-          if (this.selectedStatus === 'all') {
-            return true; // Include all reservations
-          } else {
-            return reservation.state === this.selectedStatus; // Include reservations with matching state
-          }
-        });
-  
-        console.log('Filtered reservations:', this.filteredReservations);
+        this.filterReservations(this.selectedStatus); // Apply initial filtering
       });
   }
-  
 
-  
-  
   getCurrentDateInDDMMYYYY(): string {
     const today = new Date();
     const day = String(today.getDate()).padStart(2, '0');
     const month = String(today.getMonth() + 1).padStart(2, '0'); // January is 0!
     const year = today.getFullYear();
-  
     return `${day}-${month}-${year}`;
   }
 
-  filterReservations(state: string): void {
-    console.log('Filtering reservations with state:', state);
-    if (state === 'all') {
-        this.filteredReservations = this.reservations;
-    } else if (state === 'Reserved'){
-        this.filteredReservations = this.reservations.filter(reservation => reservation.state === 'Reserved');
-    } else if (state === 'Cancelled'){
-      this.filteredReservations = this.reservations.filter(reservation => reservation.state === state);
+  parseDate(dateStr: string): Date {
+    const [day, month, year] = dateStr.split('-').map(Number);
+    return new Date(year, month - 1, day); // Note: month is 0-based
   }
+
+  filterReservations(state: string): void {
+    const currentDateStr = this.getCurrentDateInDDMMYYYY();
+    const currentDate = this.parseDate(currentDateStr);
+
+    this.filteredReservations = this.reservations.filter(reservation => {
+      const departDate = this.parseDate(reservation.departDate!);
+      console.log("current date:", currentDateStr);
+      console.log("reservation depart date:", reservation.departDate);
+      console.log("parsed depart date:", departDate);
+      console.log("comparison result:", departDate < currentDate);
+      return departDate && departDate < currentDate;
+    }).filter(reservation => {
+      if (state === 'all') {
+        return true;
+      } else {
+        return reservation.state === state;
+      }
+    });
+
     console.log('Filtered reservations:', this.filteredReservations);
-}
+  }
 
   onStatusChange(state: string): void {
-    console.log("change")
     this.selectedStatus = state;
     this.filterReservations(state);
   }

@@ -20,7 +20,7 @@
           <div class="middle">
               <div class="left">
                   <h3>Damaged Equipments</h3>
-                  <h1>{{ pour | number:'1.0-0' }}</h1> <!-- Utilise toFixed(2) pour afficher 2 décimales -->
+                  <h1>{{ pour | number:'1.0-0' }} %</h1> <!-- Utilise toFixed(2) pour afficher 2 décimales -->
               </div>
               <svg>
                   <circle cx='38' cy='38' r='36' [style.strokeDashoffset]="calculateStrokeOffset(pour)"></circle>
@@ -48,15 +48,16 @@
             
     </div>
     
-    <div class="charts">
-        <div class="chart">
-            <h2>Reservation Occurrences (past 12 months)</h2>
-            <canvas id="lineChart" ></canvas>
-        </div>
-        <div class="chart" id="doughunt-chart">
-            <h2>Maintenance</h2>
-            <canvas id="doughuntChart" ></canvas>
-        </div>
-    </div>
+
   </div>
   </div>
+<div class="charts">
+  <div class="chart">
+      <h2>Reservation Occurrences (past 12 months)</h2>
+      <canvas id="lineChart" ></canvas>
+  </div>
+  <div class="chart" id="doughunt-chart">
+      <h2>Maintenance</h2>
+      <canvas id="doughuntChart" ></canvas>
+  </div>
+</div>

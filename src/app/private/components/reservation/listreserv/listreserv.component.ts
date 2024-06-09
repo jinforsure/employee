@@ -1,10 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { ReservationService } from 'src/app/private/services/reservation.service';
-import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms'; 
-import { MatDialog } from '@angular/material/dialog';
-import * as emailjs from 'emailjs-com';
 import { Reservation } from 'src/app/private/model/reservation';
 import { EmailService } from 'src/app/private/services/email.service';
 import { NotifService,AppNotification } from 'src/app/private/services/notif.service';
@@ -213,7 +210,7 @@ this.reservationService.storeReservationState(this.reservationState);
   this.router.navigate(['/reservation']); // Remplacez '/previous-page' par le chemin de la page précédente
 }
 Back(){
-  this.router.navigate(['/calendar']);
+  this.router.navigate(['/calendar'])
 }
 
 

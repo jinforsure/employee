@@ -10,7 +10,7 @@
                         <a (click)="navigateBack()" [ngClass]="{'active': last}">{{ breadcrumb.label }}</a>
                     </ng-container>
                 </span>
-            </div>                  
+            </div>
         </div>
         <div class="head-content-right">
             <div class="head-menu">
@@ -28,7 +28,10 @@
                             <ul class="notification-list">
                                 <li *ngFor="let notification of notifications" class="notification-item" cdkMenuItem>
                                     <div class="notification-icon-container">
-                                        <i class="notification-icon" [ngClass]="getNotificationIcon(notification.message)"></i>
+                                        <i class="notification-icon"
+                                           [ngClass]="getNotificationIcon(notification.message).iconClass"
+                                           [ngStyle]="{'color': getNotificationIcon(notification.message).color}">
+                                        </i>
                                     </div>
                                     <div class="notification-content">
                                         <div class="notification-message">{{ notification.message }}</div>
@@ -47,8 +50,7 @@
                 </div>
             </div>
         </div>
-        
-    </div>        
+    </div>
 </div>
 
 <ng-template #userverlay>
@@ -67,7 +69,7 @@
                 </a>
             </li>
             <li>
-                <a  class="profile-link" (click)="onUserItemClicked(userItems[2])">
+                <a class="profile-link" (click)="onUserItemClicked(userItems[2])">
                     <i class="icon" [ngClass]="userItems[2].icon"></i>
                     <span>{{userItems[2].label}}</span>
                 </a>

@@ -3,9 +3,9 @@ import { Chart,ChartConfiguration } from "chart.js/auto";
 
 export function createChartDoughunt(ctx: CanvasRenderingContext2D, equipmentData: any[]): Chart<'doughnut', number[], string> {
   // Comptez le nombre d'équipements dans chaque état de maintenance
-  const operationalCount = equipmentData.filter(equipment => equipment.maintenance_status === 'Operational').length;
+  const operationalCount = equipmentData.filter(equipment => equipment.maintenance_status === 'operational').length;
   const underMaintenanceCount = equipmentData.filter(equipment => equipment.maintenance_status === 'under maintenance').length;
-  const damagedCount = equipmentData.filter(equipment => equipment.maintenance_status === 'Damaged').length;
+  const damagedCount = equipmentData.filter(equipment => equipment.maintenance_status === 'damaged').length;
   
   console.log(`Operational: ${operationalCount}, Under Maintenance: ${underMaintenanceCount}, Damaged: ${damagedCount}`);
 

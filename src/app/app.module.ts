@@ -23,6 +23,7 @@ import { ForgotPasswordComponent } from './private/components/forgot-password/fo
 import { NotFoundComponent } from './private/components/not-found/not-found.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { ResetPasswordComponent } from './private/components/reset-password/reset-password.component';
 
 
 
@@ -43,7 +44,8 @@ class CustomDateFormatter extends CalendarNativeDateFormatter{
         LoginComponent,
         EmployeeLayoutComponent,
         ForgotPasswordComponent,
-        NotFoundComponent, 
+        NotFoundComponent,
+        ResetPasswordComponent, 
         
     ],
     providers: [

@@ -16,17 +16,19 @@
             <div *ngIf="reservationForm.get('departureDate')?.hasError('pastDate')">
               <small class="text-danger">Please select a future date.</small>
             </div>
+
+            <div *ngIf="reservationForm.get('departureDate')?.hasError('holidayDate')">
+              <small class="text-danger">Selected date is a holiday.</small>
+            </div>
           </div>
           
           <div class="form-group">
             <label for="departureTime">Select Hour of Departure</label>
             <input type="time" id="departureTime" name="departureTime" formControlName="departureTime" class="form-control">
             <div *ngIf="reservationForm.hasError('invalidTimeRange')">
-              <small class="text-danger">Time must be between 08:00 and 18:00.</small>
+              <small class="text-danger">Time must be between 08:00 and 19:00.</small>
             </div>
-            <div *ngIf="reservationForm.hasError('invalidTimeOrder')">
-              <small class="text-danger">Departure time must be before return time.</small>
-            </div>
+            
             <div *ngIf="reservationForm.get('departureTime')?.hasError('pastDepartureTime')">
               <small class="text-danger">Please select a valid departure time.</small>
             </div>
@@ -34,16 +36,27 @@
             <div *ngIf="reservationForm.hasError('invalidDepartureTime')">
               <small class="text-danger">Departure time in July/August must be before 14:00.</small>
             </div>
+
+            <div *ngIf="reservationForm.hasError('insufficientTimeDifference')">
+              <small class="text-danger">The time difference between departure and return must be at least 30 minutes.</small>
+            </div>
           </div>
 
           <div class="form-group">
             <label for="returnTime">Select Hour of Return</label>
             <input type="time" id="returnTime" name="returnTime" formControlName="returnTime" class="form-control">
             <div *ngIf="reservationForm.hasError('invalidTimeRange')">
-              <small class="text-danger">Time must be between 08:00 and 18:00.</small>
+              <small class="text-danger">Time must be between 08:00 and 19:00.</small>
             </div>
             <div *ngIf="reservationForm.hasError('invalidTimeOrder')">
               <small class="text-danger">Return time must be after departure time.</small>
+            </div>
+            <div *ngIf="reservationForm.hasError('invalidDepartureTime')">
+              <small class="text-danger">Departure time in July/August must be before 14:00.</small>
+            </div>
+
+            <div *ngIf="reservationForm.hasError('insufficientTimeDifference')">
+              <small class="text-danger">The time difference between departure and return must be at least 30 minutes.</small>
             </div>
           </div>
         </form>

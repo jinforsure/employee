@@ -12,7 +12,7 @@ export class LoginComponent {
   password: string ='';
   errorMessage: string ='';
   account_type: string='';
-
+  
   constructor(private authService: AuthService,
               private router: Router) { }
 
@@ -33,13 +33,17 @@ export class LoginComponent {
               this.router.navigateByUrl('/calendar');
             }
           }
+        } else if (result.message === 'email does not match') {
+          alert('Email is incorrect');
+        } else if (result.message === 'password not match') {
+          alert('Password is incorrect');
         } else {
           alert('Failed to login');
         }
       },
       error => {
         console.error(error);
-        alert('An error occurred while logging in');
+        this.errorMessage = 'An error occurred while logging in';
       }
     );
   }

@@ -2,6 +2,8 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Employee } from '../model/employee';
 import { Observable } from 'rxjs';
+import { PasswordReset } from '../model/PasswordReset';
+import { PasswordResetConfirm } from '../model/PasswordResetConfirm';
 
 @Injectable({
   providedIn: 'root'
@@ -47,6 +49,14 @@ export class EmployeeService {
       .set('newPassword', newPassword);
 
     return this.httpclient.post(`${this.baseUrl}/employee/change-password`, {}, { params, responseType: 'text' });
+  }
+
+  resetPassword(data: { email: string }): Observable<any> {
+    return this.httpclient.post(`${this.baseUrl}/employee/reset-password`, data, { responseType: 'text' });
+  }
+
+  resetPasswordConfirm(data: PasswordResetConfirm): Observable<any> {
+    return this.httpclient.post(`${this.baseUrl}/employee/reset-password/confirm`, data, { responseType: 'text' });
   }
 
 }

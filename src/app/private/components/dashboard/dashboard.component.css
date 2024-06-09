@@ -119,55 +119,55 @@ b {
 .insights {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 1.6rem;
-}
-
-@media (max-width: 768px) {
+    gap: 2rem;
+  }
+  
+  @media (max-width: 768px) {
     .insights {
-        grid-template-columns: 1fr;
+      grid-template-columns: 1fr;
     }
-}
-
-.insights > div {
+  }
+  
+  .insights > div {
     background: #f1f1f1;
-    padding: 1.8rem;
+    padding: 2rem;
     width: 100%;
-    height: 250px;
-    border-radius: 2rem;
+    height: 300px;
+    border-radius: 1.5rem;
     margin-top: 1rem;
     box-shadow: 0 2rem 3rem #b9b9b9;
     transition: all 300ms ease;
-}
-
-.insights > div:hover {
+  }
+  
+  .insights > div:hover {
     box-shadow: none;
-}
-
-.insights > div span {
+  }
+  
+  .insights > div span {
     background-color: #04A79E;
-    padding: 0.5rem;
+    padding: 0.7rem;
     border-radius: 50%;
     color: white;
-    font-size: 2rem;
-}
-
-.insights > div .middle {
+    font-size: 2.5rem;
+  }
+  
+  .insights > div .middle {
     display: flex;
     align-items: center;
     justify-content: space-between;
-}
-
-.insights h3 {
+  }
+  
+  .insights h3 {
     margin: 1rem 0 0.6rem;
-    font-size: 1rem;
-}
-
-.insights svg {
-    width: 7rem;
-    height: 7rem;
-}
-
-.insights svg circle {
+    font-size: 1.2rem;
+  }
+  
+  .insights svg {
+    width: 8rem;
+    height: 8rem;
+  }
+  
+  .insights svg circle {
     fill: none;
     stroke: #0d6ee5;
     stroke-width: 14;
@@ -175,92 +175,95 @@ b {
     transform: translate(5px, 5px);
     stroke-dasharray: 226.08; /* 2 * Math.PI * 36 */
     stroke-dashoffset: 0; /* Full circle by default */
-}
-
-.insights .sales svg circle {
+  }
+  
+  .insights .sales svg circle {
     stroke-dashoffset: calc(226.08 - (226.08 * 0.3)); /* Example for 30% */
-}
-
-.insights .expense svg circle {
+  }
+  
+  .insights .expense svg circle {
     stroke-dashoffset: calc(226.08 - (226.08 * 0.1)); /* Example for 10% */
-}
-
-.insights .income svg circle {
+  }
+  
+  .insights .income svg circle {
     stroke-dashoffset: calc(226.08 - (226.08 * 0.35)); /* Example for 35% */
-}
-
-.insights small {
+  }
+  
+  .insights small {
     margin-top: 1.6rem;
     display: block;
-}
-
-/*  CHARTS    */
-
-.charts {
+  }
+  
+  /*  CHARTS    */
+  
+  .charts {
     display: grid;
-    grid-template-columns: 2fr 1fr;
-    grid-gap: 20px;
-    width: 100%;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 30px;
+    width: 1300px;
     padding: 20px;
     padding-top: 0;
     margin-top: 50px;
-}
-
-@media (max-width: 768px) {
+  }
+  
+  @media (max-width: 768px) {
     .charts {
-        grid-template-columns: 1fr;
+      grid-template-columns: 1fr;
     }
-}
-
-.chart {
+  }
+  
+  .chart {
     background: #f1f1f1;
-    padding: 20px;
-    border-radius: 10px;
+    padding: 30px;
+    border-radius: 15px;
     box-shadow: 0 2rem 3rem #b9b9b9;
     width: 100%;
-}
-
-.high {
+  }
+  
+  .high {
     color: red; /* Couleur du texte pour les valeurs élevées */
-}
-
-.medium {
+  }
+  
+  .medium {
     color: orange; /* Couleur du texte pour les valeurs moyennes */
-}
-
-.low {
+  }
+  
+  .low {
     color: green; /* Couleur du texte pour les valeurs faibles */
-}
-
-/* dashboard.component.css */
-.expense .middle svg {
+  }
+  
+  /* dashboard.component.css */
+  .expense .middle svg {
     transform: rotate(-90deg); /* Rotate to start the stroke from the top */
-}
-
-.expense .middle circle {
+  }
+  
+  .expense .middle circle {
     transition: stroke-dashoffset 0.35s; /* Smooth transition for animation */
     stroke: blue; /* Color of the stroke */
     stroke-width: 4; /* Width of the stroke */
     fill: none; /* No fill inside the circle */
-}
-.insights svg circle {
+  }
+  
+  .insights svg circle {
     transition: stroke-dashoffset 0.35s ease; /* Ajoutez une transition pour l'animation */
-}
-.sales .middle svg {
+  }
+  
+  .sales .middle svg {
     transform: rotate(-90deg); /* Rotate to start the stroke from the top */
-}
-
-.sales .middle circle {
+  }
+  
+  .sales .middle circle {
     transition: stroke-dashoffset 0.35s; /* Smooth transition for animation */
     stroke: blue; /* Color of the stroke */
     stroke-width: 4; /* Width of the stroke */
-}
-.income .middle svg {
+  }
+  
+  .income .middle svg {
     transform: rotate(-90deg); /* Rotate to start the stroke from the top */
-}
-
-.income .middle circle {
+  }
+  
+  .income .middle circle {
     transition: stroke-dashoffset 0.35s; /* Smooth transition for animation */
     stroke: blue; /* Color of the stroke */
     stroke-width: 4; /* Width of the stroke */
-}
+  }

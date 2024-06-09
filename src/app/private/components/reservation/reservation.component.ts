@@ -153,6 +153,7 @@ filterBySearchText(): void {
 filterEquipmentsBySearchText(): void {
   // Si le champ de recherche n'est pas vide
   if (this.searchText.trim() !== '') {
+    console.log('Available Rooms:', this.availableRooms);
     // Filtrer la liste en fonction du texte de recherche
     this.filteredEquipmentsList = this.availableEquipments.filter(equipment =>
       (equipment.name && equipment.name.toLowerCase().includes(this.searchText.toLowerCase())) ||
@@ -388,6 +389,7 @@ extractDepartureDates(reservations: Reservation[]): { equipmentsId: number | und
   displayEquipments() {
     this.equipmentsService.getAllEquipments().subscribe((res) => {
      this.equipmentsList = res;
+     this.availableEquipments=res;
       this.filteredEquipmentsList = res;
       console.log(res);
      
@@ -397,6 +399,7 @@ extractDepartureDates(reservations: Reservation[]): { equipmentsId: number | und
   displayRooms() {
     this.roomsService.getAllRooms().subscribe((res) => {
       this.roomsList = res;
+      this.availableRooms = res;
       this.filteredRoomsList = res;
       console.log(res);
     });
@@ -440,47 +443,45 @@ extractDepartureDates(reservations: Reservation[]): { equipmentsId: number | und
   }
   
 // Déclaration de la propriété filteredRoomsList comme un tableau vide
-  search() {
-    // Réinitialiser les listes des équipements et des chambres
-    this.filteredEquipmentsList = [];
-    this.filteredRoomsList = [];
+search() {
+  // Réinitialiser les listes des équipements et des chambres filtrées
+  this.filteredEquipmentsList = [];
+  this.filteredRoomsList = [];
   
-    // Récupérez la valeur de la catégorie et de la sous-catégorie sélectionnées
-    const selectedCategory = (document.getElementById('category') as HTMLSelectElement).value;
-    const selectedSubcategory = (document.getElementById('subcategory') as HTMLSelectElement).value;
+  // Récupérez la valeur de la catégorie et de la sous-catégorie sélectionnées
+  const selectedCategory = (document.getElementById('category') as HTMLSelectElement).value;
+  const selectedSubcategory = (document.getElementById('subcategory') as HTMLSelectElement).value;
   
-     // Affichez les valeurs récupérées dans la console
+  // Affichez les valeurs récupérées dans la console
   console.log('Selected Category:', selectedCategory);
   console.log('Selected Subcategory:', selectedSubcategory);
 
-    if (selectedCategory === 'category1') { // 'category1' devrait correspondre à 'Equipments'
-      this.equipmentsService.getAllEquipments().subscribe(equipments => {
-        if (selectedSubcategory) {
-          // Filtrer uniquement si une sous-catégorie est sélectionnée
-          this.filteredEquipmentsList = equipments.filter(equipment => equipment.type === selectedSubcategory);
-        } else {
-          // Si aucune sous-catégorie n'est sélectionnée, afficher tous les équipements
-          this.filteredEquipmentsList = equipments;
-        }
-      });
-    
-      console.log('filteredEquipmentsList :', this.filteredEquipmentsList);  } 
-    else if (selectedCategory === 'category2') { // 'category2' devrait correspondre à 'Rooms'
-      this.roomsService.getAllRooms().subscribe(rooms => {
-        if (selectedSubcategory) {
-          // Filtrer uniquement si une sous-catégorie est sélectionnée
-          this.filteredRoomsList = rooms.filter(room => room.type === selectedSubcategory);
-        } else {
-          // Si aucune sous-catégorie n'est sélectionnée, afficher toutes les chambres
-          this.filteredRoomsList = rooms;
-        }
-      });
-      console.log('filteredRoomsList :', this.filteredRoomsList);  }
-      else {
-        this.displayEquipments();
-        this.displayRooms();
-      }
+  if (selectedCategory === 'category1') { // 'category1' devrait correspondre à 'Equipments'
+    if (selectedSubcategory) {
+      // Filtrer les équipements disponibles uniquement si une sous-catégorie est sélectionnée
+      this.filteredEquipmentsList = this.availableEquipments.filter(equipment => equipment.type === selectedSubcategory);
+    } else {
+      // Si aucune sous-catégorie n'est sélectionnée, afficher tous les équipements disponibles
+      this.filteredEquipmentsList = this.availableEquipments;
+    }
+    console.log('filteredEquipmentsList:', this.filteredEquipmentsList);
+  } else if (selectedCategory === 'category2') { // 'category2' devrait correspondre à 'Rooms'
+    if (selectedSubcategory) {
+      // Filtrer les chambres disponibles uniquement si une sous-catégorie est sélectionnée
+      this.filteredRoomsList = this.availableRooms.filter(room => room.type === selectedSubcategory);
+    } else {
+      // Si aucune sous-catégorie n'est sélectionnée, afficher toutes les chambres disponibles
+      this.filteredRoomsList = this.availableRooms;
+    }
+    console.log('filteredRoomsList:', this.filteredRoomsList);
+    console.log('availableRooms:', this.availableRooms);
+  } else {
+    // Si aucune catégorie n'est sélectionnée, afficher les équipements et les chambres disponibles
+    this.filteredEquipmentsList = this.availableEquipments;
+    this.filteredRoomsList = this.availableRooms;
   }
+}
+
   
 
   openDetailsModal(item: any) {

@@ -22,7 +22,8 @@ export class CustomModalComponent {
     new Date('2024-07-07'), // Ras El Am Hijri
     new Date('2024-07-25'), // Fête Nationale de la République
     new Date('2024-09-15'), // Mouled
-    new Date('2024-10-15')  // Fête de l'évacuation
+    new Date('2024-10-15'),
+    new Date('2024-12-31')  // Fête de l'évacuation
   ];
 
   constructor(
@@ -145,6 +146,17 @@ export class CustomModalComponent {
           const currentMinute = currentTime.getMinutes();
           const isToday = isSameDay(selectedDepartureDate, currentTime);
 
+          const selectedDepartureTime = new Date(`2000-01-01T${departureTime}`);
+          const selectedReturnTime = new Date(`2000-01-01T${returnTime}`);
+  
+          // Calculate the time difference in minutes
+          const timeDifference = Math.abs(selectedReturnTime.getTime() - selectedDepartureTime.getTime()) / (1000 * 60);
+  
+          // Check if the time difference is less than 30 minutes
+          if (timeDifference < 30) {
+            return { insufficientTimeDifference: true };
+          }
+
           if (isToday) {
             const selectedDepartureTime = new Date(`2000-01-01T${departureTime}`);
             const selectedHour = selectedDepartureTime.getHours();
@@ -161,11 +173,13 @@ export class CustomModalComponent {
           if (departureHour < 8 || returnHour > 18) {
             return { invalidTimeRange: true };
           }
-
-          if (departureHour >= returnHour) {
+          
+          console.log("departure : ",departureHour)
+          console.log("return : ",returnHour)
+          if (departureHour > returnHour) {
             return { invalidTimeOrder: true };
           }
-          if (this.isDepartureTimeInJulyAugustAfter14(departureDate, departureTime)) {
+          if (this.isDepartureTimeInJulyAugustAfter14(departureDate, departureTime ,returnTime)) {
             return { invalidDepartureTime: true };
           }
         }
@@ -174,15 +188,21 @@ export class CustomModalComponent {
       return null;
     };
   }
+
   
-  isDepartureTimeInJulyAugustAfter14(departureDate: string, departureTime: string): boolean {
+  
+  isDepartureTimeInJulyAugustAfter14(departureDate: string, departureTime: string, returnTime: string): boolean {
     const selectedDate = new Date(departureDate);
     const selectedMonth = selectedDate.getMonth();
     const selectedDepartureTime = new Date(`2000-01-01T${departureTime}`);
+    const selectedreturnTime = new Date(`2000-01-01T${returnTime}`);
     const selectedHour = selectedDepartureTime.getHours();
-
-    const isAfter14JulyAugust = (selectedMonth === 6 || selectedMonth === 7) && selectedHour >= 14;
-    console.log(`Departure date: ${departureDate}, Departure time: ${departureTime}, Is after 14:00 in July/August: ${isAfter14JulyAugust}`);
+    const selectedHourreturn = selectedreturnTime.getHours();
+    console.log("187  ",selectedHourreturn)
+    console.log("188  ",selectedHourreturn >=14)
+    const isAfter14JulyAugust = (selectedMonth === 6 || selectedMonth === 7) && selectedHour >= 14 || selectedHourreturn >=14;
+    console.log("189 : ", (selectedMonth === 6 || selectedMonth === 7) && selectedHour >= 14 && selectedHourreturn >=14)
+    console.log(`Departure date: ${departureDate}, Departure time: ${departureTime}, Is after 14:00 in July/August: ${isAfter14JulyAugust}, Return time: ${returnTime}, Is after 14:00 in July/August: ${isAfter14JulyAugust}` );
     
     return isAfter14JulyAugust;
 }

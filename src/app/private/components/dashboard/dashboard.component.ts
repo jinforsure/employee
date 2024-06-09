@@ -220,7 +220,7 @@ export class DashboardComponent  {
         .map(state => state as string); // Convertissez le type en string si nécessaire
 
       // Calculer le nombre d'états égaux à "disabled"
-      this.disabledCount = equipmentStates.filter(state => state === 'Damaged').length;
+      this.disabledCount = equipmentStates.filter(state => state === 'damaged').length;
       console.log(this.disabledCount);
       // Mettre à jour le nombre total d'équipements
       this.totalEquipments = equipmentStates.length;
@@ -273,16 +273,5 @@ export class DashboardComponent  {
     return 226.08 - filledLength;
   }
   
-
-
-
-
-
-
-
-
-
-
-
 
 }

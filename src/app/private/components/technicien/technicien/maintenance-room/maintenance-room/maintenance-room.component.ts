@@ -6,6 +6,8 @@ import { ReservationService } from 'src/app/private/services/reservation.service
 import { EmailService } from 'src/app/private/services/email.service';
 import { NotifService,AppNotification } from 'src/app/private/services/notif.service';
 import { DatePipe } from '@angular/common';
+import { EmployeeService } from 'src/app/private/services/employee.service';
+import { Employee } from 'src/app/private/model/employee';
 @Component({
   selector: 'app-maintenance-room',
   templateUrl: './maintenance-room.component.html',
@@ -50,44 +52,58 @@ export class MaintenanceRoomComponent {
     private reservationService: ReservationService,
     private emailService:EmailService,
     private NotifService: NotifService,
-    private datePipe: DatePipe
-
+    private datePipe: DatePipe,
+    private employeeService: EmployeeService
 
   ) { }
 
   notifications: AppNotification[] = [];
 
-  sendEmail() {
- const emaill =this.email;
-    const to: string[] = [this.email!]; // Adreslse e-mail du destinataire
-    const cc: string[] = [this.email!]; // Adresse e-mail en copie
-    const subject = "Important Update Regarding Your Reservation!!! "; // Sujet du courriel
-    const body = "Dear "+this.username+",\n We hope this message finds you well. We regret to inform you that due to unforeseen maintenance issues/matters beyond our control, we are unable to honor your reservation at this time.We understand the inconvenience this may cause and sincerely apologize for any disruption to your plans. We are committed to providing the highest quality of service and are taking all necessary steps to resolve these issues promptly.\n Best regards, \n Technicien";
-    this.emailService.sendEmail(to, cc, subject, body).subscribe(
-      response => {
-        console.log('Email sent successfully', response);
-        const newNotification: AppNotification = {
-          date_envoi: new Date().toISOString().split('T')[0], // Date au format YYYY-MM-DD
-          heure: new Date().toLocaleTimeString(), // Heure actuelle
-          type: 'Email',
-          titre: subject,
-          message: body
-        };
-        this.NotifService.addNotification(newNotification).subscribe(
-          notifResponse => {
-            console.log('Notification stored successfully', notifResponse);
-            this.notifications.push(notifResponse); // Ajouter la nouvelle notification à la liste
-          },
-          notifError => {
-            console.error('Error storing notification', notifError);
-          }
-        );
-      
-      },
-      error => {
-        console.error('Error sending email', error);
-      }
-    );
+  sendEmail(user:string) {
+    console.log("user 65",user)
+    this.employeeService.getAllEmployee().subscribe((employees: Employee[]) => {
+      // Find the employee with the matching username
+      const employee = employees.find((emp) => emp.username === user);
+      if (employee) {
+        // Retrieve the email only if the employee is found
+        const email = employee.email;
+        // Check if the email is defined before using it
+        if (email) {
+          const to: string[] = [email]; // Email address of the recipient
+          const cc: string[] = [email]; // Email address in cc
+          const subject = "Important Update Regarding Your Reservation!!! "; // Email subject
+          const body = "Dear " +user+ ",\n We hope this message finds you well. We regret to inform you that due to unforeseen maintenance issues, we are unable to honor your reservation at this time. We understand the inconvenience this may cause and sincerely apologize for any disruption to your plans.\n Best regards,\n Technicien";
+          
+          // Send email
+          this.emailService.sendEmail(to, cc, subject, body).subscribe(
+            response => {
+              console.log('Email sent successfully', response);
+              const newNotification: AppNotification = {
+                date_envoi: new Date().toISOString().split('T')[0], // Date in YYYY-MM-DD format
+                heure: new Date().toLocaleTimeString(), // Current time
+                type: 'Email',
+                titre: subject,
+                message: body
+              };
+              // Add notification
+              this.NotifService.addNotification(newNotification).subscribe(
+                notifResponse => {
+                  console.log('Notification stored successfully', notifResponse);
+                  this.notifications.push(notifResponse); // Add the new notification to the list
+                },
+                notifError => {
+                  console.error('Error storing notification', notifError);
+                }
+              );
+  
+            },
+            error => {
+              console.error('Error sending email', error);
+            }
+          );
+        }
+      }
+    });
   }
   
   sendEmail3() {
@@ -190,10 +206,11 @@ export class MaintenanceRoomComponent {
       
       // Traiter les réservations futures
       futureReservations.forEach(reservation => {
+        console.log("roomId 209",reservation.roomsId);
         if (reservation.roomsId !== null && reservation.roomsId !== undefined) {
 
           const roomsId: number = reservation.roomsId;
-          console.log("roomId",roomsId);
+          console.log("roomId 213",roomsId);
           // Assurez-vous que c'est un number
           this.equipmentService.getRoomsById(roomsId).subscribe((equipment: Rooms) => {
             console.log('Équipement associé à la réservation:', equipment);
@@ -393,11 +410,12 @@ performAction(equipement: any) {
           reservations.forEach((reservation: any) => {
             console.log("rrrrrrrrr", reservation.roomsId, roomIdToUpdate);
             if (reservation.roomsId === roomIdToUpdate) {
+              const user = reservation.username;
               console.log("'''''''''");
               this.reservationService.deleteReservation(reservation.id).subscribe(
                 () => {
                   console.log('La réservation associée à la equip a été supprimée avec succès.');
-                  this.sendEmail();
+                  this.sendEmail(user);
                   console.log("Action performed for equipment:", equipement);
                 }
               );

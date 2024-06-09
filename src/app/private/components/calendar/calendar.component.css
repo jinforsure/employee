@@ -164,3 +164,44 @@ input[type="time"]:focus {
 .btn-info {
   width: auto; /* Allow buttons to adjust their width according to content */
 }
+
+
+.message-container {
+  position: fixed;
+  right: 30px;
+  top: 100px;
+  padding: 15px;
+  border-radius: 8px;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.8); /* Semi-transparent black background */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Drop shadow */
+  z-index: 9999; /* Ensure it's above other content */
+  animation: slideInRight 0.5s ease-in-out forwards, fadeOut 3s 1s forwards; /* Animation for appearing and disappearing */
+}
+
+@keyframes slideInRight {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.message-container.success {
+  background-color: rgba(40, 167, 69, 0.8); /* Green background for success messages */
+}
+
+.message-container.error {
+  background-color: rgba(220, 53, 69, 0.8); /* Red background for error messages */
+}
+

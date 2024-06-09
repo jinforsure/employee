@@ -168,6 +168,9 @@
           <button class="btn btn-danger" (click)="cancelReservation(event)">
             Cancel
           </button>
+          <div class="message-container" *ngIf="message" [ngClass]="{'success': isSuccess, 'error': !isSuccess}">
+            {{ message }}
+          </div>
         </td>
       </tr>
     </tbody>

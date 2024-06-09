@@ -133,19 +133,21 @@ export class HeaderComponent implements OnInit {
     this.hasNewNotification = false;
 }
 
-getNotificationIcon(message: string): string {
+getNotificationIcon(message: string): { iconClass: string, color: string } {
   if (message.includes('successfully')) {
-      return 'fas fa-check-circle';
+      return { iconClass: 'fas fa-bell', color: 'green' };
   } else if (message.includes('edited') || message.includes('updated')) {
-      return 'fas fa-info-circle';
+      return { iconClass: 'fas fa-info-circle', color: 'blue' };
   } else if (message.includes('error') || message.includes('failed')) {
-      return 'fas fa-exclamation-circle';
+      return { iconClass: 'fas fa-exclamation-circle', color: 'red' };
   } else if (message.includes('cancelled') || message.includes('deleted')) {
-      return 'fas fa-times-circle';
+      return { iconClass: 'fas fa-times-circle', color: 'gray' };
   } else {
-      return 'fas fa-bell';
+      return { iconClass: 'fas fa-bell', color: 'yellow' };
   }
 }
+
+
 
 
 }
